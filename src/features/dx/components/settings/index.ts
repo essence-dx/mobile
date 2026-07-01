@@ -1,0 +1,5 @@
+export { SettingsAccount } from "./settings-account"
+export { SettingsAppearance } from "./settings-appearance"
+export { SettingsCustomize } from "./settings-customize"
+export { SettingsPlaceholder } from "./settings-placeholder"
+export { PixelCanvas, DORA_COLORS, JARVIS_COLORS } from "./pixel-canvas"
