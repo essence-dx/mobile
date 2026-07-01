@@ -1,14 +1,17 @@
 "use client"
 
 import * as React from "react"
+import { AnimatePresence, motion } from "framer-motion"
 import {
   ArrowDown,
   ArrowUp,
+  CalendarDays,
   Check,
   ChevronDown,
   ChevronLeft,
   ChevronRight,
   CircleSlash,
+  Clock,
   Code,
   Cog,
   Copy,
@@ -28,6 +31,7 @@ import {
   Link,
   LogOut,
   Menu,
+  MessageSquare,
   MessageSquarePlus,
   Mic,
   Moon,
@@ -69,6 +73,11 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
+import {
+  HoverCard,
+  HoverCardContent,
+  HoverCardTrigger,
+} from "@/components/ui/hover-card"
 import { Input } from "@/components/ui/input"
 import { ScrollArea } from "@/components/ui/scroll-area"
 import { Separator } from "@/components/ui/separator"
@@ -85,8 +94,6 @@ type RightPanel = "thoughts" | "sources" | "files" | null
 function LogoIcon({ className }: { className?: string }) {
   return (
     <svg
-      width="24"
-      height="24"
       viewBox="0 0 24 24"
       fill="none"
       stroke="currentColor"
@@ -231,29 +238,77 @@ function VoiceBar({ delay, height }: { delay: string; height: number }) {
 }
 
 export function DxChat({ swapped }: { swapped?: boolean }) {
-  const [sidebarCollapsed, setSidebarCollapsed] = React.useState(false)
+  const [sidebarCollapsed, setSidebarCollapsed] = React.useState(() => {
+    if (typeof window !== "undefined") {
+      return localStorage.getItem("dx-sidebar-collapsed") === "true"
+    }
+    return false
+  })
   const [mobileSidebarOpen, setMobileSidebarOpen] = React.useState(false)
-  const [rightPanel, setRightPanel] = React.useState<RightPanel>(null)
+  const [isDesktop, setIsDesktop] = React.useState(true)
+
+  React.useEffect(() => {
+    const mq = window.matchMedia("(min-width: 768px)")
+    setIsDesktop(mq.matches)
+    const handler = (e: MediaQueryListEvent) => setIsDesktop(e.matches)
+    mq.addEventListener("change", handler)
+    return () => mq.removeEventListener("change", handler)
+  }, [])
+  const [rightPanel, setRightPanel] = React.useState<RightPanel>(() => {
+    if (typeof window !== "undefined") {
+      const stored = localStorage.getItem("dx-right-panel")
+      return (stored as RightPanel) || null
+    }
+    return null
+  })
   const [inputValue, setInputValue] = React.useState("")
   const [isConnecting, setIsConnecting] = React.useState(false)
   const [isVoiceMode, setIsVoiceMode] = React.useState(false)
-  const [projectsOpen, setProjectsOpen] = React.useState(true)
-  const [historyOpen, setHistoryOpen] = React.useState(true)
-  const [darkMode, setDarkMode] = React.useState(false)
+  const [projectsOpen, setProjectsOpen] = React.useState(() => {
+    if (typeof window !== "undefined") {
+      return localStorage.getItem("dx-projects-open") !== "false"
+    }
+    return true
+  })
+  const [historyOpen, setHistoryOpen] = React.useState(() => {
+    if (typeof window !== "undefined") {
+      return localStorage.getItem("dx-history-open") !== "false"
+    }
+    return true
+  })
+  const [darkMode, setDarkMode] = React.useState(() => {
+    if (typeof window !== "undefined") {
+      return localStorage.getItem("dx-dark-mode") === "true"
+    }
+    return false
+  })
   const [settingsOpen, setSettingsOpen] = React.useState(false)
   const [settingsTab, setSettingsTab] = React.useState("account")
 
-  const toggleDarkMode = React.useCallback(() => {
-    setDarkMode((prev) => {
-      const next = !prev
-      if (next) {
-        document.documentElement.classList.add("dark")
-      } else {
-        document.documentElement.classList.remove("dark")
-      }
-      return next
-    })
-  }, [])
+  React.useEffect(() => {
+    localStorage.setItem("dx-sidebar-collapsed", String(sidebarCollapsed))
+  }, [sidebarCollapsed])
+
+  React.useEffect(() => {
+    localStorage.setItem("dx-right-panel", rightPanel || "")
+  }, [rightPanel])
+
+  React.useEffect(() => {
+    localStorage.setItem("dx-projects-open", String(projectsOpen))
+  }, [projectsOpen])
+
+  React.useEffect(() => {
+    localStorage.setItem("dx-history-open", String(historyOpen))
+  }, [historyOpen])
+
+  React.useEffect(() => {
+    localStorage.setItem("dx-dark-mode", String(darkMode))
+    if (darkMode) {
+      document.documentElement.classList.add("dark")
+    } else {
+      document.documentElement.classList.remove("dark")
+    }
+  }, [darkMode])
 
   const scrollViewportRef = React.useRef<HTMLDivElement>(null)
   const [showScrollBtn, setShowScrollBtn] = React.useState(false)
@@ -282,7 +337,7 @@ export function DxChat({ swapped }: { swapped?: boolean }) {
   }, [inputValue, isConnecting])
 
   const openRightPanel = React.useCallback((panel: RightPanel) => {
-    if (panel) setRightPanel(panel)
+    setRightPanel((prev) => (prev === panel ? null : panel))
   }, [])
 
   const closeRightPanel = React.useCallback(() => {
@@ -293,27 +348,37 @@ export function DxChat({ swapped }: { swapped?: boolean }) {
     <TooltipProvider delayDuration={300}>
       <div className="flex h-screen w-screen overflow-hidden bg-background text-foreground">
         {/* Mobile Overlay */}
-        {(mobileSidebarOpen || rightPanel) && (
-          <div
-            className="fixed inset-0 z-40 bg-black/40 backdrop-blur-[2px] md:hidden"
-            onClick={() => {
-              setMobileSidebarOpen(false)
-              closeRightPanel()
-            }}
-          />
-        )}
+        <AnimatePresence>
+          {(mobileSidebarOpen || rightPanel) && (
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 0.2 }}
+              className="fixed inset-0 z-40 bg-black/40 backdrop-blur-[2px] md:hidden"
+              onClick={() => {
+                setMobileSidebarOpen(false)
+                closeRightPanel()
+              }}
+            />
+          )}
+        </AnimatePresence>
 
         {/* LEFT SIDEBAR */}
-        <aside
+        <motion.aside
           className={cn(
-            "absolute top-0 left-0 z-50 flex h-full flex-shrink-0 flex-col border-r border-sidebar-border bg-sidebar text-sidebar-foreground transition-all duration-300 ease-in-out md:relative",
+            "absolute top-0 left-0 z-50 flex h-full flex-shrink-0 flex-col border-r border-sidebar-border bg-sidebar text-sidebar-foreground md:relative",
             "shadow-2xl md:shadow-none",
-            mobileSidebarOpen
-              ? "translate-x-0"
-              : "-translate-x-full md:translate-x-0",
-            sidebarCollapsed ? "md:w-[68px]" : "md:w-[260px]",
             "w-[280px]"
           )}
+          animate={{
+            x: isDesktop ? 0 : mobileSidebarOpen ? 0 : "-100%",
+            width: sidebarCollapsed ? 68 : 260,
+          }}
+          transition={{
+            x: { type: "spring", stiffness: 300, damping: 30 },
+            width: { type: "spring", stiffness: 300, damping: 30 },
+          }}
           style={
             swapped
               ? ({
@@ -332,18 +397,17 @@ export function DxChat({ swapped }: { swapped?: boolean }) {
           }
         >
           {/* Sidebar Header */}
-          <div className="flex h-14 items-center px-4 pt-2">
-            <LogoIcon className="min-w-[24px] text-sidebar-foreground" />
-            <span
-              className={cn(
-                "ml-2 font-bold text-sidebar-foreground md:hidden",
-                sidebarCollapsed && "md:hidden"
-              )}
-            >
-              SuperGrok
-            </span>
-            <div className="ml-auto flex items-center gap-1">
-              {!sidebarCollapsed && (
+          {sidebarCollapsed ? (
+            <div className="flex h-14 items-center justify-center">
+              <LogoIcon className="size-5 shrink-0 text-sidebar-foreground" />
+            </div>
+          ) : (
+            <div className="flex h-14 items-center px-4 pt-2">
+              <LogoIcon className="size-6 shrink-0 text-sidebar-foreground" />
+              <span className="ml-2 font-bold text-sidebar-foreground md:hidden">
+                SuperGrok
+              </span>
+              <div className="ml-auto flex items-center gap-1">
                 <Button
                   variant="ghost"
                   size="icon-xs"
@@ -352,52 +416,234 @@ export function DxChat({ swapped }: { swapped?: boolean }) {
                 >
                   <ChevronLeft className="size-4" />
                 </Button>
-              )}
-              <Button
-                variant="ghost"
-                size="icon-xs"
-                className="bg-muted text-muted-foreground md:hidden"
-                onClick={() => setMobileSidebarOpen(false)}
-              >
-                <X className="size-4" />
-              </Button>
+                <Button
+                  variant="ghost"
+                  size="icon-xs"
+                  className="bg-muted text-muted-foreground md:hidden"
+                  onClick={() => setMobileSidebarOpen(false)}
+                >
+                  <X className="size-4" />
+                </Button>
+              </div>
             </div>
-          </div>
+          )}
 
           {/* Navigation */}
-          <div className="space-y-0.5 px-3 pt-4 pb-4">
-            <SidebarItem
-              icon={Search}
-              label="Search"
-              collapsed={sidebarCollapsed}
-            />
-            <SidebarItem
-              icon={MessageSquarePlus}
-              label="New Chat"
-              collapsed={sidebarCollapsed}
-              active
-            />
-            <SidebarItem
-              icon={Image}
-              label="Imagine"
-              collapsed={sidebarCollapsed}
-            />
-            <SidebarItem
-              icon={Code}
-              label="Build"
-              collapsed={sidebarCollapsed}
-              badge="New"
-            />
-            <SidebarItem
-              icon={Grid3x3}
-              label="Skills and Connectors"
-              collapsed={sidebarCollapsed}
-            />
-          </div>
+          <motion.div
+            className={cn(
+              "space-y-0.5 pt-4 pb-4",
+              sidebarCollapsed ? "flex flex-col items-center" : "px-3"
+            )}
+            initial="hidden"
+            animate="visible"
+            variants={{
+              visible: { transition: { staggerChildren: 0.06 } },
+            }}
+          >
+            <motion.div
+              variants={{
+                hidden: { opacity: 0, x: -12 },
+                visible: { opacity: 1, x: 0 },
+              }}
+              transition={{ type: "spring", stiffness: 300, damping: 25 }}
+            >
+              <SidebarItem
+                icon={Search}
+                label="Search"
+                collapsed={sidebarCollapsed}
+              />
+            </motion.div>
+            <motion.div
+              variants={{
+                hidden: { opacity: 0, x: -12 },
+                visible: { opacity: 1, x: 0 },
+              }}
+              transition={{ type: "spring", stiffness: 300, damping: 25 }}
+            >
+              <SidebarItem
+                icon={MessageSquarePlus}
+                label="New Chat"
+                collapsed={sidebarCollapsed}
+                active
+              />
+            </motion.div>
+            <motion.div
+              variants={{
+                hidden: { opacity: 0, x: -12 },
+                visible: { opacity: 1, x: 0 },
+              }}
+              transition={{ type: "spring", stiffness: 300, damping: 25 }}
+            >
+              <SidebarItem
+                icon={Image}
+                label="Imagine"
+                collapsed={sidebarCollapsed}
+              />
+            </motion.div>
+            <motion.div
+              variants={{
+                hidden: { opacity: 0, x: -12 },
+                visible: { opacity: 1, x: 0 },
+              }}
+              transition={{ type: "spring", stiffness: 300, damping: 25 }}
+            >
+              <SidebarItem
+                icon={Code}
+                label="Build"
+                collapsed={sidebarCollapsed}
+                badge="New"
+              />
+            </motion.div>
+            <motion.div
+              variants={{
+                hidden: { opacity: 0, x: -12 },
+                visible: { opacity: 1, x: 0 },
+              }}
+              transition={{ type: "spring", stiffness: 300, damping: 25 }}
+            >
+              <SidebarItem
+                icon={Grid3x3}
+                label="Skills and Connectors"
+                collapsed={sidebarCollapsed}
+              />
+            </motion.div>
+          </motion.div>
 
           {/* Scrollable Middle */}
           <ScrollArea className="flex-1 px-3">
-            {!sidebarCollapsed && (
+            {sidebarCollapsed ? (
+              <>
+                <Separator className="mx-3 my-2" />
+                <div className="flex flex-col items-center gap-2">
+                  <HoverCard openDelay={100} closeDelay={0}>
+                    <HoverCardTrigger asChild>
+                      <button className="flex size-10 items-center justify-center rounded-lg text-muted-foreground transition-colors hover:bg-muted hover:text-foreground">
+                        <FolderOpen className="size-5" />
+                      </button>
+                    </HoverCardTrigger>
+                    <HoverCardContent
+                      side="right"
+                      align="start"
+                      className="w-48 p-2"
+                    >
+                      <div className="space-y-0.5">
+                        <div className="px-3 py-1.5 text-xs font-semibold text-muted-foreground">
+                          Projects
+                        </div>
+                        <button className="flex w-full items-center gap-2 rounded-md px-3 py-1.5 text-sm text-foreground transition-colors hover:bg-muted">
+                          <Plus className="size-4 shrink-0" />
+                          <span className="truncate">New Project</span>
+                        </button>
+                        <button className="flex w-full items-center gap-2 rounded-md px-3 py-1.5 text-sm text-foreground transition-colors hover:bg-muted">
+                          <Sparkles className="size-4 shrink-0" />
+                          <span className="truncate">Dx</span>
+                        </button>
+                      </div>
+                    </HoverCardContent>
+                  </HoverCard>
+
+                  <HoverCard openDelay={100} closeDelay={0}>
+                    <HoverCardTrigger asChild>
+                      <button className="flex size-10 items-center justify-center rounded-lg text-muted-foreground transition-colors hover:bg-muted hover:text-foreground">
+                        <Clock className="size-5" />
+                      </button>
+                    </HoverCardTrigger>
+                    <HoverCardContent
+                      side="right"
+                      align="start"
+                      className="w-56 p-2"
+                    >
+                      <div className="space-y-0.5">
+                        <div className="px-3 py-1.5 text-xs font-semibold text-muted-foreground">
+                          History
+                        </div>
+                        <button className="flex w-full items-center gap-2 rounded-md px-3 py-1.5 text-sm text-foreground transition-colors hover:bg-muted">
+                          <Pin className="size-3.5 shrink-0 text-muted-foreground" />
+                          <span className="truncate">
+                            C++ Markdown to FlatBu...
+                          </span>
+                        </button>
+                        <button className="flex w-full items-center gap-2 rounded-md px-3 py-1.5 text-sm text-foreground transition-colors hover:bg-muted">
+                          <Pin className="size-3.5 shrink-0 text-muted-foreground" />
+                          <span className="truncate">
+                            OpenClaw and Hermes ...
+                          </span>
+                        </button>
+                        <button className="flex w-full items-center gap-2 rounded-md px-3 py-1.5 text-sm text-foreground transition-colors hover:bg-muted">
+                          <Pin className="size-3.5 shrink-0 text-muted-foreground" />
+                          <span className="truncate">
+                            Sandbox Specs: Linux, N...
+                          </span>
+                        </button>
+                        <button className="flex w-full items-center gap-2 rounded-md px-3 py-1.5 text-sm text-foreground transition-colors hover:bg-muted">
+                          <Pin className="size-3.5 shrink-0 text-muted-foreground" />
+                          <span className="truncate">
+                            DX Config: Block Syntax...
+                          </span>
+                        </button>
+                        <button className="flex w-full items-center gap-2 rounded-md px-3 py-1.5 text-sm text-foreground transition-colors hover:bg-muted">
+                          <Pin className="size-3.5 shrink-0 text-muted-foreground" />
+                          <span className="truncate">
+                            DX CLI: Root Markdown...
+                          </span>
+                        </button>
+                        <div className="mt-1 border-t border-border pt-1">
+                          <button className="flex w-full items-center gap-2 rounded-md px-3 py-1.5 text-sm text-foreground transition-colors hover:bg-muted">
+                            <MessageSquare className="size-3.5 shrink-0 text-muted-foreground" />
+                            <span className="truncate">
+                              Latest AI News Top 10 ...
+                            </span>
+                          </button>
+                          <button className="flex w-full items-center gap-2 rounded-md px-3 py-1.5 text-sm text-foreground transition-colors hover:bg-muted">
+                            <MessageSquare className="size-3.5 shrink-0 text-muted-foreground" />
+                            <span className="truncate">
+                              Google Antigravity AI Ed...
+                            </span>
+                          </button>
+                        </div>
+                      </div>
+                    </HoverCardContent>
+                  </HoverCard>
+
+                  <HoverCard openDelay={100} closeDelay={0}>
+                    <HoverCardTrigger asChild>
+                      <button className="flex size-10 items-center justify-center rounded-lg text-muted-foreground transition-colors hover:bg-muted hover:text-foreground">
+                        <CalendarDays className="size-5" />
+                      </button>
+                    </HoverCardTrigger>
+                    <HoverCardContent
+                      side="right"
+                      align="start"
+                      className="w-56 p-2"
+                    >
+                      <div className="space-y-0.5">
+                        <div className="px-3 py-1.5 text-xs font-semibold text-muted-foreground">
+                          Today
+                        </div>
+                        <button className="flex w-full items-center gap-2 rounded-md px-3 py-1.5 text-sm text-foreground transition-colors hover:bg-muted">
+                          <MessageSquare className="size-3.5 shrink-0 text-muted-foreground" />
+                          <span className="truncate">
+                            Latest AI News Top 10 Updat...
+                          </span>
+                        </button>
+                        <button className="flex w-full items-center gap-2 rounded-md px-3 py-1.5 text-sm text-foreground transition-colors hover:bg-muted">
+                          <MessageSquare className="size-3.5 shrink-0 text-muted-foreground" />
+                          <span className="truncate">
+                            Google Antigravity AI Editor ...
+                          </span>
+                        </button>
+                        <button className="flex w-full items-center gap-2 rounded-md px-3 py-1.5 text-sm text-foreground transition-colors hover:bg-muted">
+                          <MessageSquare className="size-3.5 shrink-0 text-muted-foreground" />
+                          <span className="truncate">
+                            Dropdown free providers thr...
+                          </span>
+                        </button>
+                      </div>
+                    </HoverCardContent>
+                  </HoverCard>
+                </div>
+              </>
+            ) : (
               <>
                 {/* Projects */}
                 <Collapsible
@@ -469,15 +715,18 @@ export function DxChat({ swapped }: { swapped?: boolean }) {
                       Today
                     </div>
                     <HistoryItem
+                      icon={MessageSquare}
                       label="Latest AI News Top 10 Updat..."
                       collapsed={sidebarCollapsed}
                       active
                     />
                     <HistoryItem
+                      icon={MessageSquare}
                       label="Google Antigravity AI Editor ..."
                       collapsed={sidebarCollapsed}
                     />
                     <HistoryItem
+                      icon={MessageSquare}
                       label="Dropdown free providers thr..."
                       collapsed={sidebarCollapsed}
                     />
@@ -558,7 +807,7 @@ export function DxChat({ swapped }: { swapped?: boolean }) {
               </DropdownMenuContent>
             </DropdownMenu>
           </div>
-        </aside>
+        </motion.aside>
 
         {/* MAIN CONTENT */}
         <main
@@ -672,123 +921,128 @@ export function DxChat({ swapped }: { swapped?: boolean }) {
           </div>
 
           {/* Chat Scroll Area */}
-          <ScrollArea
-            viewportRef={scrollViewportRef}
-            onScroll={handleScroll}
-            className="flex-1 px-4 pt-20 pb-44 md:px-6 md:pt-12"
-          >
-            <div className="flex flex-col items-center">
-              <div className="w-full max-w-3xl text-[15px] leading-relaxed text-foreground/80 transition-all">
-                {/* User Message */}
-                <div className="group my-6 flex flex-col items-end">
-                  <div className="max-w-[90%] rounded-[1.5rem] rounded-tr-sm border border-border bg-muted px-4 py-3 text-[14px] text-foreground shadow-xs md:max-w-[85%] md:px-5 md:text-[15px]">
-                    Please tell me what are the latest today&apos;s ai updates -
-                    list top 10 news of today
-                  </div>
-                  <div className="mt-1 flex items-center gap-1 pr-2 opacity-0 transition-opacity group-hover:opacity-100">
-                    <Button
-                      variant="ghost"
-                      size="icon-xs"
-                      className="text-muted-foreground"
-                    >
-                      <Pencil className="size-3.5" />
-                    </Button>
-                    <Button
-                      variant="ghost"
-                      size="icon-xs"
-                      className="text-muted-foreground"
-                    >
-                      <Copy className="size-3.5" />
-                    </Button>
-                  </div>
-                </div>
-
-                {/* Bot Message */}
-                <div className="group relative my-8 flex w-full flex-col items-start gap-2">
-                  <ThoughtProcess
-                    label="49s"
-                    onOpenThoughts={() => openRightPanel("thoughts")}
-                  />
-                  <div className="mb-1 flex w-full items-center gap-3">
-                    <LogoIcon className="flex-shrink-0 text-foreground" />
-                    <span className="text-[15px] font-bold text-foreground">
-                      SuperGrok
-                    </span>
-                  </div>
-                  <div className="w-full text-[14px] leading-[1.7] text-foreground/80 md:text-[15px]">
-                    <p className="mb-6">
-                      Your AI Friday here, popping out of the Doraemon pocket
-                      with the freshest AI scoop straight from the future! I dug
-                      through the latest buzz (as of this morning, June 25,
-                      2026) like a true gadget-hunting best friend. Here&apos;s
-                      the <strong>Top 10 AI news dominating today</strong>{" "}
-                      &mdash; ranked by what&apos;s buzzing hardest right now:
-                    </p>
-
-                    <div className="mb-6">
-                      <h3 className="mb-2 text-[17px] leading-snug font-bold text-foreground md:text-[18px]">
-                        1. Anthropic Accuses Alibaba of Massive Claude
-                        &quot;Distillation&quot; Theft
-                      </h3>
-                      <p>
-                        Anthropic dropped a bombshell: Alibaba-linked operators
-                        allegedly used <strong>~25,000 fake accounts</strong> to
-                        make queries to Claude, stealing its best capabilities.
-                        They called it the largest known attack of its kind.
-                        <SourceBadge label="Reuters" domain="reuters" />
-                      </p>
+          <div className="min-h-0 flex-1">
+            <ScrollArea
+              viewportRef={scrollViewportRef}
+              onScroll={handleScroll}
+              className="h-full px-4 md:px-6"
+            >
+              <div className="flex flex-col items-center pb-40 md:pb-44">
+                <div className="w-full max-w-3xl text-[15px] leading-relaxed text-foreground/80">
+                  {/* User Message */}
+                  <div className="group my-6 flex flex-col items-end">
+                    <div className="max-w-[90%] rounded-[1.5rem] rounded-tr-sm border border-border bg-muted px-4 py-3 text-[14px] text-foreground shadow-xs md:max-w-[85%] md:px-5 md:text-[15px]">
+                      Please tell me what are the latest today&apos;s ai updates
+                      - list top 10 news of today
                     </div>
-
-                    <div className="mb-6">
-                      <h3 className="mb-2 text-[17px] leading-snug font-bold text-foreground md:text-[18px]">
-                        2. SK Hynix Announces Massive $29.4 Billion Nasdaq
-                        Listing
-                      </h3>
-                      <p>
-                        The AI memory chip king is going all-in. They&apos;re
-                        raising up to <strong>$29.4 billion</strong> via US ADR
-                        listing on Nasdaq &mdash; one of the biggest listings
-                        ever &mdash; to supercharge production for the AI boom.
-                        <SourceBadge label="Bloomberg" domain="bloomberg" />
-                      </p>
-                    </div>
-
-                    <div className="mb-6">
-                      <h3 className="mb-2 text-[17px] leading-snug font-bold text-foreground md:text-[18px]">
-                        3. OpenAI Drops GPT-5.5 Instant Update
-                      </h3>
-                      <p>
-                        ChatGPT&apos;s most-used model just got smarter. The
-                        June 24 update improves:
-                      </p>
-                      <ul className="mt-3 list-disc space-y-2 pl-5">
-                        <li>Understanding your real goal behind questions</li>
-                        <li>
-                          Handling complex instructions + constraints better
-                        </li>
-                      </ul>
+                    <div className="mt-1 flex items-center gap-1 pr-2 opacity-0 transition-opacity group-hover:opacity-100">
+                      <Button
+                        variant="ghost"
+                        size="icon-xs"
+                        className="text-muted-foreground"
+                      >
+                        <Pencil className="size-3.5" />
+                      </Button>
+                      <Button
+                        variant="ghost"
+                        size="icon-xs"
+                        className="text-muted-foreground"
+                      >
+                        <Copy className="size-3.5" />
+                      </Button>
                     </div>
                   </div>
 
-                  <BotMessageActions />
+                  {/* Bot Message */}
+                  <div className="group relative my-8 flex w-full flex-col items-start gap-2">
+                    <ThoughtProcess
+                      label="49s"
+                      onOpenThoughts={() => openRightPanel("thoughts")}
+                    />
+
+                    <div className="w-full text-[14px] leading-[1.7] text-foreground/80 md:text-[15px]">
+                      <p className="mb-6">
+                        Your AI Friday here, popping out of the Doraemon pocket
+                        with the freshest AI scoop straight from the future! I
+                        dug through the latest buzz (as of this morning, June
+                        25, 2026) like a true gadget-hunting best friend.
+                        Here&apos;s the{" "}
+                        <strong>Top 10 AI news dominating today</strong> &mdash;
+                        ranked by what&apos;s buzzing hardest right now:
+                      </p>
+
+                      <div className="mb-6">
+                        <h3 className="mb-2 text-[17px] leading-snug font-bold text-foreground md:text-[18px]">
+                          1. Anthropic Accuses Alibaba of Massive Claude
+                          &quot;Distillation&quot; Theft
+                        </h3>
+                        <p>
+                          Anthropic dropped a bombshell: Alibaba-linked
+                          operators allegedly used{" "}
+                          <strong>~25,000 fake accounts</strong> to make queries
+                          to Claude, stealing its best capabilities. They called
+                          it the largest known attack of its kind.
+                          <SourceBadge label="Reuters" domain="reuters" />
+                        </p>
+                      </div>
+
+                      <div className="mb-6">
+                        <h3 className="mb-2 text-[17px] leading-snug font-bold text-foreground md:text-[18px]">
+                          2. SK Hynix Announces Massive $29.4 Billion Nasdaq
+                          Listing
+                        </h3>
+                        <p>
+                          The AI memory chip king is going all-in. They&apos;re
+                          raising up to <strong>$29.4 billion</strong> via US
+                          ADR listing on Nasdaq &mdash; one of the biggest
+                          listings ever &mdash; to supercharge production for
+                          the AI boom.
+                          <SourceBadge label="Bloomberg" domain="bloomberg" />
+                        </p>
+                      </div>
+
+                      <div className="mb-6">
+                        <h3 className="mb-2 text-[17px] leading-snug font-bold text-foreground md:text-[18px]">
+                          3. OpenAI Drops GPT-5.5 Instant Update
+                        </h3>
+                        <p>
+                          ChatGPT&apos;s most-used model just got smarter. The
+                          June 24 update improves:
+                        </p>
+                        <ul className="mt-3 list-disc space-y-2 pl-5">
+                          <li>Understanding your real goal behind questions</li>
+                          <li>
+                            Handling complex instructions + constraints better
+                          </li>
+                        </ul>
+                      </div>
+                    </div>
+
+                    <BotMessageActions />
+                  </div>
                 </div>
               </div>
-            </div>
-          </ScrollArea>
+            </ScrollArea>
+          </div>
 
           {/* Scroll to Bottom Button */}
           <div className="absolute bottom-36 left-1/2 z-30 -translate-x-1/2 md:bottom-40">
-            <button
+            <motion.button
               onClick={scrollToBottom}
-              className={cn(
-                "flex size-10 items-center justify-center rounded-full border border-border bg-background text-muted-foreground shadow-md transition-all duration-300 hover:bg-muted hover:text-foreground md:size-9",
-                showScrollBtn
-                  ? "translate-y-0 opacity-100"
-                  : "pointer-events-none translate-y-4 opacity-0"
-              )}
+              className="flex size-10 items-center justify-center rounded-full border border-border bg-background text-muted-foreground shadow-md hover:bg-muted hover:text-foreground md:size-9"
+              animate={{
+                y: showScrollBtn ? 0 : 16,
+                opacity: showScrollBtn ? 1 : 0,
+                pointerEvents: showScrollBtn
+                  ? ("auto" as const)
+                  : ("none" as const),
+              }}
+              transition={{ type: "spring", stiffness: 300, damping: 25 }}
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
             >
               <ArrowDown className="size-4" />
-            </button>
+            </motion.button>
           </div>
 
           {/* Chat Input */}
@@ -826,7 +1080,7 @@ export function DxChat({ swapped }: { swapped?: boolean }) {
                     }
                   }}
                   placeholder="Ask anything"
-                  className="h-full flex-1 border-none bg-transparent px-2 text-[15px] shadow-none outline-none placeholder:text-muted-foreground md:px-3"
+                  className="h-full flex-1 border-none bg-transparent px-2 text-[15px] shadow-none outline-none placeholder:text-muted-foreground focus-visible:border-none focus-visible:ring-0 md:px-3 dark:bg-transparent"
                 />
 
                 <div className="flex flex-shrink-0 items-center gap-1 md:gap-1.5">
@@ -1008,14 +1262,17 @@ export function DxChat({ swapped }: { swapped?: boolean }) {
         </main>
 
         {/* RIGHT SIDEBAR */}
-        <aside
+        <motion.aside
           className={cn(
-            "fixed inset-y-0 right-0 z-50 flex flex-shrink-0 flex-col overflow-hidden border-l bg-sidebar shadow-[-4px_0_20px_rgba(0,0,0,0.08)] transition-all duration-300 ease-in-out md:relative",
+            "fixed inset-y-0 right-0 z-50 flex flex-shrink-0 flex-col overflow-hidden border-l bg-sidebar shadow-[-4px_0_20px_rgba(0,0,0,0.08)] md:relative",
             swapped ? "border-sidebar-border" : "border-border",
             rightPanel
-              ? "border-opacity-100 w-[85vw] md:w-[340px]"
-              : "border-opacity-0 w-0 md:w-0"
+              ? "border-opacity-100 border-border/50"
+              : "border-opacity-0 w-0"
           )}
+          initial={{ width: 0 }}
+          animate={{ width: rightPanel ? 340 : 0 }}
+          transition={{ type: "spring", stiffness: 300, damping: 30 }}
           style={
             swapped
               ? ({
@@ -1150,14 +1407,17 @@ export function DxChat({ swapped }: { swapped?: boolean }) {
               </div>
             </ScrollArea>
           </div>
-        </aside>
+        </motion.aside>
 
         {/* SETTINGS DIALOG */}
         <Dialog open={settingsOpen} onOpenChange={setSettingsOpen}>
-          <DialogContent className="flex h-full max-h-[90vh] w-full max-w-[100vw] flex-col gap-0 overflow-hidden rounded-2xl border-border bg-muted p-0 md:h-[650px] md:w-[900px] md:max-w-[95vw] md:flex-row">
+          <DialogContent
+            aria-describedby={undefined}
+            className="flex h-full max-h-[90vh] w-full max-w-[100vw] flex-col gap-0 overflow-hidden rounded-2xl border-border bg-muted p-0 md:h-[650px] md:w-[900px] md:max-w-[95vw] md:flex-row"
+          >
             <DialogTitle className="sr-only">Settings</DialogTitle>
             {/* Settings Sidebar */}
-            <div className="z-10 no-scrollbar flex w-full flex-shrink-0 flex-row overflow-x-auto border-b border-border bg-muted px-2 py-2 whitespace-nowrap shadow-sm md:w-[220px] md:flex-col md:border-r md:border-b-0 md:px-3 md:py-4 md:shadow-none">
+            <div className="z-10 no-scrollbar flex w-full flex-shrink-0 flex-row overflow-x-auto border-b border-border bg-background px-2 py-2 whitespace-nowrap shadow-sm md:w-[220px] md:flex-col md:border-r md:border-b-0 md:px-3 md:py-4 md:shadow-none">
               <div className="flex w-max flex-row gap-1 md:w-full md:flex-col">
                 {[
                   { id: "account", label: "Account", icon: User },
@@ -1194,17 +1454,8 @@ export function DxChat({ swapped }: { swapped?: boolean }) {
             </div>
 
             {/* Settings Content */}
-            <div className="relative flex h-full flex-1 flex-col overflow-hidden bg-background">
-              <Button
-                variant="ghost"
-                size="icon-sm"
-                className="absolute top-3 right-3 z-20 border border-border bg-background text-muted-foreground shadow-sm hover:text-foreground md:top-4 md:right-4 md:border-transparent md:bg-transparent md:shadow-none"
-                onClick={() => setSettingsOpen(false)}
-              >
-                <X className="size-4" />
-              </Button>
-
-              <ScrollArea className="flex-1 p-4 pt-10 md:p-8 md:pt-6">
+            <div className="relative flex h-full flex-1 flex-col overflow-hidden bg-muted">
+              <ScrollArea className="flex-1 p-4 pt-6 md:p-8">
                 {settingsTab === "account" && <SettingsAccount />}
                 {settingsTab === "appearance" && (
                   <SettingsAppearance
@@ -1252,27 +1503,38 @@ function SidebarItem({
       <TooltipTrigger asChild>
         <button
           className={cn(
-            "flex w-full items-center gap-3 rounded-lg px-3 py-2.5 text-left text-[15px] font-medium transition-colors md:py-2 md:text-sm",
+            "group flex items-center gap-3 rounded-lg py-2.5 text-left text-[15px] font-medium transition-colors md:py-2 md:text-sm",
+            collapsed ? "w-auto justify-center px-0" : "w-full px-3",
             active
               ? "bg-muted text-foreground"
-              : "text-muted-foreground hover:bg-muted hover:text-foreground",
-            collapsed && "justify-center px-0"
+              : "text-muted-foreground hover:bg-muted hover:text-foreground"
           )}
         >
-          <Icon className="size-[18px] flex-shrink-0 md:size-4" />
+          <motion.span
+            className="flex"
+            whileHover={{ scale: 1.15, rotate: -4 }}
+            whileTap={{ scale: 0.9 }}
+            transition={{ type: "spring", stiffness: 400, damping: 20 }}
+          >
+            <Icon className="size-[18px] flex-shrink-0 md:size-4" />
+          </motion.span>
           {!collapsed && (
             <>
               <span className="truncate">{label}</span>
               {badge && (
-                <span className="flex-shrink-0 rounded-full border border-orange-200 bg-orange-50 px-1.5 py-0.5 text-[10px] font-semibold text-orange-600 dark:border-orange-800 dark:bg-orange-950">
+                <motion.span
+                  initial={{ scale: 0 }}
+                  animate={{ scale: 1 }}
+                  transition={{ type: "spring", stiffness: 400, damping: 20 }}
+                  className="flex-shrink-0 rounded-full border border-orange-200 bg-orange-50 px-1.5 py-0.5 text-[10px] font-semibold text-orange-600 dark:border-orange-800 dark:bg-orange-950"
+                >
                   {badge}
-                </span>
+                </motion.span>
               )}
             </>
           )}
         </button>
       </TooltipTrigger>
-      {collapsed && <TooltipContent side="right">{label}</TooltipContent>}
     </Tooltip>
   )
 }
@@ -1291,11 +1553,18 @@ function SidebarSubItem({
       <TooltipTrigger asChild>
         <button
           className={cn(
-            "flex w-full items-center gap-3 rounded-lg px-3 py-2 text-left text-[15px] text-muted-foreground transition-colors hover:bg-muted hover:text-foreground md:py-1.5 md:text-sm",
+            "group flex w-full items-center gap-3 rounded-lg px-3 py-2 text-left text-[15px] text-muted-foreground transition-colors hover:bg-muted hover:text-foreground md:py-1.5 md:text-sm",
             collapsed && "justify-center px-0"
           )}
         >
-          <Icon className="size-[18px] flex-shrink-0 md:size-4" />
+          <motion.span
+            className="flex"
+            whileHover={{ scale: 1.15, rotate: -4 }}
+            whileTap={{ scale: 0.9 }}
+            transition={{ type: "spring", stiffness: 400, damping: 20 }}
+          >
+            <Icon className="size-[18px] flex-shrink-0 md:size-4" />
+          </motion.span>
           {!collapsed && <span className="truncate">{label}</span>}
         </button>
       </TooltipTrigger>
@@ -1325,7 +1594,14 @@ function HistoryItem({
       )}
     >
       {Icon && (
-        <Icon className="size-[18px] flex-shrink-0 text-muted-foreground md:size-4" />
+        <motion.span
+          className="flex"
+          whileHover={{ scale: 1.15, rotate: -4 }}
+          whileTap={{ scale: 0.9 }}
+          transition={{ type: "spring", stiffness: 400, damping: 20 }}
+        >
+          <Icon className="size-[18px] flex-shrink-0 text-muted-foreground md:size-4" />
+        </motion.span>
       )}
       {!Icon && collapsed === false && <span className="pl-7" />}
       <span className="truncate">{label}</span>
@@ -1490,57 +1766,41 @@ const JARVIS_COLORS = [
 
 function PixelCanvas({ palette }: { palette: string[] }) {
   const canvasRef = React.useRef<HTMLCanvasElement>(null)
+  const timeRef = React.useRef(0)
 
   React.useEffect(() => {
     const canvas = canvasRef.current
     if (!canvas) return
 
     const ctx = canvas.getContext("2d")!
-
     const size = 32
     const pixelSize = 4
     const cols = size / pixelSize
     const rows = size / pixelSize
 
     let active = true
-    let lastTime = 0
-    let grid = Array.from(
-      { length: cols * rows },
-      () => palette[Math.floor(Math.random() * palette.length)]
-    )
+    const grid = Array.from({ length: cols * rows }, (_, i) => ({
+      hue: (i * 360) / (cols * rows) + Math.random() * 60,
+      sat: 70 + Math.random() * 30,
+      light: 50 + Math.random() * 20,
+      speed: 0.5 + Math.random() * 1.5,
+    }))
 
     function drawFrame(time: number) {
       if (!active) return
+      const dt = time - timeRef.current
+      timeRef.current = time
 
-      if (time - lastTime > 60) {
-        lastTime = time
-        const newGrid = [...grid]
+      for (let r = 0; r < rows; r++) {
+        for (let c = 0; c < cols; c++) {
+          const idx = r * cols + c
+          const cell = grid[idx]
+          cell.hue = (cell.hue + cell.speed * (dt / 1000) * 30) % 360
 
-        for (let r = 0; r < rows; r++) {
-          for (let c = 0; c < cols; c++) {
-            const idx = r * cols + c
-            if (Math.random() > 0.3) {
-              const neighbors: number[] = []
-              if (r > 0) neighbors.push((r - 1) * cols + c)
-              if (r < rows - 1) neighbors.push((r + 1) * cols + c)
-              if (c > 0) neighbors.push(r * cols + (c - 1))
-              if (c < cols - 1) neighbors.push(r * cols + (c + 1))
-              newGrid[idx] =
-                grid[neighbors[Math.floor(Math.random() * neighbors.length)]]
-            }
-            if (Math.random() > 0.9) {
-              newGrid[idx] = palette[Math.floor(Math.random() * palette.length)]
-            }
-          }
-        }
-
-        grid = newGrid
-
-        for (let r = 0; r < rows; r++) {
-          for (let c = 0; c < cols; c++) {
-            ctx.fillStyle = grid[r * cols + c]
-            ctx.fillRect(c * pixelSize, r * pixelSize, pixelSize, pixelSize)
-          }
+          const baseHue = palette === JARVIS_COLORS ? 220 : 30
+          const h = baseHue + cell.hue * 0.3
+          ctx.fillStyle = `hsl(${h}, ${cell.sat}%, ${cell.light}%)`
+          ctx.fillRect(c * pixelSize, r * pixelSize, pixelSize, pixelSize)
         }
       }
 
