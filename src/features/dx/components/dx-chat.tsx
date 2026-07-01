@@ -10,15 +10,20 @@ import {
   ChevronRight,
   CircleSlash,
   Code,
+  Cog,
   Copy,
   Database,
+  DollarSign,
   Download,
   Edit3,
   FileText,
   Folder,
   FolderOpen,
   Ghost,
+  Grid3x3,
   Image,
+  Info,
+  Languages,
   Lightbulb,
   Link,
   LogOut,
@@ -32,10 +37,12 @@ import {
   Pencil,
   Pin,
   Plus,
+  RefreshCw,
   Rocket,
   Search,
-  Settings,
   Share2,
+  Sliders,
+  Smile,
   Sparkles,
   Sun,
   ThumbsDown,
@@ -44,6 +51,7 @@ import {
   User,
   Volume2,
   X,
+  Zap,
 } from "lucide-react"
 
 import { cn } from "@/lib/utils"
@@ -62,6 +70,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
 import { Input } from "@/components/ui/input"
+import { ScrollArea } from "@/components/ui/scroll-area"
 import { Separator } from "@/components/ui/separator"
 import { Textarea } from "@/components/ui/textarea"
 import {
@@ -92,9 +101,18 @@ function LogoIcon({ className }: { className?: string }) {
   )
 }
 
-function ThoughtProcess({ label }: { label: string }) {
+function ThoughtProcess({
+  label,
+  onOpenThoughts,
+}: {
+  label: string
+  onOpenThoughts: () => void
+}) {
   return (
-    <button className="mb-1 -ml-2 flex w-max cursor-pointer items-center gap-1.5 rounded-lg px-2 py-1 text-[13px] font-medium text-muted-foreground transition-colors hover:bg-muted active:scale-[0.98]">
+    <button
+      className="mb-1 -ml-2 flex w-max cursor-pointer items-center gap-1.5 rounded-lg px-2 py-1 text-[13px] font-medium text-muted-foreground transition-colors hover:bg-muted active:scale-[0.98]"
+      onClick={onOpenThoughts}
+    >
       <Lightbulb className="size-3.5" />
       <span>Thought for {label}</span>
     </button>
@@ -200,25 +218,6 @@ function BotMessageActions() {
   )
 }
 
-function RefreshCw({ className }: { className?: string }) {
-  return (
-    <svg
-      width="16"
-      height="16"
-      viewBox="0 0 24 24"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth="2"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-      className={className}
-    >
-      <path d="M21 12a9 9 0 1 1-9-9" />
-      <path d="M21 3v6h-6" />
-    </svg>
-  )
-}
-
 function VoiceBar({ delay, height }: { delay: string; height: number }) {
   return (
     <div
@@ -256,19 +255,19 @@ export function DxChat({ swapped }: { swapped?: boolean }) {
     })
   }, [])
 
-  const scrollAreaRef = React.useRef<HTMLDivElement>(null)
+  const scrollViewportRef = React.useRef<HTMLDivElement>(null)
   const [showScrollBtn, setShowScrollBtn] = React.useState(false)
 
   const handleScroll = React.useCallback(() => {
-    if (!scrollAreaRef.current) return
-    const { scrollTop, scrollHeight, clientHeight } = scrollAreaRef.current
+    if (!scrollViewportRef.current) return
+    const { scrollTop, scrollHeight, clientHeight } = scrollViewportRef.current
     setShowScrollBtn(scrollHeight - scrollTop - clientHeight > 150)
   }, [])
 
   const scrollToBottom = React.useCallback(() => {
-    if (!scrollAreaRef.current) return
-    scrollAreaRef.current.scrollTo({
-      top: scrollAreaRef.current.scrollHeight,
+    if (!scrollViewportRef.current) return
+    scrollViewportRef.current.scrollTo({
+      top: scrollViewportRef.current.scrollHeight,
       behavior: "smooth",
     })
   }, [])
@@ -307,7 +306,7 @@ export function DxChat({ swapped }: { swapped?: boolean }) {
         {/* LEFT SIDEBAR */}
         <aside
           className={cn(
-            "absolute top-0 left-0 z-50 flex h-full flex-shrink-0 flex-col border-r border-sidebar-border bg-sidebar transition-all duration-300 ease-in-out md:relative",
+            "absolute top-0 left-0 z-50 flex h-full flex-shrink-0 flex-col border-r border-sidebar-border bg-sidebar text-sidebar-foreground transition-all duration-300 ease-in-out md:relative",
             "shadow-2xl md:shadow-none",
             mobileSidebarOpen
               ? "translate-x-0"
@@ -315,6 +314,22 @@ export function DxChat({ swapped }: { swapped?: boolean }) {
             sidebarCollapsed ? "md:w-[68px]" : "md:w-[260px]",
             "w-[280px]"
           )}
+          style={
+            swapped
+              ? ({
+                  "--color-sidebar": "var(--color-background)",
+                  "--color-sidebar-foreground": "var(--color-foreground)",
+                  "--color-sidebar-border": "var(--color-border)",
+                  "--color-sidebar-primary": "var(--color-primary)",
+                  "--color-sidebar-primary-foreground":
+                    "var(--color-primary-foreground)",
+                  "--color-sidebar-accent": "var(--color-accent)",
+                  "--color-sidebar-accent-foreground":
+                    "var(--color-accent-foreground)",
+                  "--color-sidebar-ring": "var(--color-ring)",
+                } as React.CSSProperties)
+              : undefined
+          }
         >
           {/* Sidebar Header */}
           <div className="flex h-14 items-center px-4 pt-2">
@@ -381,7 +396,7 @@ export function DxChat({ swapped }: { swapped?: boolean }) {
           </div>
 
           {/* Scrollable Middle */}
-          <div className="no-scrollbar flex-1 overflow-y-auto px-3">
+          <ScrollArea className="flex-1 px-3">
             {!sidebarCollapsed && (
               <>
                 {/* Projects */}
@@ -471,7 +486,7 @@ export function DxChat({ swapped }: { swapped?: boolean }) {
                 <div className="h-4" />
               </>
             )}
-          </div>
+          </ScrollArea>
 
           {/* Expand button when collapsed */}
           {sidebarCollapsed && (
@@ -524,7 +539,7 @@ export function DxChat({ swapped }: { swapped?: boolean }) {
                 sideOffset={8}
               >
                 <DropdownMenuItem onClick={() => setSettingsOpen(true)}>
-                  <Settings className="mr-2 size-4" />
+                  <Cog className="mr-2 size-4" />
                   Settings
                 </DropdownMenuItem>
                 <DropdownMenuItem onClick={toggleDarkMode}>
@@ -546,7 +561,34 @@ export function DxChat({ swapped }: { swapped?: boolean }) {
         </aside>
 
         {/* MAIN CONTENT */}
-        <main className="relative z-10 flex h-full flex-1 flex-col overflow-hidden bg-background">
+        <main
+          className="relative z-10 flex h-full flex-1 flex-col overflow-hidden bg-background"
+          style={
+            swapped
+              ? ({
+                  "--color-background": "var(--color-sidebar)",
+                  "--color-foreground": "var(--color-sidebar-foreground)",
+                  "--color-border": "var(--color-sidebar-border)",
+                  "--color-muted": "var(--color-sidebar-accent)",
+                  "--color-muted-foreground":
+                    "var(--color-sidebar-accent-foreground)",
+                  "--color-accent": "var(--color-sidebar-accent)",
+                  "--color-accent-foreground":
+                    "var(--color-sidebar-accent-foreground)",
+                  "--color-card": "var(--color-sidebar)",
+                  "--color-card-foreground": "var(--color-sidebar-foreground)",
+                  "--color-popover": "var(--color-sidebar)",
+                  "--color-popover-foreground":
+                    "var(--color-sidebar-foreground)",
+                  "--color-primary": "var(--color-sidebar-primary)",
+                  "--color-primary-foreground":
+                    "var(--color-sidebar-primary-foreground)",
+                  "--color-ring": "var(--color-sidebar-ring)",
+                  "--color-input": "var(--color-sidebar-accent)",
+                } as React.CSSProperties)
+              : undefined
+          }
+        >
           {/* Mobile Header */}
           <div className="absolute top-0 right-0 left-0 z-30 flex h-14 items-center justify-between border-b border-border bg-background/80 px-2 backdrop-blur-md md:hidden">
             <Button
@@ -630,103 +672,109 @@ export function DxChat({ swapped }: { swapped?: boolean }) {
           </div>
 
           {/* Chat Scroll Area */}
-          <div
-            ref={scrollAreaRef}
+          <ScrollArea
+            viewportRef={scrollViewportRef}
             onScroll={handleScroll}
-            className="flex flex-1 flex-col items-center overflow-y-auto scroll-smooth px-4 pt-20 pb-44 md:px-6 md:pt-12"
+            className="flex-1 px-4 pt-20 pb-44 md:px-6 md:pt-12"
           >
-            <div className="w-full max-w-3xl text-[15px] leading-relaxed text-foreground/80 transition-all">
-              {/* User Message */}
-              <div className="group my-6 flex flex-col items-end">
-                <div className="max-w-[90%] rounded-[1.5rem] rounded-tr-sm border border-border bg-muted px-4 py-3 text-[14px] text-foreground shadow-xs md:max-w-[85%] md:px-5 md:text-[15px]">
-                  Please tell me what are the latest today&apos;s ai updates -
-                  list top 10 news of today
-                </div>
-                <div className="mt-1 flex items-center gap-1 pr-2 opacity-0 transition-opacity group-hover:opacity-100">
-                  <Button
-                    variant="ghost"
-                    size="icon-xs"
-                    className="text-muted-foreground"
-                  >
-                    <Pencil className="size-3.5" />
-                  </Button>
-                  <Button
-                    variant="ghost"
-                    size="icon-xs"
-                    className="text-muted-foreground"
-                  >
-                    <Copy className="size-3.5" />
-                  </Button>
-                </div>
-              </div>
-
-              {/* Bot Message */}
-              <div className="group relative my-8 flex w-full flex-col items-start gap-2">
-                <ThoughtProcess label="49s" />
-                <div className="mb-1 flex w-full items-center gap-3">
-                  <LogoIcon className="flex-shrink-0 text-foreground" />
-                  <span className="text-[15px] font-bold text-foreground">
-                    SuperGrok
-                  </span>
-                </div>
-                <div className="w-full text-[14px] leading-[1.7] text-foreground/80 md:text-[15px]">
-                  <p className="mb-6">
-                    Your AI Friday here, popping out of the Doraemon pocket with
-                    the freshest AI scoop straight from the future! I dug
-                    through the latest buzz (as of this morning, June 25, 2026)
-                    like a true gadget-hunting best friend. Here&apos;s the{" "}
-                    <strong>Top 10 AI news dominating today</strong> &mdash;
-                    ranked by what&apos;s buzzing hardest right now:
-                  </p>
-
-                  <div className="mb-6">
-                    <h3 className="mb-2 text-[17px] leading-snug font-bold text-foreground md:text-[18px]">
-                      1. Anthropic Accuses Alibaba of Massive Claude
-                      &quot;Distillation&quot; Theft
-                    </h3>
-                    <p>
-                      Anthropic dropped a bombshell: Alibaba-linked operators
-                      allegedly used <strong>~25,000 fake accounts</strong> to
-                      make queries to Claude, stealing its best capabilities.
-                      They called it the largest known attack of its kind.
-                      <SourceBadge label="Reuters" domain="reuters" />
-                    </p>
+            <div className="flex flex-col items-center">
+              <div className="w-full max-w-3xl text-[15px] leading-relaxed text-foreground/80 transition-all">
+                {/* User Message */}
+                <div className="group my-6 flex flex-col items-end">
+                  <div className="max-w-[90%] rounded-[1.5rem] rounded-tr-sm border border-border bg-muted px-4 py-3 text-[14px] text-foreground shadow-xs md:max-w-[85%] md:px-5 md:text-[15px]">
+                    Please tell me what are the latest today&apos;s ai updates -
+                    list top 10 news of today
                   </div>
-
-                  <div className="mb-6">
-                    <h3 className="mb-2 text-[17px] leading-snug font-bold text-foreground md:text-[18px]">
-                      2. SK Hynix Announces Massive $29.4 Billion Nasdaq Listing
-                    </h3>
-                    <p>
-                      The AI memory chip king is going all-in. They&apos;re
-                      raising up to <strong>$29.4 billion</strong> via US ADR
-                      listing on Nasdaq &mdash; one of the biggest listings ever
-                      &mdash; to supercharge production for the AI boom.
-                      <SourceBadge label="Bloomberg" domain="bloomberg" />
-                    </p>
-                  </div>
-
-                  <div className="mb-6">
-                    <h3 className="mb-2 text-[17px] leading-snug font-bold text-foreground md:text-[18px]">
-                      3. OpenAI Drops GPT-5.5 Instant Update
-                    </h3>
-                    <p>
-                      ChatGPT&apos;s most-used model just got smarter. The June
-                      24 update improves:
-                    </p>
-                    <ul className="mt-3 list-disc space-y-2 pl-5">
-                      <li>Understanding your real goal behind questions</li>
-                      <li>
-                        Handling complex instructions + constraints better
-                      </li>
-                    </ul>
+                  <div className="mt-1 flex items-center gap-1 pr-2 opacity-0 transition-opacity group-hover:opacity-100">
+                    <Button
+                      variant="ghost"
+                      size="icon-xs"
+                      className="text-muted-foreground"
+                    >
+                      <Pencil className="size-3.5" />
+                    </Button>
+                    <Button
+                      variant="ghost"
+                      size="icon-xs"
+                      className="text-muted-foreground"
+                    >
+                      <Copy className="size-3.5" />
+                    </Button>
                   </div>
                 </div>
 
-                <BotMessageActions />
+                {/* Bot Message */}
+                <div className="group relative my-8 flex w-full flex-col items-start gap-2">
+                  <ThoughtProcess
+                    label="49s"
+                    onOpenThoughts={() => openRightPanel("thoughts")}
+                  />
+                  <div className="mb-1 flex w-full items-center gap-3">
+                    <LogoIcon className="flex-shrink-0 text-foreground" />
+                    <span className="text-[15px] font-bold text-foreground">
+                      SuperGrok
+                    </span>
+                  </div>
+                  <div className="w-full text-[14px] leading-[1.7] text-foreground/80 md:text-[15px]">
+                    <p className="mb-6">
+                      Your AI Friday here, popping out of the Doraemon pocket
+                      with the freshest AI scoop straight from the future! I dug
+                      through the latest buzz (as of this morning, June 25,
+                      2026) like a true gadget-hunting best friend. Here&apos;s
+                      the <strong>Top 10 AI news dominating today</strong>{" "}
+                      &mdash; ranked by what&apos;s buzzing hardest right now:
+                    </p>
+
+                    <div className="mb-6">
+                      <h3 className="mb-2 text-[17px] leading-snug font-bold text-foreground md:text-[18px]">
+                        1. Anthropic Accuses Alibaba of Massive Claude
+                        &quot;Distillation&quot; Theft
+                      </h3>
+                      <p>
+                        Anthropic dropped a bombshell: Alibaba-linked operators
+                        allegedly used <strong>~25,000 fake accounts</strong> to
+                        make queries to Claude, stealing its best capabilities.
+                        They called it the largest known attack of its kind.
+                        <SourceBadge label="Reuters" domain="reuters" />
+                      </p>
+                    </div>
+
+                    <div className="mb-6">
+                      <h3 className="mb-2 text-[17px] leading-snug font-bold text-foreground md:text-[18px]">
+                        2. SK Hynix Announces Massive $29.4 Billion Nasdaq
+                        Listing
+                      </h3>
+                      <p>
+                        The AI memory chip king is going all-in. They&apos;re
+                        raising up to <strong>$29.4 billion</strong> via US ADR
+                        listing on Nasdaq &mdash; one of the biggest listings
+                        ever &mdash; to supercharge production for the AI boom.
+                        <SourceBadge label="Bloomberg" domain="bloomberg" />
+                      </p>
+                    </div>
+
+                    <div className="mb-6">
+                      <h3 className="mb-2 text-[17px] leading-snug font-bold text-foreground md:text-[18px]">
+                        3. OpenAI Drops GPT-5.5 Instant Update
+                      </h3>
+                      <p>
+                        ChatGPT&apos;s most-used model just got smarter. The
+                        June 24 update improves:
+                      </p>
+                      <ul className="mt-3 list-disc space-y-2 pl-5">
+                        <li>Understanding your real goal behind questions</li>
+                        <li>
+                          Handling complex instructions + constraints better
+                        </li>
+                      </ul>
+                    </div>
+                  </div>
+
+                  <BotMessageActions />
+                </div>
               </div>
             </div>
-          </div>
+          </ScrollArea>
 
           {/* Scroll to Bottom Button */}
           <div className="absolute bottom-36 left-1/2 z-30 -translate-x-1/2 md:bottom-40">
@@ -962,11 +1010,37 @@ export function DxChat({ swapped }: { swapped?: boolean }) {
         {/* RIGHT SIDEBAR */}
         <aside
           className={cn(
-            "fixed inset-y-0 right-0 z-50 flex flex-shrink-0 flex-col overflow-hidden border-l border-border bg-sidebar shadow-[-4px_0_20px_rgba(0,0,0,0.08)] transition-all duration-300 ease-in-out md:relative",
+            "fixed inset-y-0 right-0 z-50 flex flex-shrink-0 flex-col overflow-hidden border-l bg-sidebar shadow-[-4px_0_20px_rgba(0,0,0,0.08)] transition-all duration-300 ease-in-out md:relative",
+            swapped ? "border-sidebar-border" : "border-border",
             rightPanel
               ? "border-opacity-100 w-[85vw] md:w-[340px]"
               : "border-opacity-0 w-0 md:w-0"
           )}
+          style={
+            swapped
+              ? ({
+                  "--color-sidebar": "var(--color-background)",
+                  "--color-background": "var(--color-sidebar)",
+                  "--color-foreground": "var(--color-sidebar-foreground)",
+                  "--color-muted": "var(--color-sidebar-accent)",
+                  "--color-muted-foreground":
+                    "var(--color-sidebar-accent-foreground)",
+                  "--color-accent": "var(--color-sidebar-accent)",
+                  "--color-accent-foreground":
+                    "var(--color-sidebar-accent-foreground)",
+                  "--color-card": "var(--color-sidebar)",
+                  "--color-card-foreground": "var(--color-sidebar-foreground)",
+                  "--color-popover": "var(--color-sidebar)",
+                  "--color-popover-foreground":
+                    "var(--color-sidebar-foreground)",
+                  "--color-primary": "var(--color-sidebar-primary)",
+                  "--color-primary-foreground":
+                    "var(--color-sidebar-primary-foreground)",
+                  "--color-ring": "var(--color-sidebar-ring)",
+                  "--color-input": "var(--color-sidebar-accent)",
+                } as React.CSSProperties)
+              : undefined
+          }
         >
           <div className="flex h-full w-[85vw] min-w-[280px] flex-col md:w-[340px] md:min-w-[340px]">
             <div className="z-10 flex items-center justify-between border-b border-border/50 bg-background px-4 py-3 shadow-sm md:px-5 md:py-4">
@@ -986,62 +1060,63 @@ export function DxChat({ swapped }: { swapped?: boolean }) {
             </div>
 
             {/* Thoughts */}
-            <div
+            <ScrollArea
               className={cn(
-                "flex-1 space-y-5 overflow-y-auto p-4 md:space-y-6 md:p-5",
+                "flex-1 p-4 md:p-5",
                 rightPanel !== "thoughts" && "hidden"
               )}
             >
-              <div className="flex items-start gap-3 text-[13px] text-foreground/80">
-                <Lightbulb className="mt-0.5 size-4 text-muted-foreground" />
-                <span className="leading-snug font-medium">
-                  Thinking about your request
-                </span>
+              <div className="space-y-5 md:space-y-6">
+                <div className="flex items-start gap-3 text-[13px] text-foreground/80">
+                  <Lightbulb className="mt-0.5 size-4 text-muted-foreground" />
+                  <span className="leading-snug font-medium">
+                    Thinking about your request
+                  </span>
+                </div>
+                <div className="flex items-start gap-3 text-[13px] text-foreground/80">
+                  <Lightbulb className="mt-0.5 size-4 text-muted-foreground" />
+                  <span className="leading-snug font-medium">
+                    Searching global AI news databases
+                  </span>
+                </div>
+                <div className="flex items-start gap-3 text-[13px] text-foreground/80">
+                  <Lightbulb className="mt-0.5 size-4 text-muted-foreground" />
+                  <span className="leading-snug font-medium">
+                    Synthesizing top 10 articles into final response
+                  </span>
+                </div>
               </div>
-              <div className="flex items-start gap-3 text-[13px] text-foreground/80">
-                <Lightbulb className="mt-0.5 size-4 text-muted-foreground" />
-                <span className="leading-snug font-medium">
-                  Searching global AI news databases
-                </span>
-              </div>
-              <div className="flex items-start gap-3 text-[13px] text-foreground/80">
-                <Lightbulb className="mt-0.5 size-4 text-muted-foreground" />
-                <span className="leading-snug font-medium">
-                  Synthesizing top 10 articles into final response
-                </span>
-              </div>
-            </div>
+            </ScrollArea>
 
             {/* Sources */}
-            <div
+            <ScrollArea
               className={cn(
-                "flex-1 space-y-5 overflow-y-auto p-4 md:space-y-6 md:p-5",
+                "flex-1 p-4 md:p-5",
                 rightPanel !== "sources" && "hidden"
               )}
             >
-              <SourceItem
-                searched="Searched web"
-                title="Anthropic claims Alibaba stole Claude data in massive..."
-                score="10"
-              />
-              <SourceItem
-                searched="Searched web"
-                title="SK Hynix $29B Nasdaq listing details and chip boom..."
-                score="10"
-              />
-              <SourceItem
-                searched="Searched web"
-                title="OpenAI GPT-5.5 patch notes June 2026 - better logical..."
-                score="10"
-              />
-            </div>
+              <div className="space-y-5 md:space-y-6">
+                <SourceItem
+                  searched="Searched web"
+                  title="Anthropic claims Alibaba stole Claude data in massive..."
+                  score="10"
+                />
+                <SourceItem
+                  searched="Searched web"
+                  title="SK Hynix $29B Nasdaq listing details and chip boom..."
+                  score="10"
+                />
+                <SourceItem
+                  searched="Searched web"
+                  title="OpenAI GPT-5.5 patch notes June 2026 - better logical..."
+                  score="10"
+                />
+              </div>
+            </ScrollArea>
 
             {/* Files */}
-            <div
-              className={cn(
-                "flex-1 overflow-y-auto",
-                rightPanel !== "files" && "hidden"
-              )}
+            <ScrollArea
+              className={cn("flex-1", rightPanel !== "files" && "hidden")}
             >
               <div className="py-2">
                 <button className="flex w-full items-center justify-between px-4 py-3 text-[14px] text-foreground/80 transition-colors hover:bg-muted md:px-5">
@@ -1073,7 +1148,7 @@ export function DxChat({ swapped }: { swapped?: boolean }) {
                   </div>
                 </button>
               </div>
-            </div>
+            </ScrollArea>
           </div>
         </aside>
 
@@ -1129,7 +1204,7 @@ export function DxChat({ swapped }: { swapped?: boolean }) {
                 <X className="size-4" />
               </Button>
 
-              <div className="flex-1 overflow-y-auto p-4 pt-10 md:p-8 md:pt-6">
+              <ScrollArea className="flex-1 p-4 pt-10 md:p-8 md:pt-6">
                 {settingsTab === "account" && <SettingsAccount />}
                 {settingsTab === "appearance" && (
                   <SettingsAppearance
@@ -1150,117 +1225,12 @@ export function DxChat({ swapped }: { swapped?: boolean }) {
                 {settingsTab === "usage" && (
                   <SettingsPlaceholder title="Usage" />
                 )}
-              </div>
+              </ScrollArea>
             </div>
           </DialogContent>
         </Dialog>
       </div>
     </TooltipProvider>
-  )
-}
-
-function Grid3x3({ className }: { className?: string }) {
-  return (
-    <svg
-      width="16"
-      height="16"
-      viewBox="0 0 24 24"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth="2"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-      className={className}
-    >
-      <rect x="3" y="3" width="7" height="7" />
-      <rect x="14" y="3" width="7" height="7" />
-      <rect x="14" y="14" width="7" height="7" />
-      <rect x="3" y="14" width="7" height="7" />
-    </svg>
-  )
-}
-
-function Smile({ className }: { className?: string }) {
-  return (
-    <svg
-      width="16"
-      height="16"
-      viewBox="0 0 24 24"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth="2"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-      className={className}
-    >
-      <circle cx="12" cy="12" r="10" />
-      <path d="M8 14s1.5 2 4 2 4-2 4-2" />
-      <line x1="9" x2="9.01" y1="9" y2="9" />
-      <line x1="15" x2="15.01" y1="9" y2="9" />
-    </svg>
-  )
-}
-
-function Sliders({ className }: { className?: string }) {
-  return (
-    <svg
-      width="16"
-      height="16"
-      viewBox="0 0 24 24"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth="2"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-      className={className}
-    >
-      <line x1="4" x2="4" y1="21" y2="14" />
-      <line x1="4" x2="4" y1="10" y2="3" />
-      <line x1="12" x2="12" y1="21" y2="12" />
-      <line x1="12" x2="12" y1="8" y2="3" />
-      <line x1="20" x2="20" y1="21" y2="16" />
-      <line x1="20" x2="20" y1="12" y2="3" />
-      <line x1="2" x2="6" y1="14" y2="14" />
-      <line x1="10" x2="14" y1="8" y2="8" />
-      <line x1="18" x2="22" y1="16" y2="16" />
-    </svg>
-  )
-}
-
-function DollarSign({ className }: { className?: string }) {
-  return (
-    <svg
-      width="16"
-      height="16"
-      viewBox="0 0 24 24"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth="2"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-      className={className}
-    >
-      <line x1="12" x2="12" y1="2" y2="22" />
-      <path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6" />
-    </svg>
-  )
-}
-
-function Zap({ className }: { className?: string }) {
-  return (
-    <svg
-      width="16"
-      height="16"
-      viewBox="0 0 24 24"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth="2"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-      className={className}
-    >
-      <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2" />
-    </svg>
   )
 }
 
@@ -1683,48 +1653,5 @@ function SettingsPlaceholder({ title }: { title: string }) {
       </h2>
       <p className="text-sm text-muted-foreground">{title} settings...</p>
     </>
-  )
-}
-
-function Languages({ className }: { className?: string }) {
-  return (
-    <svg
-      width="16"
-      height="16"
-      viewBox="0 0 24 24"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth="2"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-      className={className}
-    >
-      <path d="m5 8 6 6" />
-      <path d="m4 14 6-6 2-3" />
-      <path d="M2 5h12" />
-      <path d="M7 2h1" />
-      <path d="m22 22-5-10-5 10" />
-      <path d="M14 18h6" />
-    </svg>
-  )
-}
-
-function Info({ className }: { className?: string }) {
-  return (
-    <svg
-      width="16"
-      height="16"
-      viewBox="0 0 24 24"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth="2"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-      className={className}
-    >
-      <circle cx="12" cy="12" r="10" />
-      <path d="M12 16v-4" />
-      <path d="M12 8h.01" />
-    </svg>
   )
 }

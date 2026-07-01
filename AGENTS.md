@@ -2,7 +2,7 @@
 
 Next.js 16 (App Router) portfolio, blog, and shadcn registry website.
 
-**Stack**: TypeScript, React 19, Tailwind CSS v4, shadcn/ui, MDX, Vitest, pnpm (Bun for scripts), Vercel
+**Stack**: TypeScript, React 19, Tailwind CSS v4, shadcn/ui, MDX, Vitest, Bun, Vercel
 
 ## Project structure
 
@@ -61,15 +61,15 @@ All content lives in `src/features/doc/content/` as MDX files, split into `blog/
 ## Commands
 
 ```bash
-pnpm dev                # Dev server
-pnpm build              # Production build (runs registry:build first)
-pnpm test               # Vitest (watch)
-pnpm test:run           # Vitest (single run)
-pnpm lint               # ESLint
-pnpm lint:fix           # ESLint with --fix
-pnpm format:write       # Prettier
-pnpm check-types        # Type checking (tsc --noEmit)
-pnpm registry:build     # Build shadcn registry (Bun script + shadcn build)
-pnpm registry:validate  # Validate generated registry.json
-pnpm icons:build        # Build registry icons
+bun run dev             # Dev server
+bun run build           # Production build (runs registry:build first)
+bun run test            # Vitest (watch)
+bun run test:run        # Vitest (single run)
+bun run lint            # ESLint
+bun run lint:fix        # ESLint with --fix
+bun run format:write    # Prettier
+bun run check-types     # Type checking (tsc --noEmit)
+bun run registry:build  # Build shadcn registry (Bun script + shadcn build)
+bun run registry:validate # Validate generated registry.json
+bun run icons:build     # Build registry icons
 ```

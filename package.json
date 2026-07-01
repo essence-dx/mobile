@@ -22,9 +22,9 @@
   },
   "scripts": {
     "dev": "next dev",
-    "build": "pnpm registry:build && next build",
+    "build": "bun run registry:build && next build",
     "start": "next start",
-    "preview": "pnpm registry:build && next build && next start",
+    "preview": "bun run registry:build && next build && next start",
     "test": "vitest",
     "test:run": "vitest run",
     "lint": "eslint . --cache --cache-location .eslintcache",
@@ -59,6 +59,7 @@
     "@phosphor-icons/react": "^2.1.10",
     "@remixicon/react": "^4.9.0",
     "@rexa-developer/tiks": "^0.1.9",
+    "@shadcn/react": "^0.2.0",
     "@tabler/icons-react": "^3.42.0",
     "@tauri-apps/api": "^2.11.1",
     "@visx/curve": "4.0.1-alpha.0",
@@ -73,10 +74,12 @@
     "d3-array": "^3.2.4",
     "date-fns": "^4.1.0",
     "dialkit": "^1.1.0",
+    "embla-carousel-react": "^8.6.0",
     "fumadocs-core": "^16.10.5",
     "fumadocs-typescript": "^5.2.6",
     "geist": "^1.7.0",
     "hast-util-to-jsx-runtime": "^2.3.6",
+    "input-otp": "^1.4.2",
     "jotai": "^2.18.1",
     "libphonenumber-js": "^1.12.4",
     "lru-cache": "^11.2.6",
@@ -90,6 +93,7 @@
     "posthog-js": "^1.395.0",
     "radix-ui": "^1.4.3",
     "react": "19.2.7",
+    "react-day-picker": "^10.0.1",
     "react-dom": "19.2.7",
     "react-fast-marquee": "^1.6.5",
     "react-hook-form": "^7.54.2",
@@ -98,10 +102,12 @@
     "react-medium-image-zoom": "^5.4.0",
     "react-resizable-panels": "^4.9.0",
     "react-use": "^17.6.0",
+    "recharts": "3.8.0",
     "schema-dts": "^1.1.5",
     "sharp": "^0.34.3",
     "sonner": "^2.0.7",
     "tailwind-merge": "^3.3.1",
+    "vaul": "^1.1.2",
     "vcard-creator": "^0.7.2",
     "web-haptics": "^0.0.6",
     "zod": "^3.25.76"
@@ -157,7 +163,7 @@
   },
   "engines": {
     "node": ">=22.x",
-    "pnpm": ">=9"
+    "bun": ">=1"
   },
-  "packageManager": "pnpm@11.5.3"
+  "packageManager": "bun@1.3.14"
 }
