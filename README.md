@@ -59,6 +59,7 @@ Please refer to the [Development Guide](./DEVELOPMENT.md) for more details.
 ### Android (Tauri)
 
 Prerequisites:
+
 - Android SDK at `G:\Dev\SDKs\Android` (set `ANDROID_HOME`)
 - JDK 21 at `C:\Program Files\Java\jdk-21.0.3+9` (set `JAVA_HOME`)
 - Rust Android targets: `rustup target add aarch64-linux-android armv7-linux-androideabi i686-linux-android x86_64-linux-android`
@@ -91,12 +92,14 @@ adb pair <ip>:<port> <pairing-code>
 ```
 
 Output APK paths:
+
 - `src-tauri/gen/android/app/build/outputs/apk/arm64/release/` (modern phones)
 - `src-tauri/gen/android/app/build/outputs/apk/arm/release/` (older 32-bit devices)
 - `src-tauri/gen/android/app/build/outputs/apk/x86_64/release/` (emulators)
 - `src-tauri/gen/android/app/build/outputs/apk/x86/release/` (emulators)
 
 Optimize `src-tauri/Cargo.toml` for smaller APK size:
+
 ```toml
 [profile.release]
 lto = true

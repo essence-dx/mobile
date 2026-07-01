@@ -26,8 +26,8 @@ function getWebSiteJsonLd(): WithContext<WebSite> {
 // Thanks @shadcn-ui, @tailwindcss
 const darkModeScript = String.raw`
   try {
-    var theme = localStorage.getItem('theme');
-    if (theme === 'dark' || !theme) {
+    var theme = localStorage.getItem('dx-dark-mode');
+    if (theme === 'true') {
       document.documentElement.classList.add('dark');
       document.querySelector('meta[name="theme-color"]').setAttribute('content', '${META_THEME_COLORS.dark}')
     }
@@ -121,17 +121,18 @@ export default function RootLayout({
   return (
     <html lang="en" className={fontVariables} suppressHydrationWarning>
       <head>
-        <script
-          type="text/javascript"
+        <Script
+          id="dark-mode-script"
+          strategy="beforeInteractive"
           dangerouslySetInnerHTML={{ __html: darkModeScript }}
         />
         {/*
           Thanks @tailwindcss. We inject the script via the `<Script/>` tag again,
           since we found the regular `<script>` tag to not execute when rendering a not-found page.
          */}
-        <Script src={`data:text/javascript;base64,${btoa(darkModeScript)}`} />
-        <script
-          type="text/javascript"
+        <Script
+          id="avatar-lights-script"
+          strategy="beforeInteractive"
           dangerouslySetInnerHTML={{
             __html: `
               try {
