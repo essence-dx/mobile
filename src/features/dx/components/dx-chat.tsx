@@ -269,11 +269,17 @@ function BotMessageActions() {
 
 function VoiceBar({ delay, height }: { delay: string; height: number }) {
   return (
-    <div
-      className="w-[3px] animate-pulse rounded-full bg-blue-500"
-      style={{
-        height: `${height}%`,
-        animationDelay: delay,
+    <motion.div
+      className="w-[3px] rounded-full bg-blue-500"
+      style={{ height: `${height}%` }}
+      animate={{
+        scaleY: [0.4, 1, 0.4],
+      }}
+      transition={{
+        duration: 1.2,
+        repeat: Infinity,
+        ease: "easeInOut",
+        delay: parseFloat(delay) * 0.01,
       }}
     />
   )
@@ -284,10 +290,6 @@ export function DxChat({ swapped }: { swapped?: boolean }) {
     "dx-sidebar-collapsed",
     true
   )
-  const [useSpring, setUseSpring] = React.useState(false)
-  React.useEffect(() => {
-    requestAnimationFrame(() => setUseSpring(true))
-  }, [])
   const [mobileSidebarOpen, setMobileSidebarOpen] = React.useState(false)
   const [isDesktop, setIsDesktop] = React.useState(true)
 
@@ -377,11 +379,11 @@ export function DxChat({ swapped }: { swapped?: boolean }) {
       <AnimatePresence>
         {(mobileSidebarOpen || rightPanel) && (
           <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            transition={{ duration: 0.2 }}
-            className="fixed inset-0 z-40 bg-black/40 backdrop-blur-[2px] md:hidden"
+            initial={{ opacity: 0, backdropFilter: "blur(0px)" }}
+            animate={{ opacity: 1, backdropFilter: "blur(2px)" }}
+            exit={{ opacity: 0, backdropFilter: "blur(0px)" }}
+            transition={{ duration: 0.25, ease: [0.4, 0, 0.2, 1] }}
+            className="fixed inset-0 z-40 bg-black/40 md:hidden"
             onClick={() => {
               setMobileSidebarOpen(false)
               closeRightPanel()
@@ -396,15 +398,15 @@ export function DxChat({ swapped }: { swapped?: boolean }) {
         className={cn(
           "absolute top-0 left-0 z-50 flex h-full flex-shrink-0 flex-col border-r border-sidebar-border bg-sidebar text-sidebar-foreground md:relative",
           "shadow-2xl md:shadow-none",
-          sidebarCollapsed ? "w-[68px]" : "w-[260px]",
-          useSpring &&
-            "transition-all duration-300 ease-[cubic-bezier(0.24,0.88,0.28,0.92)]"
+          sidebarCollapsed ? "w-[68px]" : "w-[260px]"
         )}
         animate={{
           x: isDesktop ? 0 : mobileSidebarOpen ? 0 : "-100%",
+          width: sidebarCollapsed ? 68 : 260,
         }}
         transition={{
-          x: { type: "spring", stiffness: 300, damping: 30 },
+          x: { type: "spring", stiffness: 400, damping: 30 },
+          width: { type: "spring", stiffness: 300, damping: 30 },
         }}
         style={
           swapped
@@ -464,15 +466,29 @@ export function DxChat({ swapped }: { swapped?: boolean }) {
           initial="hidden"
           animate="visible"
           variants={{
-            visible: { transition: { staggerChildren: 0.06 } },
+            hidden: {},
+            visible: {
+              transition: {
+                staggerChildren: 0.05,
+                delayChildren: 0.1,
+              },
+            },
           }}
         >
           <motion.div
             variants={{
-              hidden: { opacity: 0, x: -12 },
-              visible: { opacity: 1, x: 0 },
+              hidden: { opacity: 0, x: -8, scale: 0.95 },
+              visible: {
+                opacity: 1,
+                x: 0,
+                scale: 1,
+                transition: {
+                  type: "spring",
+                  stiffness: 350,
+                  damping: 25,
+                },
+              },
             }}
-            transition={{ type: "spring", stiffness: 300, damping: 25 }}
           >
             <SidebarItem
               icon={Search}
@@ -482,10 +498,18 @@ export function DxChat({ swapped }: { swapped?: boolean }) {
           </motion.div>
           <motion.div
             variants={{
-              hidden: { opacity: 0, x: -12 },
-              visible: { opacity: 1, x: 0 },
+              hidden: { opacity: 0, x: -8, scale: 0.95 },
+              visible: {
+                opacity: 1,
+                x: 0,
+                scale: 1,
+                transition: {
+                  type: "spring",
+                  stiffness: 350,
+                  damping: 25,
+                },
+              },
             }}
-            transition={{ type: "spring", stiffness: 300, damping: 25 }}
           >
             <SidebarItem
               icon={MessageSquarePlus}
@@ -496,10 +520,18 @@ export function DxChat({ swapped }: { swapped?: boolean }) {
           </motion.div>
           <motion.div
             variants={{
-              hidden: { opacity: 0, x: -12 },
-              visible: { opacity: 1, x: 0 },
+              hidden: { opacity: 0, x: -8, scale: 0.95 },
+              visible: {
+                opacity: 1,
+                x: 0,
+                scale: 1,
+                transition: {
+                  type: "spring",
+                  stiffness: 350,
+                  damping: 25,
+                },
+              },
             }}
-            transition={{ type: "spring", stiffness: 300, damping: 25 }}
           >
             <SidebarItem
               icon={Image}
@@ -509,10 +541,18 @@ export function DxChat({ swapped }: { swapped?: boolean }) {
           </motion.div>
           <motion.div
             variants={{
-              hidden: { opacity: 0, x: -12 },
-              visible: { opacity: 1, x: 0 },
+              hidden: { opacity: 0, x: -8, scale: 0.95 },
+              visible: {
+                opacity: 1,
+                x: 0,
+                scale: 1,
+                transition: {
+                  type: "spring",
+                  stiffness: 350,
+                  damping: 25,
+                },
+              },
             }}
-            transition={{ type: "spring", stiffness: 300, damping: 25 }}
           >
             <SidebarItem
               icon={Code}
@@ -523,10 +563,18 @@ export function DxChat({ swapped }: { swapped?: boolean }) {
           </motion.div>
           <motion.div
             variants={{
-              hidden: { opacity: 0, x: -12 },
-              visible: { opacity: 1, x: 0 },
+              hidden: { opacity: 0, x: -8, scale: 0.95 },
+              visible: {
+                opacity: 1,
+                x: 0,
+                scale: 1,
+                transition: {
+                  type: "spring",
+                  stiffness: 350,
+                  damping: 25,
+                },
+              },
             }}
-            transition={{ type: "spring", stiffness: 300, damping: 25 }}
           >
             <SidebarItem
               icon={Grid3x3}
@@ -1051,14 +1099,19 @@ export function DxChat({ swapped }: { swapped?: boolean }) {
             onClick={scrollToBottom}
             className="flex size-10 items-center justify-center rounded-full border border-border bg-background text-muted-foreground shadow-md hover:bg-muted hover:text-foreground md:size-9"
             animate={{
-              y: showScrollBtn ? 0 : 16,
+              y: showScrollBtn ? 0 : 20,
               opacity: showScrollBtn ? 1 : 0,
+              scale: showScrollBtn ? 1 : 0.8,
               pointerEvents: showScrollBtn
                 ? ("auto" as const)
                 : ("none" as const),
             }}
-            transition={{ type: "spring", stiffness: 300, damping: 25 }}
-            whileHover={{ scale: 1.05 }}
+            transition={{
+              y: { type: "spring", stiffness: 400, damping: 30 },
+              opacity: { duration: 0.2 },
+              scale: { type: "spring", stiffness: 400, damping: 30 },
+            }}
+            whileHover={{ scale: 1.1, y: -2 }}
             whileTap={{ scale: 0.95 }}
           >
             <ArrowDown className="size-4" />
@@ -1285,14 +1338,17 @@ export function DxChat({ swapped }: { swapped?: boolean }) {
       <motion.aside
         className={cn(
           "fixed inset-y-0 right-0 z-50 flex flex-shrink-0 flex-col overflow-hidden border-l bg-sidebar shadow-[-4px_0_20px_rgba(0,0,0,0.08)] md:relative",
-          swapped ? "border-sidebar-border" : "border-border",
-          rightPanel
-            ? "border-opacity-100 border-border/50"
-            : "border-opacity-0 w-0"
+          swapped ? "border-sidebar-border" : "border-border"
         )}
-        initial={{ width: 0 }}
-        animate={{ width: rightPanel ? 340 : 0 }}
-        transition={{ type: "spring", stiffness: 300, damping: 30 }}
+        initial={{ width: 0, opacity: 0 }}
+        animate={{
+          width: rightPanel ? 340 : 0,
+          opacity: rightPanel ? 1 : 0,
+        }}
+        transition={{
+          width: { type: "spring", stiffness: 350, damping: 30 },
+          opacity: { duration: 0.2 },
+        }}
         style={
           swapped
             ? ({
@@ -1455,7 +1511,7 @@ export function DxChat({ swapped }: { swapped?: boolean }) {
                 },
                 { id: "usage", label: "Usage", icon: Zap },
               ].map(({ id, label, icon: Icon }) => (
-                <button
+                <motion.button
                   key={id}
                   onClick={() => setSettingsTab(id)}
                   className={cn(
@@ -1464,36 +1520,52 @@ export function DxChat({ swapped }: { swapped?: boolean }) {
                       ? "bg-muted-foreground/10 text-foreground"
                       : "text-muted-foreground hover:bg-muted-foreground/5"
                   )}
+                  whileHover={{ scale: 1.02 }}
+                  whileTap={{ scale: 0.98 }}
+                  transition={{ type: "spring", stiffness: 400, damping: 25 }}
                 >
                   <Icon className="hidden size-[18px] md:inline-block" />
                   {label}
-                </button>
+                </motion.button>
               ))}
             </div>
           </div>
 
           {/* Settings Content */}
           <div className="relative flex h-full flex-1 flex-col overflow-hidden bg-muted">
-            <ScrollArea className="flex-1 p-4 pt-6 md:p-8">
-              {settingsTab === "account" && <SettingsAccount />}
-              {settingsTab === "appearance" && (
-                <SettingsAppearance
-                  darkMode={darkMode}
-                  onToggleDarkMode={toggleDarkMode}
-                />
-              )}
-              {settingsTab === "customize" && <SettingsCustomize />}
-              {settingsTab === "behavior" && (
-                <SettingsPlaceholder title="Behavior" />
-              )}
-              {settingsTab === "datacontrols" && (
-                <SettingsPlaceholder title="Data Controls" />
-              )}
-              {settingsTab === "subscription" && (
-                <SettingsPlaceholder title="Subscription" />
-              )}
-              {settingsTab === "usage" && <SettingsPlaceholder title="Usage" />}
-            </ScrollArea>
+            <AnimatePresence mode="wait">
+              <motion.div
+                key={settingsTab}
+                initial={{ opacity: 0, x: 10 }}
+                animate={{ opacity: 1, x: 0 }}
+                exit={{ opacity: 0, x: -10 }}
+                transition={{ duration: 0.2, ease: [0.4, 0, 0.2, 1] }}
+                className="flex h-full flex-1 flex-col"
+              >
+                <ScrollArea className="flex-1 p-4 pt-6 md:p-8">
+                  {settingsTab === "account" && <SettingsAccount />}
+                  {settingsTab === "appearance" && (
+                    <SettingsAppearance
+                      darkMode={darkMode}
+                      onToggleDarkMode={toggleDarkMode}
+                    />
+                  )}
+                  {settingsTab === "customize" && <SettingsCustomize />}
+                  {settingsTab === "behavior" && (
+                    <SettingsPlaceholder title="Behavior" />
+                  )}
+                  {settingsTab === "datacontrols" && (
+                    <SettingsPlaceholder title="Data Controls" />
+                  )}
+                  {settingsTab === "subscription" && (
+                    <SettingsPlaceholder title="Subscription" />
+                  )}
+                  {settingsTab === "usage" && (
+                    <SettingsPlaceholder title="Usage" />
+                  )}
+                </ScrollArea>
+              </motion.div>
+            </AnimatePresence>
           </div>
         </DialogContent>
       </Dialog>
@@ -1528,20 +1600,29 @@ function SidebarItem({
         >
           <motion.span
             className="flex"
-            whileHover={{ scale: 1.15, rotate: -4 }}
-            whileTap={{ scale: 0.9 }}
-            transition={{ type: "spring", stiffness: 400, damping: 20 }}
+            whileHover={{ scale: 1.05, rotate: -2 }}
+            whileTap={{ scale: 0.95 }}
+            transition={{
+              type: "spring",
+              stiffness: 400,
+              damping: 25,
+            }}
           >
-            <Icon className="size-[18px] flex-shrink-0 md:size-4" />
+            <Icon className="size-[18px] flex-shrink-0 text-muted-foreground md:size-4" />
           </motion.span>
           {!collapsed && (
             <>
               <span className="truncate">{label}</span>
               {badge && (
                 <motion.span
-                  initial={{ scale: 0 }}
-                  animate={{ scale: 1 }}
-                  transition={{ type: "spring", stiffness: 400, damping: 20 }}
+                  initial={{ scale: 0, opacity: 0 }}
+                  animate={{ scale: 1, opacity: 1 }}
+                  transition={{
+                    type: "spring",
+                    stiffness: 500,
+                    damping: 28,
+                    delay: 0.1,
+                  }}
                   className="flex-shrink-0 rounded-full border border-orange-200 bg-orange-50 px-1.5 py-0.5 text-[10px] font-semibold text-orange-600 dark:border-orange-800 dark:bg-orange-950"
                 >
                   {badge}
@@ -1575,11 +1656,15 @@ function SidebarSubItem({
         >
           <motion.span
             className="flex"
-            whileHover={{ scale: 1.15, rotate: -4 }}
-            whileTap={{ scale: 0.9 }}
-            transition={{ type: "spring", stiffness: 400, damping: 20 }}
+            whileHover={{ scale: 1.05, rotate: -2 }}
+            whileTap={{ scale: 0.95 }}
+            transition={{
+              type: "spring",
+              stiffness: 400,
+              damping: 25,
+            }}
           >
-            <Icon className="size-[18px] flex-shrink-0 md:size-4" />
+            <Icon className="size-[18px] flex-shrink-0 text-muted-foreground md:size-4" />
           </motion.span>
           {!collapsed && <span className="truncate">{label}</span>}
         </button>
