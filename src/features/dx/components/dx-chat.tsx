@@ -231,7 +231,7 @@ function VoiceBar({ delay, height }: { delay: string; height: number }) {
   )
 }
 
-export function DxChat() {
+export function DxChat({ swapped }: { swapped?: boolean }) {
   const [sidebarCollapsed, setSidebarCollapsed] = React.useState(false)
   const [mobileSidebarOpen, setMobileSidebarOpen] = React.useState(false)
   const [rightPanel, setRightPanel] = React.useState<RightPanel>(null)
@@ -382,91 +382,95 @@ export function DxChat() {
 
           {/* Scrollable Middle */}
           <div className="no-scrollbar flex-1 overflow-y-auto px-3">
-            {/* Projects */}
-            <Collapsible
-              open={projectsOpen}
-              onOpenChange={setProjectsOpen}
-              className="mb-4"
-            >
-              <CollapsibleTrigger className="group flex w-full items-center gap-1 px-3 py-1.5 text-xs font-semibold text-muted-foreground transition-colors hover:text-foreground">
-                Projects
-                <ChevronDown
-                  className={cn(
-                    "size-3 transition-transform duration-300",
-                    !projectsOpen && "-rotate-90"
-                  )}
-                />
-              </CollapsibleTrigger>
-              <CollapsibleContent className="mt-1 space-y-0.5">
-                <SidebarSubItem
-                  icon={Plus}
-                  label="New Project"
-                  collapsed={sidebarCollapsed}
-                />
-                <SidebarSubItem
-                  icon={Sparkles}
-                  label="Dx"
-                  collapsed={sidebarCollapsed}
-                />
-              </CollapsibleContent>
-            </Collapsible>
+            {!sidebarCollapsed && (
+              <>
+                {/* Projects */}
+                <Collapsible
+                  open={projectsOpen}
+                  onOpenChange={setProjectsOpen}
+                  className="mb-4"
+                >
+                  <CollapsibleTrigger className="group flex w-full items-center gap-1 px-3 py-1.5 text-xs font-semibold text-muted-foreground transition-colors hover:text-foreground">
+                    Projects
+                    <ChevronDown
+                      className={cn(
+                        "size-3 transition-transform duration-300",
+                        !projectsOpen && "-rotate-90"
+                      )}
+                    />
+                  </CollapsibleTrigger>
+                  <CollapsibleContent className="mt-1 space-y-0.5">
+                    <SidebarSubItem
+                      icon={Plus}
+                      label="New Project"
+                      collapsed={sidebarCollapsed}
+                    />
+                    <SidebarSubItem
+                      icon={Sparkles}
+                      label="Dx"
+                      collapsed={sidebarCollapsed}
+                    />
+                  </CollapsibleContent>
+                </Collapsible>
 
-            {/* History */}
-            <Collapsible open={historyOpen} onOpenChange={setHistoryOpen}>
-              <CollapsibleTrigger className="group flex w-full items-center gap-1 px-3 py-1.5 text-xs font-semibold text-muted-foreground transition-colors hover:text-foreground">
-                History
-                <ChevronDown
-                  className={cn(
-                    "size-3 transition-transform duration-300",
-                    !historyOpen && "-rotate-90"
-                  )}
-                />
-              </CollapsibleTrigger>
-              <CollapsibleContent className="mt-1 space-y-0.5">
-                <HistoryItem
-                  icon={Pin}
-                  label="C++ Markdown to FlatBu..."
-                  collapsed={sidebarCollapsed}
-                />
-                <HistoryItem
-                  icon={Pin}
-                  label="OpenClaw and Hermes ..."
-                  collapsed={sidebarCollapsed}
-                />
-                <HistoryItem
-                  icon={Pin}
-                  label="Sandbox Specs: Linux, N..."
-                  collapsed={sidebarCollapsed}
-                />
-                <HistoryItem
-                  icon={Pin}
-                  label="DX Config: Block Syntax ..."
-                  collapsed={sidebarCollapsed}
-                />
-                <HistoryItem
-                  icon={Pin}
-                  label="DX CLI: Root Markdown ..."
-                  collapsed={sidebarCollapsed}
-                />
-                <div className="px-3 pt-4 pb-1 text-[11px] font-medium text-muted-foreground/60">
-                  Today
-                </div>
-                <HistoryItem
-                  label="Latest AI News Top 10 Updat..."
-                  collapsed={sidebarCollapsed}
-                  active
-                />
-                <HistoryItem
-                  label="Google Antigravity AI Editor ..."
-                  collapsed={sidebarCollapsed}
-                />
-                <HistoryItem
-                  label="Dropdown free providers thr..."
-                  collapsed={sidebarCollapsed}
-                />
-              </CollapsibleContent>
-            </Collapsible>
-            <div className="h-4" />
+                {/* History */}
+                <Collapsible open={historyOpen} onOpenChange={setHistoryOpen}>
+                  <CollapsibleTrigger className="group flex w-full items-center gap-1 px-3 py-1.5 text-xs font-semibold text-muted-foreground transition-colors hover:text-foreground">
+                    History
+                    <ChevronDown
+                      className={cn(
+                        "size-3 transition-transform duration-300",
+                        !historyOpen && "-rotate-90"
+                      )}
+                    />
+                  </CollapsibleTrigger>
+                  <CollapsibleContent className="mt-1 space-y-0.5">
+                    <HistoryItem
+                      icon={Pin}
+                      label="C++ Markdown to FlatBu..."
+                      collapsed={sidebarCollapsed}
+                    />
+                    <HistoryItem
+                      icon={Pin}
+                      label="OpenClaw and Hermes ..."
+                      collapsed={sidebarCollapsed}
+                    />
+                    <HistoryItem
+                      icon={Pin}
+                      label="Sandbox Specs: Linux, N..."
+                      collapsed={sidebarCollapsed}
+                    />
+                    <HistoryItem
+                      icon={Pin}
+                      label="DX Config: Block Syntax ..."
+                      collapsed={sidebarCollapsed}
+                    />
+                    <HistoryItem
+                      icon={Pin}
+                      label="DX CLI: Root Markdown ..."
+                      collapsed={sidebarCollapsed}
+                    />
+                    <div className="px-3 pt-4 pb-1 text-[11px] font-medium text-muted-foreground/60">
+                      Today
+                    </div>
+                    <HistoryItem
+                      label="Latest AI News Top 10 Updat..."
+                      collapsed={sidebarCollapsed}
+                      active
+                    />
+                    <HistoryItem
+                      label="Google Antigravity AI Editor ..."
+                      collapsed={sidebarCollapsed}
+                    />
+                    <HistoryItem
+                      label="Dropdown free providers thr..."
+                      collapsed={sidebarCollapsed}
+                    />
+                  </CollapsibleContent>
+                </Collapsible>
+                <div className="h-4" />
+              </>
+            )}
           </div>
 
           {/* Expand button when collapsed */}
