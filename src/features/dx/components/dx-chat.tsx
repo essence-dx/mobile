@@ -12,6 +12,7 @@ import {
   Code,
   Cog,
   Database,
+  DollarSign,
   FileText,
   Folder,
   Ghost,
@@ -38,7 +39,7 @@ import {
   User,
   X,
   Zap,
-} from '@/components/animated-lucide/index';
+} from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from '@/components/ui/collapsible';
 import { Dialog, DialogContent, DialogTitle } from '@/components/ui/dialog';

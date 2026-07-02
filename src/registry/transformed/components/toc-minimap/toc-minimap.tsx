@@ -1,10 +1,11 @@
 'use client';
 
 import { useEffect, useMemo, useState } from 'react';
-import { HoverCard, HoverCardContent, HoverCardTrigger } from '@/components/ui/hover-card';
-import { useSound } from '@/hooks/soundcn/use-sound';
+
 import { uMiniMapOpenSound } from '@/lib/soundcn/u-mini-map-open';
 import { cn } from '@/lib/utils';
+import { useSound } from '@/hooks/soundcn/use-sound';
+import { HoverCard, HoverCardContent, HoverCardTrigger } from '@/components/ui/hover-card';
 
 export type TOCItemType = {
   title: React.ReactNode;

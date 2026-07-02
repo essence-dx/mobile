@@ -1,8 +1,8 @@
 'use client';
 
-import { AnimatePresence, motion, useInView, usePageInView, useReducedMotion } from 'motion/react';
 import type { ReactNode } from 'react';
 import { Children, memo, useEffect, useMemo, useRef, useState } from 'react';
+import { AnimatePresence, motion, useInView, usePageInView, useReducedMotion } from 'motion/react';
 
 import { cn } from '@/lib/utils';
 

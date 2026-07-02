@@ -1,12 +1,13 @@
 'use client';
 
+import type { ComponentProps } from 'react';
 import { CheckIcon, CircleXIcon, CopyIcon } from 'lucide-react';
 import { motion } from 'motion/react';
-import type { ComponentProps } from 'react';
-import { Button } from '@/components/ui/button';
+
+import { cn } from '@/lib/utils';
 import type { CopyState } from '@/hooks/use-copy-to-clipboard';
 import { useCopyToClipboard } from '@/hooks/use-copy-to-clipboard';
-import { cn } from '@/lib/utils';
+import { Button } from '@/components/ui/button';
 import { IconSwap, IconSwapItem } from '@/registry/transformed/components/icon-swap';
 
 export type CopyStateIconProps = {
