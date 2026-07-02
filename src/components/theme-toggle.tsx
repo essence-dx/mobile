@@ -1,36 +1,32 @@
-"use client"
+'use client';
 
-import { useTheme } from "next-themes"
-import { useHotkeys } from "react-hotkeys-hook"
+import { useTheme } from 'next-themes';
+import { useHotkeys } from 'react-hotkeys-hook';
 
-import { META_THEME_COLORS } from "@/config/site"
-import { useClickSound } from "@/hooks/soundcn/use-click-sound"
-import { useMetaColor } from "@/hooks/use-meta-color"
+import { META_THEME_COLORS } from '@/config/site';
+import { useClickSound } from '@/hooks/soundcn/use-click-sound';
+import { useMetaColor } from '@/hooks/use-meta-color';
 
-import { MoonIcon } from "./animated-icons/moon-icon"
-import { SunMediumIcon } from "./animated-icons/sun-medium-icon"
-import { Tooltip, TooltipContent, TooltipTrigger } from "./base/ui/tooltip"
-import { Button } from "./ui/button"
-import { Kbd } from "./ui/kbd"
+import { MoonIcon } from './animated-icons/moon-icon';
+import { SunMediumIcon } from './animated-icons/sun-medium-icon';
+import { Tooltip, TooltipContent, TooltipTrigger } from './base/ui/tooltip';
+import { Button } from './ui/button';
+import { Kbd } from './ui/kbd';
 
 export function ThemeToggle() {
-  const { resolvedTheme, setTheme } = useTheme()
+  const { resolvedTheme, setTheme } = useTheme();
 
-  const { setMetaColor } = useMetaColor()
+  const { setMetaColor } = useMetaColor();
 
-  const [click] = useClickSound()
+  const [click] = useClickSound();
 
   const switchTheme = () => {
-    click()
-    setTheme(resolvedTheme === "dark" ? "light" : "dark")
-    setMetaColor(
-      resolvedTheme === "dark"
-        ? META_THEME_COLORS.light
-        : META_THEME_COLORS.dark
-    )
-  }
+    click();
+    setTheme(resolvedTheme === 'dark' ? 'light' : 'dark');
+    setMetaColor(resolvedTheme === 'dark' ? META_THEME_COLORS.light : META_THEME_COLORS.dark);
+  };
 
-  useHotkeys("d", () => switchTheme())
+  useHotkeys('d', () => switchTheme());
 
   return (
     <Tooltip>
@@ -43,15 +39,9 @@ export function ThemeToggle() {
             aria-label="Toggle mode"
             onClick={() => switchTheme()}
           >
-            <span
-              className="absolute size-12 pointer-fine:hidden"
-              aria-hidden
-            />
+            <span className="absolute size-12 pointer-fine:hidden" aria-hidden />
             <MoonIcon className="hidden [html.dark_&]:block" aria-hidden />
-            <SunMediumIcon
-              className="hidden [html.light_&]:block"
-              aria-hidden
-            />
+            <SunMediumIcon className="hidden [html.light_&]:block" aria-hidden />
           </Button>
         }
       />
@@ -62,5 +52,5 @@ export function ThemeToggle() {
         </div>
       </TooltipContent>
     </Tooltip>
-  )
+  );
 }

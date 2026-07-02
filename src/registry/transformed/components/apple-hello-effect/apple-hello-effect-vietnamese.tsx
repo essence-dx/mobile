@@ -1,34 +1,34 @@
-"use client"
+'use client';
 
-import type { ComponentProps } from "react"
-import type { TargetAndTransition } from "motion/react"
-import { motion } from "motion/react"
+import type { TargetAndTransition } from 'motion/react';
+import { motion } from 'motion/react';
+import type { ComponentProps } from 'react';
 
-import { cn } from "@/lib/utils"
+import { cn } from '@/lib/utils';
 
 const initialProps: TargetAndTransition = {
   pathLength: 0,
   opacity: 0,
-}
+};
 
 const animateProps: TargetAndTransition = {
   pathLength: 1,
   opacity: 1,
-}
+};
 
 export type AppleHelloEffectProps = Omit<
   ComponentProps<typeof motion.svg>,
-  "durationScale" | "onAnimationComplete"
+  'durationScale' | 'onAnimationComplete'
 > & {
   /**
    * Scales the duration and delay of the handwriting animation.
    * Values below 1 speed up, values above 1 slow down.
    * @defaultValue 1
    */
-  durationScale?: number
+  durationScale?: number;
   /** Called when the full handwriting animation completes. */
-  onAnimationComplete?: () => void
-}
+  onAnimationComplete?: () => void;
+};
 
 export function AppleHelloEffectVietnamese({
   className,
@@ -36,11 +36,11 @@ export function AppleHelloEffectVietnamese({
   onAnimationComplete,
   ...props
 }: AppleHelloEffectProps) {
-  const calc = (x: number) => x * durationScale
+  const calc = (x: number) => x * durationScale;
 
   return (
     <motion.svg
-      className={cn("h-20", className)}
+      className={cn('h-20', className)}
       xmlns="http://www.w3.org/2000/svg"
       viewBox="0 0 1009 200"
       fill="none"
@@ -61,7 +61,7 @@ export function AppleHelloEffectVietnamese({
         animate={animateProps}
         transition={{
           duration: calc(0.3),
-          ease: "easeInOut",
+          ease: 'easeInOut',
           opacity: { duration: 0.15 },
         }}
       />
@@ -73,7 +73,7 @@ export function AppleHelloEffectVietnamese({
         animate={animateProps}
         transition={{
           duration: calc(0.7),
-          ease: "easeInOut",
+          ease: 'easeInOut',
           delay: calc(0.4),
           opacity: { duration: 0.35, delay: calc(0.4) },
         }}
@@ -86,7 +86,7 @@ export function AppleHelloEffectVietnamese({
         animate={animateProps}
         transition={{
           duration: calc(0.5),
-          ease: "easeOut",
+          ease: 'easeOut',
           delay: calc(1),
           opacity: { duration: 0.25, delay: calc(1) },
         }}
@@ -99,7 +99,7 @@ export function AppleHelloEffectVietnamese({
         animate={animateProps}
         transition={{
           duration: calc(0.3),
-          ease: "easeOut",
+          ease: 'easeOut',
           delay: calc(1.5),
           opacity: { duration: 0.15, delay: calc(1.5) },
         }}
@@ -112,7 +112,7 @@ export function AppleHelloEffectVietnamese({
         animate={animateProps}
         transition={{
           duration: calc(0.9),
-          ease: "easeOut",
+          ease: 'easeOut',
           delay: calc(1.8),
           opacity: { duration: 0.45, delay: calc(1.8) },
         }}
@@ -125,7 +125,7 @@ export function AppleHelloEffectVietnamese({
         animate={animateProps}
         transition={{
           duration: calc(1.1),
-          ease: "easeInOut",
+          ease: 'easeInOut',
           delay: calc(2.6),
           opacity: { duration: 0.55, delay: calc(2.6) },
         }}
@@ -138,7 +138,7 @@ export function AppleHelloEffectVietnamese({
         animate={animateProps}
         transition={{
           duration: calc(1),
-          ease: "easeInOut",
+          ease: 'easeInOut',
           delay: calc(3.6),
           opacity: { duration: 0.5, delay: calc(3.6) },
         }}
@@ -151,7 +151,7 @@ export function AppleHelloEffectVietnamese({
         animate={animateProps}
         transition={{
           duration: calc(0.8),
-          ease: "easeOut",
+          ease: 'easeOut',
           delay: calc(4.6),
           opacity: { duration: 0.4, delay: calc(4.6) },
         }}
@@ -164,7 +164,7 @@ export function AppleHelloEffectVietnamese({
         animate={animateProps}
         transition={{
           duration: calc(1.5),
-          ease: "easeOut",
+          ease: 'easeOut',
           delay: calc(5.4),
           opacity: { duration: 0.75, delay: calc(5.4) },
         }}
@@ -177,12 +177,12 @@ export function AppleHelloEffectVietnamese({
         animate={animateProps}
         transition={{
           duration: calc(0.8),
-          ease: "easeInOut",
+          ease: 'easeInOut',
           delay: calc(7),
           opacity: { duration: 0.4, delay: calc(7) },
         }}
         onAnimationComplete={onAnimationComplete}
       />
     </motion.svg>
-  )
+  );
 }

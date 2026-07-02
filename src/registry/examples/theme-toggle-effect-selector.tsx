@@ -1,13 +1,7 @@
-"use client"
+'use client';
 
-import { useEffect, useLayoutEffect, useState } from "react"
-import {
-  Circle,
-  CircleDashed,
-  Diamond,
-  Triangle,
-  TriangleDashed,
-} from "lucide-react"
+import { Circle, CircleDashed, Diamond, Triangle, TriangleDashed } from 'lucide-react';
+import { useEffect, useLayoutEffect, useState } from 'react';
 
 import {
   Select,
@@ -17,36 +11,31 @@ import {
   SelectLabel,
   SelectTrigger,
   SelectValue,
-} from "@/components/ui/select"
+} from '@/components/ui/select';
 
-const EFFECT_STYLE_ID = "theme-toggle-effect-demo-style"
+const EFFECT_STYLE_ID = 'theme-toggle-effect-demo-style';
 
-type EffectName = keyof typeof EFFECTS
+type EffectName = keyof typeof EFFECTS;
 
 export function ThemeToggleEffectSelector() {
-  const [effectName, setEffectName] = useState<EffectName>("triangle")
+  const [effectName, setEffectName] = useState<EffectName>('triangle');
 
   useLayoutEffect(() => {
-    addEffectStyle(document, EFFECTS[effectName]?.css || "", EFFECT_STYLE_ID)
-  }, [effectName])
+    addEffectStyle(document, EFFECTS[effectName]?.css || '', EFFECT_STYLE_ID);
+  }, [effectName]);
 
   useEffect(() => {
     return () => {
-      removeEffectStyle(document, EFFECT_STYLE_ID)
-    }
-  }, [])
+      removeEffectStyle(document, EFFECT_STYLE_ID);
+    };
+  }, []);
 
   return (
     <Select
       value={effectName}
-      onValueChange={(selectedEffect) =>
-        setEffectName(selectedEffect as EffectName)
-      }
+      onValueChange={(selectedEffect) => setEffectName(selectedEffect as EffectName)}
     >
-      <SelectTrigger
-        className="w-50 *:data-[slot=select-value]:gap-2"
-        aria-label="Select Effect"
-      >
+      <SelectTrigger className="w-50 *:data-[slot=select-value]:gap-2" aria-label="Select Effect">
         <SelectValue placeholder="Effect" />
       </SelectTrigger>
 
@@ -62,28 +51,28 @@ export function ThemeToggleEffectSelector() {
         </SelectGroup>
       </SelectContent>
     </Select>
-  )
+  );
 }
 
 function removeEffectStyle(doc: Document, styleId: string) {
-  doc.getElementById(styleId)?.remove()
+  doc.getElementById(styleId)?.remove();
 }
 
 function addEffectStyle(doc: Document, cssText: string, styleId: string) {
-  let styleEl = doc.getElementById(styleId) as HTMLStyleElement | null
+  let styleEl = doc.getElementById(styleId) as HTMLStyleElement | null;
 
   if (!styleEl) {
-    styleEl = doc.createElement("style")
-    styleEl.id = styleId
-    doc.head.appendChild(styleEl)
+    styleEl = doc.createElement('style');
+    styleEl.id = styleId;
+    doc.head.appendChild(styleEl);
   }
 
-  styleEl.textContent = cssText
+  styleEl.textContent = cssText;
 }
 
 const EFFECTS = {
   triangle: {
-    title: "Triangle",
+    title: 'Triangle',
     icon: <Triangle />,
     css: `
       ::view-transition-group(root) {
@@ -109,8 +98,8 @@ const EFFECTS = {
       }
     `,
   },
-  "triangle-blur": {
-    title: "Triangle Blur",
+  'triangle-blur': {
+    title: 'Triangle Blur',
     icon: <TriangleDashed />,
     css: `
       ::view-transition-group(root) {
@@ -137,7 +126,7 @@ const EFFECTS = {
     `,
   },
   circle: {
-    title: "Circle",
+    title: 'Circle',
     icon: <Circle />,
     css: `
       ::view-transition-group(root) {
@@ -163,8 +152,8 @@ const EFFECTS = {
       }
     `,
   },
-  "circle-blur": {
-    title: "Circle Blur",
+  'circle-blur': {
+    title: 'Circle Blur',
     icon: <CircleDashed />,
     css: `
       ::view-transition-group(root) {
@@ -194,8 +183,8 @@ const EFFECTS = {
       }
     `,
   },
-  "circle-blur-top-left": {
-    title: "Circle Blur Top Left",
+  'circle-blur-top-left': {
+    title: 'Circle Blur Top Left',
     icon: <CircleDashed />,
     css: `
       ::view-transition-group(root) {
@@ -225,7 +214,7 @@ const EFFECTS = {
     `,
   },
   polygon: {
-    title: "Polygon",
+    title: 'Polygon',
     icon: <Diamond />,
     css: `
       ::view-transition-group(root) {
@@ -266,8 +255,8 @@ const EFFECTS = {
       }
     `,
   },
-  "polygon-gradient": {
-    title: "Polygon Gradient",
+  'polygon-gradient': {
+    title: 'Polygon Gradient',
     icon: <Diamond />,
     css: `
       ::view-transition-group(root) {
@@ -295,4 +284,4 @@ const EFFECTS = {
       }
     `,
   },
-}
+};

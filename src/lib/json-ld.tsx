@@ -1,25 +1,23 @@
-import type { BreadcrumbList, WithContext } from "schema-dts"
+import type { BreadcrumbList, WithContext } from 'schema-dts';
 
-import { absoluteUrl } from "@/lib/utils"
+import { absoluteUrl } from '@/lib/utils';
 
 export type BreadcrumbItem = {
-  name: string
-  href: string
-}
+  name: string;
+  href: string;
+};
 
-export function jsonLdBreadcrumbList(
-  items: BreadcrumbItem[]
-): WithContext<BreadcrumbList> {
+export function jsonLdBreadcrumbList(items: BreadcrumbItem[]): WithContext<BreadcrumbList> {
   return {
-    "@context": "https://schema.org",
-    "@type": "BreadcrumbList",
+    '@context': 'https://schema.org',
+    '@type': 'BreadcrumbList',
     itemListElement: items.map((item, i) => ({
-      "@type": "ListItem",
+      '@type': 'ListItem',
       position: i + 1,
       name: item.name,
       item: absoluteUrl(item.href),
     })),
-  }
+  };
 }
 
 export function JsonLdScript({ data }: { data: unknown }) {
@@ -27,8 +25,8 @@ export function JsonLdScript({ data }: { data: unknown }) {
     <script
       type="application/ld+json"
       dangerouslySetInnerHTML={{
-        __html: JSON.stringify(data).replace(/</g, "\\u003c"),
+        __html: JSON.stringify(data).replace(/</g, '\\u003c'),
       }}
     />
-  )
+  );
 }

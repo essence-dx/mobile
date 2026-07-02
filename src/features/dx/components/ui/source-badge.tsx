@@ -3,9 +3,9 @@ export function SourceBadge({
   domain,
   onClick,
 }: {
-  label: string
-  domain: string
-  onClick?: () => void
+  label: string;
+  domain: string;
+  onClick?: () => void;
 }) {
   return (
     <button
@@ -17,5 +17,5 @@ export function SourceBadge({
       </div>
       {label}
     </button>
-  )
+  );
 }

@@ -1,7 +1,7 @@
-import { CodeXmlIcon, LightbulbIcon } from "lucide-react"
+import { CodeXmlIcon, LightbulbIcon } from 'lucide-react';
 
-import type { ExperienceItemType } from "@/registry/transformed/components/work-experience"
-import { WorkExperience } from "@/registry/transformed/components/work-experience"
+import type { ExperienceItemType } from '@/registry/transformed/components/work-experience';
+import { WorkExperience } from '@/registry/transformed/components/work-experience';
 
 export function Experience01() {
   return (
@@ -19,51 +19,45 @@ export function Experience01() {
         </div>
       </div>
     </div>
-  )
+  );
 }
 
 const EXPERIENCE: ExperienceItemType[] = [
   {
-    id: "shadcncraft",
-    companyName: "shadcncraft",
-    companyLogo: "https://assets.chanhdai.com/images/companies/shadcncraft.svg",
-    companyWebsite: "https://shadcncraft.com?atp=ncdai",
+    id: 'shadcncraft',
+    companyName: 'shadcncraft',
+    companyLogo: 'https://assets.chanhdai.com/images/companies/shadcncraft.svg',
+    companyWebsite: 'https://shadcncraft.com?atp=ncdai',
     positions: [
       {
-        id: "1",
-        title: "Design Engineer",
+        id: '1',
+        title: 'Design Engineer',
         employmentPeriod: {
-          start: "01.2026",
+          start: '01.2026',
         },
-        employmentType: "Full-time",
+        employmentType: 'Full-time',
         icon: <CodeXmlIcon />,
         description:
-          "- Work on the registry and React component library.\n- Design and build Pro application components and blocks, from Figma to production-ready React.",
-        skills: [
-          "TypeScript",
-          "Next.js",
-          "Tailwind CSS",
-          "shadcn/registry",
-          "Figma",
-        ],
+          '- Work on the registry and React component library.\n- Design and build Pro application components and blocks, from Figma to production-ready React.',
+        skills: ['TypeScript', 'Next.js', 'Tailwind CSS', 'shadcn/registry', 'Figma'],
         isExpanded: true,
       },
     ],
     isCurrentEmployer: true,
   },
   {
-    id: "quaric",
-    companyName: "Quaric",
-    companyLogo: "https://assets.chanhdai.com/images/companies/quaric.svg",
-    companyWebsite: "https://quaric.com",
+    id: 'quaric',
+    companyName: 'Quaric',
+    companyLogo: 'https://assets.chanhdai.com/images/companies/quaric.svg',
+    companyWebsite: 'https://quaric.com',
     positions: [
       {
-        id: "2",
-        title: "Design Engineer",
+        id: '2',
+        title: 'Design Engineer',
         employmentPeriod: {
-          start: "03.2024",
+          start: '03.2024',
         },
-        employmentType: "Part-time",
+        employmentType: 'Part-time',
         icon: <CodeXmlIcon />,
         description: `- Integrated VNPAY-QR for secure transactions.
 - Registered the e-commerce site with [online.gov.vn](https://online.gov.vn) for compliance.
@@ -71,30 +65,30 @@ const EXPERIENCE: ExperienceItemType[] = [
 - Build and maintain ZaDark.com with Docusaurus, integrating AdSense.
 - Develop and maintain the ZaDark extension for Zalo Web on Chrome, Safari, Edge, and Firefox — with 15,000+ active users via Chrome Web Store.`,
         skills: [
-          "Next.js",
-          "Strapi",
-          "Auth0",
-          "VNPAY-QR",
-          "Docker",
-          "NGINX",
-          "Google Cloud",
-          "Docusaurus",
-          "Extension",
-          "Research",
-          "Project Management",
+          'Next.js',
+          'Strapi',
+          'Auth0',
+          'VNPAY-QR',
+          'Docker',
+          'NGINX',
+          'Google Cloud',
+          'Docusaurus',
+          'Extension',
+          'Research',
+          'Project Management',
         ],
       },
       {
-        id: "1",
-        title: "Founder",
+        id: '1',
+        title: 'Founder',
         employmentPeriod: {
-          start: "03.2024",
+          start: '03.2024',
         },
-        employmentType: "Part-time",
+        employmentType: 'Part-time',
         icon: <LightbulbIcon />,
-        skills: ["Business Ownership", "Business Law", "Business Tax"],
+        skills: ['Business Ownership', 'Business Law', 'Business Tax'],
       },
     ],
     isCurrentEmployer: true,
   },
-]
+];

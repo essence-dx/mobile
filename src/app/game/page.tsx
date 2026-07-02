@@ -1,34 +1,34 @@
-import "@/components/daikanoid/daikanoid.css"
+import '@/components/daikanoid/daikanoid.css';
 
-import { Suspense } from "react"
-import type { Metadata } from "next"
+import type { Metadata } from 'next';
+import { Suspense } from 'react';
 
-import { X_HANDLE } from "@/config/site"
+import { X_HANDLE } from '@/config/site';
 
-import { Game } from "./game"
+import { Game } from './game';
 
 export const metadata: Metadata = {
-  title: "Daikanoid",
+  title: 'Daikanoid',
   alternates: {
-    canonical: "/game",
+    canonical: '/game',
   },
   openGraph: {
-    url: "/game",
-    type: "website",
+    url: '/game',
+    type: 'website',
     images: {
-      url: "https://assets.chanhdai.com/images/blog/daikanoid.webp",
+      url: 'https://assets.chanhdai.com/images/blog/daikanoid.webp',
       width: 1200,
       height: 630,
-      alt: "Daikanoid",
+      alt: 'Daikanoid',
     },
   },
   twitter: {
-    card: "summary_large_image",
+    card: 'summary_large_image',
     site: X_HANDLE,
     creator: X_HANDLE,
-    images: ["https://assets.chanhdai.com/images/blog/daikanoid.webp"],
+    images: ['https://assets.chanhdai.com/images/blog/daikanoid.webp'],
   },
-}
+};
 
 export default function GamePage() {
   return (
@@ -45,5 +45,5 @@ export default function GamePage() {
         </Suspense>
       </section>
     </div>
-  )
+  );
 }

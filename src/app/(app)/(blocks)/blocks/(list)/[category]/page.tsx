@@ -1,40 +1,39 @@
-import { Fragment } from "react"
-import type { Metadata } from "next"
-import type { CollectionPage, WithContext } from "schema-dts"
+import type { Metadata } from 'next';
+import { Fragment } from 'react';
+import type { CollectionPage, WithContext } from 'schema-dts';
+import { BlockDisplay } from '@/app/(preview)/components/block-display';
+import { blockCategories } from '@/config/registry';
+import { X_HANDLE } from '@/config/site';
+import { getAllBlockIds } from '@/lib/blocks';
+import { JsonLdScript, jsonLdBreadcrumbList } from '@/lib/json-ld';
+import { absoluteUrl } from '@/lib/utils';
 
-import { blockCategories } from "@/config/registry"
-import { X_HANDLE } from "@/config/site"
-import { getAllBlockIds } from "@/lib/blocks"
-import { jsonLdBreadcrumbList, JsonLdScript } from "@/lib/json-ld"
-import { absoluteUrl } from "@/lib/utils"
-import { BlockDisplay } from "@/app/(preview)/components/block-display"
-
-export const revalidate = false
-export const dynamic = "force-static"
-export const dynamicParams = false
+export const revalidate = false;
+export const dynamic = 'force-static';
+export const dynamicParams = false;
 
 export async function generateStaticParams() {
   return blockCategories.map((category) => ({
     category: category.name,
-  }))
+  }));
 }
 
 export async function generateMetadata({
   params,
-}: PageProps<"/blocks/[category]">): Promise<Metadata> {
-  const { category } = await params
+}: PageProps<'/blocks/[category]'>): Promise<Metadata> {
+  const { category } = await params;
 
-  const item = blockCategories.find((item) => item.name === category)
+  const item = blockCategories.find((item) => item.name === category);
 
   if (!item) {
-    return {}
+    return {};
   }
 
-  const title = item.name
-  const description = item.description
+  const title = item.name;
+  const description = item.description;
 
-  const categoryUrl = `/blocks/${item.name}`
-  const ogImage = "/og/default.png"
+  const categoryUrl = `/blocks/${item.name}`;
+  const ogImage = '/og/default.png';
 
   return {
     title,
@@ -44,7 +43,7 @@ export async function generateMetadata({
     },
     openGraph: {
       url: categoryUrl,
-      type: "website",
+      type: 'website',
       images: {
         url: ogImage,
         width: 1200,
@@ -53,69 +52,65 @@ export async function generateMetadata({
       },
     },
     twitter: {
-      card: "summary_large_image",
+      card: 'summary_large_image',
       site: X_HANDLE,
       creator: X_HANDLE,
       images: [ogImage],
     },
-  }
+  };
 }
 
 function getCollectionPageJsonLd(
   category: { name: string; title: string; description: string },
   blockIds: string[]
 ): WithContext<CollectionPage> {
-  const categoryUrl = `/blocks/${category.name}`
+  const categoryUrl = `/blocks/${category.name}`;
 
   return {
-    "@context": "https://schema.org",
-    "@type": "CollectionPage",
-    "@id": absoluteUrl(categoryUrl),
+    '@context': 'https://schema.org',
+    '@type': 'CollectionPage',
+    '@id': absoluteUrl(categoryUrl),
     name: category.title,
     description: category.description,
     url: absoluteUrl(categoryUrl),
     mainEntity: {
-      "@type": "ItemList",
+      '@type': 'ItemList',
       numberOfItems: blockIds.length,
       itemListElement: blockIds.map((blockId, index) => ({
-        "@type": "ListItem",
+        '@type': 'ListItem',
         position: index + 1,
         url: absoluteUrl(`/blocks/${category.name}/${blockId}`),
       })),
     },
     isPartOf: {
-      "@type": "CollectionPage",
-      "@id": absoluteUrl("/blocks"),
-      name: "Blocks",
-      url: absoluteUrl("/blocks"),
+      '@type': 'CollectionPage',
+      '@id': absoluteUrl('/blocks'),
+      name: 'Blocks',
+      url: absoluteUrl('/blocks'),
     },
-  }
+  };
 }
 
-export default async function BlocksPage({
-  params,
-}: PageProps<"/blocks/[category]">) {
-  const { category } = await params
+export default async function BlocksPage({ params }: PageProps<'/blocks/[category]'>) {
+  const { category } = await params;
 
-  const blockIds = await getAllBlockIds(["registry:block"], [category])
+  const blockIds = await getAllBlockIds(['registry:block'], [category]);
 
-  const categoryItem = blockCategories.find((item) => item.name === category)
+  const categoryItem = blockCategories.find((item) => item.name === category);
 
   return (
     <>
-      {categoryItem && (
-        <JsonLdScript data={getCollectionPageJsonLd(categoryItem, blockIds)} />
-      )}
+      {categoryItem && <JsonLdScript data={getCollectionPageJsonLd(categoryItem, blockIds)} />}
 
       <JsonLdScript
         data={jsonLdBreadcrumbList([
           {
-            name: "Home",
-            href: "/",
+            name: 'Home',
+            href: '/',
           },
           {
-            name: "Blocks",
-            href: "/blocks",
+            name: 'Blocks',
+            href: '/blocks',
           },
           {
             name: categoryItem?.title || category,
@@ -131,7 +126,7 @@ export default async function BlocksPage({
         </Fragment>
       ))}
     </>
-  )
+  );
 }
 
 function Separator() {
@@ -139,5 +134,5 @@ function Separator() {
     <div className="screen-line-top screen-line-bottom">
       <div className="stripe-divider" />
     </div>
-  )
+  );
 }

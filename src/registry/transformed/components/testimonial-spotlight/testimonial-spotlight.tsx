@@ -1,44 +1,34 @@
-"use client"
+'use client';
 
-import { useRef } from "react"
+import { useRef } from 'react';
 
-import { cn } from "@/lib/utils"
+import { cn } from '@/lib/utils';
 
 export type TestimonialSpotlightProps = Omit<
-  React.ComponentPropsWithoutRef<"div">,
-  "children" | "onMouseMove"
+  React.ComponentPropsWithoutRef<'div'>,
+  'children' | 'onMouseMove'
 > & {
-  children: React.ReactNode
-}
+  children: React.ReactNode;
+};
 
-export function TestimonialSpotlight({
-  children,
-  className,
-  ...props
-}: TestimonialSpotlightProps) {
-  const itemRef = useRef<HTMLDivElement>(null)
+export function TestimonialSpotlight({ children, className, ...props }: TestimonialSpotlightProps) {
+  const itemRef = useRef<HTMLDivElement>(null);
 
   const handleMouseMove: React.MouseEventHandler<HTMLDivElement> = (e) => {
-    if (!itemRef.current) return
+    if (!itemRef.current) return;
 
-    const rect = itemRef.current.getBoundingClientRect()
+    const rect = itemRef.current.getBoundingClientRect();
 
-    itemRef.current.style.setProperty(
-      "--spotlight-x",
-      `${e.clientX - rect.left}px`
-    )
-    itemRef.current.style.setProperty(
-      "--spotlight-y",
-      `${e.clientY - rect.top}px`
-    )
-  }
+    itemRef.current.style.setProperty('--spotlight-x', `${e.clientX - rect.left}px`);
+    itemRef.current.style.setProperty('--spotlight-y', `${e.clientY - rect.top}px`);
+  };
 
   return (
     <div
       ref={itemRef}
       data-slot="testimonial-spotlight"
       className={cn(
-        "group/testimonial-spotlight relative overflow-hidden rounded-xl bg-card/50 inset-ring-1 inset-ring-foreground/10",
+        'group/testimonial-spotlight relative overflow-hidden rounded-xl bg-card/50 inset-ring-1 inset-ring-foreground/10',
         className
       )}
       onMouseMove={handleMouseMove}
@@ -52,5 +42,5 @@ export function TestimonialSpotlight({
       />
       {children}
     </div>
-  )
+  );
 }

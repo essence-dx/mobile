@@ -2,20 +2,16 @@ export function SettingsAppearance({
   darkMode,
   onToggleDarkMode,
 }: {
-  darkMode: boolean
-  onToggleDarkMode: () => void
+  darkMode: boolean;
+  onToggleDarkMode: () => void;
 }) {
   return (
     <>
-      <h2 className="mb-4 text-lg font-bold text-foreground md:mb-6 md:text-xl">
-        Appearance
-      </h2>
+      <h2 className="mb-4 text-lg font-bold text-foreground md:mb-6 md:text-xl">Appearance</h2>
       <div className="flex items-center justify-between border-b border-border py-3">
         <div>
           <div className="font-medium text-foreground">Dark mode</div>
-          <div className="text-sm text-muted-foreground">
-            Use dark theme across DX
-          </div>
+          <div className="text-sm text-muted-foreground">Use dark theme across DX</div>
         </div>
         <label className="relative inline-flex cursor-pointer items-center">
           <input
@@ -28,5 +24,5 @@ export function SettingsAppearance({
         </label>
       </div>
     </>
-  )
+  );
 }

@@ -1,23 +1,16 @@
-import { GraduationCapIcon, InfinityIcon } from "lucide-react"
-
-import { cn } from "@/lib/utils"
-import { Separator } from "@/components/ui/separator"
-import { Tag } from "@/components/ui/tag"
-import { Prose } from "@/components/ui/typography"
-import {
-  Collapsible,
-  CollapsibleChevronsUpDownIcon,
-} from "@/components/base/collapsible-animated"
-import {
-  CollapsibleContent,
-  CollapsibleTrigger,
-} from "@/components/base/ui/collapsible"
-import { Markdown } from "@/components/markdown"
-import type { Education } from "@/features/portfolio/types/education"
+import { GraduationCapIcon, InfinityIcon } from 'lucide-react';
+import { Collapsible, CollapsibleChevronsUpDownIcon } from '@/components/base/collapsible-animated';
+import { CollapsibleContent, CollapsibleTrigger } from '@/components/base/ui/collapsible';
+import { Markdown } from '@/components/markdown';
+import { Separator } from '@/components/ui/separator';
+import { Tag } from '@/components/ui/tag';
+import { Prose } from '@/components/ui/typography';
+import type { Education } from '@/features/portfolio/types/education';
+import { cn } from '@/lib/utils';
 
 export function EducationItem({ item }: { item: Education }) {
-  const { start, end } = item.period
-  const isOngoing = !end
+  const { start, end } = item.period;
+  const isOngoing = !end;
 
   return (
     <div className="group/education-item relative before:absolute before:left-3 before:h-full before:w-px before:bg-border">
@@ -31,18 +24,18 @@ export function EducationItem({ item }: { item: Education }) {
       <Collapsible defaultOpen={item.isExpanded} disabled={!item.description}>
         <CollapsibleTrigger
           className={cn(
-            "group block w-full text-left",
-            "relative before:absolute before:-top-1 before:-right-1 before:-bottom-1.5 before:left-7 before:-z-1 before:rounded-lg before:transition-[background-color] before:ease-out hover:before:bg-accent-muted",
-            "outline-none focus-visible:before:inset-ring-2 focus-visible:before:inset-ring-ring/50",
-            "data-disabled:before:content-none"
+            'group block w-full text-left',
+            'relative before:absolute before:-top-1 before:-right-1 before:-bottom-1.5 before:left-7 before:-z-1 before:rounded-lg before:transition-[background-color] before:ease-out hover:before:bg-accent-muted',
+            'outline-none focus-visible:before:inset-ring-2 focus-visible:before:inset-ring-ring/50',
+            'data-disabled:before:content-none'
           )}
         >
           <div className="relative z-1 mb-1 flex items-start gap-3 text-base">
             <div
               className={cn(
-                "flex size-6 shrink-0 items-center justify-center rounded-md",
-                "bg-muted text-muted-foreground",
-                "border border-muted-foreground/15 ring-1 ring-line ring-offset-1 ring-offset-background",
+                'flex size-6 shrink-0 items-center justify-center rounded-md',
+                'bg-muted text-muted-foreground',
+                'border border-muted-foreground/15 ring-1 ring-line ring-offset-1 ring-offset-background',
                 "[&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-4"
               )}
             >
@@ -125,5 +118,5 @@ export function EducationItem({ item }: { item: Education }) {
         )}
       </Collapsible>
     </div>
-  )
+  );
 }

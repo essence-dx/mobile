@@ -1,25 +1,24 @@
-"use client"
+'use client';
 
-import type { Route } from "next"
-import Link from "next/link"
-import { usePathname } from "next/navigation"
-
-import type { NavItem } from "@/types/nav"
-import { blockCategories } from "@/config/registry"
+import type { Route } from 'next';
+import Link from 'next/link';
+import { usePathname } from 'next/navigation';
+import { blockCategories } from '@/config/registry';
+import type { NavItem } from '@/types/nav';
 
 const NAV_ITEMS: NavItem<Route>[] = [
   {
-    href: "/blocks",
-    title: "All",
+    href: '/blocks',
+    title: 'All',
   },
   ...blockCategories.map((category) => ({
     href: `/blocks/${category.name}` as Route,
     title: category.title,
   })),
-]
+];
 
 export function BlocksNav() {
-  const pathname = usePathname()
+  const pathname = usePathname();
 
   return (
     <div className="no-scrollbar scroll-fade-x overflow-x-auto">
@@ -28,7 +27,7 @@ export function BlocksNav() {
           <Link
             key={href}
             href={href}
-            aria-current={href === pathname ? "page" : undefined}
+            aria-current={href === pathname ? 'page' : undefined}
             className="border-r border-line p-4 font-mono text-[.8125rem]/4 font-medium tracking-wide text-muted-foreground uppercase transition-[color,background-color] ease-out hover:bg-accent-muted aria-[current=page]:bg-accent-muted aria-[current=page]:text-foreground"
           >
             {title}
@@ -36,5 +35,5 @@ export function BlocksNav() {
         ))}
       </nav>
     </div>
-  )
+  );
 }

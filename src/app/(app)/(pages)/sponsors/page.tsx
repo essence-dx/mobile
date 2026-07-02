@@ -1,37 +1,35 @@
-import type { Metadata } from "next"
-import { addQueryParams } from "@/utils/url"
-import { ArrowUpRightIcon } from "lucide-react"
-
-import { SPONSORSHIP_URL, UTM_PARAMS, X_HANDLE } from "@/config/site"
-import { jsonLdBreadcrumbList, JsonLdScript } from "@/lib/json-ld"
-import { cn } from "@/lib/utils"
-import { Button } from "@/components/base/ui/button"
+import { ArrowUpRightIcon } from 'lucide-react';
+import type { Metadata } from 'next';
+import { Button } from '@/components/base/ui/button';
 import {
   PageHeading,
   PageHeadingDescription,
   PageHeadingTagline,
   PageHeadingTitle,
-} from "@/components/page-heading"
-import { SponsorItem } from "@/features/sponsor/components/sponsor-item"
-import { SPONSORS } from "@/features/sponsor/data"
-import type { Sponsor, SponsorTier } from "@/features/sponsor/types"
-import { SPONSOR_TIERS } from "@/features/sponsor/types"
+} from '@/components/page-heading';
+import { SPONSORSHIP_URL, UTM_PARAMS, X_HANDLE } from '@/config/site';
+import { SponsorItem } from '@/features/sponsor/components/sponsor-item';
+import { SPONSORS } from '@/features/sponsor/data';
+import type { Sponsor, SponsorTier } from '@/features/sponsor/types';
+import { SPONSOR_TIERS } from '@/features/sponsor/types';
+import { JsonLdScript, jsonLdBreadcrumbList } from '@/lib/json-ld';
+import { cn } from '@/lib/utils';
+import { addQueryParams } from '@/utils/url';
 
-const title = "Sponsors"
-const description =
-  "Grateful to the sponsors who make this open-source work possible."
+const title = 'Sponsors';
+const description = 'Grateful to the sponsors who make this open-source work possible.';
 
-const ogImage = "/og/default.png"
+const ogImage = '/og/default.png';
 
 export const metadata: Metadata = {
   title,
   description,
   alternates: {
-    canonical: "/sponsors",
+    canonical: '/sponsors',
   },
   openGraph: {
-    url: "/sponsors",
-    type: "website",
+    url: '/sponsors',
+    type: 'website',
     images: {
       url: ogImage,
       width: 1200,
@@ -40,23 +38,23 @@ export const metadata: Metadata = {
     },
   },
   twitter: {
-    card: "summary_large_image",
+    card: 'summary_large_image',
     site: X_HANDLE,
     creator: X_HANDLE,
     images: [ogImage],
   },
-}
+};
 
 const SPONSORS_BY_TIER = SPONSORS.reduce(
   (acc, sponsor) => {
     if (!acc[sponsor.tier]) {
-      acc[sponsor.tier] = []
+      acc[sponsor.tier] = [];
     }
-    acc[sponsor.tier].push(sponsor)
-    return acc
+    acc[sponsor.tier].push(sponsor);
+    return acc;
   },
   {} as Record<SponsorTier, Sponsor[]>
-)
+);
 
 export default function Page() {
   return (
@@ -64,12 +62,12 @@ export default function Page() {
       <JsonLdScript
         data={jsonLdBreadcrumbList([
           {
-            name: "Home",
-            href: "/",
+            name: 'Home',
+            href: '/',
           },
           {
-            name: "Sponsors",
-            href: "/sponsors",
+            name: 'Sponsors',
+            href: '/sponsors',
           },
         ])}
       />
@@ -110,18 +108,12 @@ export default function Page() {
         <div className="screen-line-top h-4" />
       </div>
     </>
-  )
+  );
 }
 
-function SponsorsGroup({
-  title,
-  sponsors,
-}: {
-  title: string
-  sponsors: Sponsor[]
-}) {
+function SponsorsGroup({ title, sponsors }: { title: string; sponsors: Sponsor[] }) {
   if (sponsors.length === 0) {
-    return null
+    return null;
   }
 
   return (
@@ -139,19 +131,19 @@ function SponsorsGroup({
             <li
               key={item.name}
               className={cn(
-                "max-sm:screen-line-top max-sm:screen-line-bottom",
-                "sm:nth-[2n+1]:screen-line-top sm:nth-[2n+1]:screen-line-bottom"
+                'max-sm:screen-line-top max-sm:screen-line-bottom',
+                'sm:nth-[2n+1]:screen-line-top sm:nth-[2n+1]:screen-line-bottom'
               )}
             >
               <SponsorItem
                 href={addQueryParams(item.url, UTM_PARAMS)}
                 aria-label={`${item.name} logo`}
-                data-tier={item.tier.replaceAll("_", "-")}
+                data-tier={item.tier.replaceAll('_', '-')}
                 className={cn(
-                  "[&_svg]:w-full [&_svg]:max-w-75 [&_svg]:shrink-0",
-                  "data-[tier=osp]:[&_svg]:max-w-60",
-                  "data-[tier=silver]:[&_svg]:max-w-60",
-                  "data-[tier=spark-supporter]:[&_svg]:max-w-50"
+                  '[&_svg]:w-full [&_svg]:max-w-75 [&_svg]:shrink-0',
+                  'data-[tier=osp]:[&_svg]:max-w-60',
+                  'data-[tier=silver]:[&_svg]:max-w-60',
+                  'data-[tier=spark-supporter]:[&_svg]:max-w-50'
                 )}
               >
                 <item.logo aria-hidden />
@@ -161,5 +153,5 @@ function SponsorsGroup({
         </ul>
       </div>
     </div>
-  )
+  );
 }

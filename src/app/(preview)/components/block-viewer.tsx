@@ -1,80 +1,18 @@
-"use client"
+'use client';
 
-import React, {
-  createContext,
-  useContext,
-  useEffect,
-  useMemo,
-  useRef,
-  useState,
-} from "react"
-import { getRegistryItemNamespace, getRegistryItemUrl } from "@/utils/registry"
-import { IconCheck, IconCopy, IconX } from "@tabler/icons-react"
-import { CheckIcon, ChevronRightIcon } from "lucide-react"
-import type { PanelImperativeHandle } from "react-resizable-panels"
-import type {
-  RegistryItem,
-  registryItemFileSchema,
-  registryItemSchema,
-} from "shadcn/schema"
-import type { z } from "zod"
-
-import { trackEvent } from "@/lib/events"
-import type {
-  createFileTreeForRegistryItemFiles,
-  FileTree,
-} from "@/lib/registry"
-import { cn } from "@/lib/utils"
-import { useCopyToClipboard } from "@/hooks/use-copy-to-clipboard"
-import { Button } from "@/components/ui/button"
-import {
-  Collapsible,
-  CollapsibleContent,
-  CollapsibleTrigger,
-} from "@/components/ui/collapsible"
-import {
-  Command,
-  CommandEmpty,
-  CommandGroup,
-  CommandInput,
-  CommandItem,
-  CommandList,
-} from "@/components/ui/command"
-import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from "@/components/ui/popover"
-import {
-  ResizableHandle,
-  ResizablePanel,
-  ResizablePanelGroup,
-} from "@/components/ui/resizable"
-import { Separator } from "@/components/ui/separator"
-import {
-  Sidebar,
-  SidebarGroup,
-  SidebarGroupContent,
-  SidebarGroupLabel,
-  SidebarMenu,
-  SidebarMenuButton,
-  SidebarMenuItem,
-  SidebarMenuSub,
-  SidebarProvider,
-} from "@/components/ui/sidebar"
-import {
-  Tabs,
-  TabsContent,
-  TabsIndicator,
-  TabsList,
-  TabsTrigger,
-} from "@/components/base/ui/tabs"
-import { ToggleGroup, ToggleGroupItem } from "@/components/base/ui/toggle-group"
-import {
-  Tooltip,
-  TooltipContent,
-  TooltipTrigger,
-} from "@/components/base/ui/tooltip"
+import { IconCheck, IconCopy, IconX } from '@tabler/icons-react';
+import { CheckIcon, ChevronRightIcon } from 'lucide-react';
+import type React from 'react';
+import { createContext, useContext, useEffect, useMemo, useRef, useState } from 'react';
+import type { PanelImperativeHandle } from 'react-resizable-panels';
+import type { RegistryItem, registryItemFileSchema, registryItemSchema } from 'shadcn/schema';
+import type { z } from 'zod';
+import { sendToIframe } from '@/app/(preview)/hooks/use-iframe-sync';
+import type { PreviewSearchParams } from '@/app/(preview)/lib/search-params';
+import { serializePreviewSearchParams } from '@/app/(preview)/lib/search-params';
+import { Tabs, TabsContent, TabsIndicator, TabsList, TabsTrigger } from '@/components/base/ui/tabs';
+import { ToggleGroup, ToggleGroupItem } from '@/components/base/ui/toggle-group';
+import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/base/ui/tooltip';
 import {
   DesktopIcon,
   FolderIcon,
@@ -85,48 +23,74 @@ import {
   SmartPhoneIcon,
   TabletIcon,
   TerminalIcon,
-} from "@/components/icons"
-import { OpenInV0Button } from "@/components/v0-open-button"
-import { CopyButton, CopyStateIcon } from "@/registry/components/copy-button"
-import { sendToIframe } from "@/app/(preview)/hooks/use-iframe-sync"
-import type { PreviewSearchParams } from "@/app/(preview)/lib/search-params"
-import { serializePreviewSearchParams } from "@/app/(preview)/lib/search-params"
+} from '@/components/icons';
+import { Button } from '@/components/ui/button';
+import { Collapsible, CollapsibleContent, CollapsibleTrigger } from '@/components/ui/collapsible';
+import {
+  Command,
+  CommandEmpty,
+  CommandGroup,
+  CommandInput,
+  CommandItem,
+  CommandList,
+} from '@/components/ui/command';
+import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
+import { ResizableHandle, ResizablePanel, ResizablePanelGroup } from '@/components/ui/resizable';
+import { Separator } from '@/components/ui/separator';
+import {
+  Sidebar,
+  SidebarGroup,
+  SidebarGroupContent,
+  SidebarGroupLabel,
+  SidebarMenu,
+  SidebarMenuButton,
+  SidebarMenuItem,
+  SidebarMenuSub,
+  SidebarProvider,
+} from '@/components/ui/sidebar';
+import { OpenInV0Button } from '@/components/v0-open-button';
+import { useCopyToClipboard } from '@/hooks/use-copy-to-clipboard';
+import { trackEvent } from '@/lib/events';
+import type { createFileTreeForRegistryItemFiles, FileTree } from '@/lib/registry';
+import { cn } from '@/lib/utils';
+import { CopyButton, CopyStateIcon } from '@/registry/components/copy-button';
+import { getRegistryItemNamespace, getRegistryItemUrl } from '@/utils/registry';
 
-type View = "preview" | "code"
+type View = 'preview' | 'code';
 
 type BlockViewerContext = {
-  item: z.infer<typeof registryItemSchema>
+  item: z.infer<typeof registryItemSchema>;
 
-  setView: (view: View) => void
+  setView: (view: View) => void;
 
-  activeFile: string | null
-  setActiveFile: (file: string) => void
+  activeFile: string | null;
+  setActiveFile: (file: string) => void;
 
-  tree: ReturnType<typeof createFileTreeForRegistryItemFiles> | null
+  tree: ReturnType<typeof createFileTreeForRegistryItemFiles> | null;
   highlightedFiles:
     | (z.infer<typeof registryItemFileSchema> & {
-        highlightedContent: string
+        highlightedContent: string;
       })[]
-    | null
+    | null;
 
-  iframeKey?: number
-  setIframeKey?: React.Dispatch<React.SetStateAction<number>>
+  iframeKey?: number;
+  setIframeKey?: React.Dispatch<React.SetStateAction<number>>;
 
-  resizablePanelRef: React.RefObject<PanelImperativeHandle | null> | null
+  resizablePanelRef: React.RefObject<PanelImperativeHandle | null> | null;
 
-  themes: Map<string, RegistryItem>
-  theme: PreviewSearchParams["theme"]
-  setTheme: (theme: PreviewSearchParams["theme"]) => void
-}
+  themes: Map<string, RegistryItem>;
+  theme: PreviewSearchParams['theme'];
+  setTheme: (theme: PreviewSearchParams['theme']) => void;
+};
 
-const BlockViewerContext = createContext<BlockViewerContext | null>(null)
+const BlockViewerContext = createContext<BlockViewerContext | null>(null);
 
 function useBlockViewer() {
-  const context = useContext(BlockViewerContext)
+  const context = useContext(BlockViewerContext);
   if (!context) {
-    throw new Error("useBlockViewer must be used within a BlockViewerProvider.")
+    throw new Error('useBlockViewer must be used within a BlockViewerProvider.');
   }
-  return context
+  return context;
 }
 
 function BlockViewerProvider({
@@ -135,19 +99,19 @@ function BlockViewerProvider({
   highlightedFiles,
   themes,
   children,
-}: Pick<BlockViewerContext, "item" | "tree" | "highlightedFiles" | "themes"> & {
-  children: React.ReactNode
+}: Pick<BlockViewerContext, 'item' | 'tree' | 'highlightedFiles' | 'themes'> & {
+  children: React.ReactNode;
 }) {
-  const [view, setView] = useState<View>("preview")
-  const [theme, setTheme] = useState<PreviewSearchParams["theme"]>(null)
+  const [view, setView] = useState<View>('preview');
+  const [theme, setTheme] = useState<PreviewSearchParams['theme']>(null);
 
-  const [activeFile, setActiveFile] = useState<
-    BlockViewerContext["activeFile"]
-  >(highlightedFiles?.[0].target ?? null)
+  const [activeFile, setActiveFile] = useState<BlockViewerContext['activeFile']>(
+    highlightedFiles?.[0].target ?? null
+  );
 
-  const [iframeKey, setIframeKey] = useState(0)
+  const [iframeKey, setIframeKey] = useState(0);
 
-  const resizablePanelRef = useRef<PanelImperativeHandle>(null)
+  const resizablePanelRef = useRef<PanelImperativeHandle>(null);
 
   return (
     <BlockViewerContext.Provider
@@ -171,39 +135,30 @@ function BlockViewerProvider({
         className="flex min-w-0 scroll-mt-14 flex-col-reverse items-stretch gap-2 p-2 md:flex-col lg:pr-0"
         style={
           {
-            "--height": item.meta?.iframeHeight ?? "768px",
+            '--height': item.meta?.iframeHeight ?? '768px',
           } as React.CSSProperties
         }
       >
         <Tabs
           value={view}
           onValueChange={(value) => {
-            setView(value as View)
+            setView(value as View);
             trackEvent({
-              name: "block_viewer_tab_change",
+              name: 'block_viewer_tab_change',
               properties: { block: item.name, tab: value },
-            })
+            });
           }}
         >
           {children}
         </Tabs>
       </div>
     </BlockViewerContext.Provider>
-  )
+  );
 }
 
-type BlockViewerProps = Pick<
-  BlockViewerContext,
-  "item" | "tree" | "highlightedFiles" | "themes"
->
+type BlockViewerProps = Pick<BlockViewerContext, 'item' | 'tree' | 'highlightedFiles' | 'themes'>;
 
-export function BlockViewer({
-  item,
-  tree,
-  highlightedFiles,
-  themes,
-  ...props
-}: BlockViewerProps) {
+export function BlockViewer({ item, tree, highlightedFiles, themes, ...props }: BlockViewerProps) {
   return (
     <BlockViewerProvider
       item={item}
@@ -218,14 +173,13 @@ export function BlockViewer({
       <BlockViewerCode />
       <BlockViewerMobile />
     </BlockViewerProvider>
-  )
+  );
 }
 
 function BlockViewerToolbar() {
-  const { setView, item, resizablePanelRef, setIframeKey, theme } =
-    useBlockViewer()
+  const { setView, item, resizablePanelRef, setIframeKey, theme } = useBlockViewer();
 
-  const { state, copy } = useCopyToClipboard()
+  const { state, copy } = useCopyToClipboard();
 
   return (
     <div className="flex w-full items-center gap-2 px-2 max-lg:hidden">
@@ -244,11 +198,8 @@ function BlockViewerToolbar() {
         className="mx-2 data-vertical:h-4 data-vertical:self-center"
       />
 
-      <a
-        href={`#${item.name}`}
-        className="line-clamp-1 text-sm font-medium link"
-      >
-        {item.description?.replace(/\.$/, "")}
+      <a href={`#${item.name}`} className="line-clamp-1 text-sm font-medium link">
+        {item.description?.replace(/\.$/, '')}
       </a>
 
       <div className="ml-auto flex items-center gap-2">
@@ -257,14 +208,14 @@ function BlockViewerToolbar() {
         <div className="flex h-8 items-center gap-0.75 rounded-lg border p-0.75">
           <ToggleGroup
             className="gap-0.75 *:data-[slot=toggle-group-item]:h-6 *:data-[slot=toggle-group-item]:min-w-6 *:data-[slot=toggle-group-item]:rounded-sm! *:data-[slot=toggle-group-item]:px-0"
-            defaultValue={["100%"]}
+            defaultValue={['100%']}
             onValueChange={([value]) => {
-              setView("preview")
-              resizablePanelRef?.current?.resize(value || "100%")
+              setView('preview');
+              resizablePanelRef?.current?.resize(value || '100%');
               trackEvent({
-                name: "block_viewer_resize",
-                properties: { block: item.name, size: value || "100%" },
-              })
+                name: 'block_viewer_resize',
+                properties: { block: item.name, size: value || '100%' },
+              });
             }}
           >
             <ToggleGroupItem aria-label="Mobile" value="30%">
@@ -300,7 +251,7 @@ function BlockViewerToolbar() {
               aria-label="Open in New Tab"
               onClick={() =>
                 trackEvent({
-                  name: "block_viewer_open_preview",
+                  name: 'block_viewer_open_preview',
                   properties: { block: item.name },
                 })
               }
@@ -320,12 +271,12 @@ function BlockViewerToolbar() {
             size="icon-xs"
             aria-label="Refresh Preview"
             onClick={() => {
-              setView("preview")
-              setIframeKey?.((v) => v + 1)
+              setView('preview');
+              setIframeKey?.((v) => v + 1);
               trackEvent({
-                name: "block_viewer_refresh_preview",
+                name: 'block_viewer_refresh_preview',
                 properties: { block: item.name },
-              })
+              });
             }}
           >
             <RefreshIcon className="size-4" />
@@ -342,21 +293,17 @@ function BlockViewerToolbar() {
           variant="outline"
           size="sm"
           onClick={() => {
-            const code = `npx shadcn@latest add ${getRegistryItemNamespace(item.name)}`
-            copy(code)
+            const code = `npx shadcn@latest add ${getRegistryItemNamespace(item.name)}`;
+            copy(code);
             trackEvent({
-              name: "copy_npm_command",
+              name: 'copy_npm_command',
               properties: { code },
-            })
+            });
           }}
         >
-          <CopyStateIcon
-            state={state}
-            idleIcon={<TerminalIcon />}
-            doneIcon={<CheckIcon />}
-          />
+          <CopyStateIcon state={state} idleIcon={<TerminalIcon />} doneIcon={<CheckIcon />} />
           <span>
-            <span className="text-muted-foreground">npx shadcn add</span>{" "}
+            <span className="text-muted-foreground">npx shadcn add</span>{' '}
             {getRegistryItemNamespace(item.name)}
           </span>
         </Button>
@@ -369,18 +316,14 @@ function BlockViewerToolbar() {
         <OpenInV0Button url={getRegistryItemUrl(item.name)} />
       </div>
     </div>
-  )
+  );
 }
 
 function BlockViewerView() {
-  const { resizablePanelRef } = useBlockViewer()
+  const { resizablePanelRef } = useBlockViewer();
 
   return (
-    <TabsContent
-      className="flex h-(--height) flex-none max-lg:hidden"
-      value="preview"
-      keepMounted
-    >
+    <TabsContent className="flex h-(--height) flex-none max-lg:hidden" value="preview" keepMounted>
       <div className="relative w-full">
         <div className="absolute inset-0 right-2 rounded-xl bg-black/0.75 bg-[radial-gradient(var(--pattern-foreground)_1px,transparent_0)] bg-size-[10px_10px] bg-center [--pattern-foreground:var(--color-zinc-950)]/5 dark:bg-white/0.75 dark:[--pattern-foreground:var(--color-white)]/5" />
 
@@ -396,9 +339,9 @@ function BlockViewerView() {
 
           <ResizableHandle
             className={cn(
-              "relative w-2 -translate-x-4 bg-transparent p-0 focus-visible:ring-0 focus-visible:ring-offset-0",
-              "after:absolute after:top-1/2 after:left-0.5 after:h-12 after:w-1.5 after:translate-x-0 after:-translate-y-1/2 after:rounded-full after:bg-foreground/10 after:transition-all",
-              "data-[separator=active]:after:scale-y-125 data-[separator=active]:after:bg-foreground/30 data-[separator=hover]:after:bg-foreground/20"
+              'relative w-2 -translate-x-4 bg-transparent p-0 focus-visible:ring-0 focus-visible:ring-offset-0',
+              'after:absolute after:top-1/2 after:left-0.5 after:h-12 after:w-1.5 after:translate-x-0 after:-translate-y-1/2 after:rounded-full after:bg-foreground/10 after:transition-all',
+              'data-[separator=active]:after:scale-y-125 data-[separator=active]:after:bg-foreground/30 data-[separator=hover]:after:bg-foreground/20'
             )}
             disableDoubleClick
           />
@@ -407,33 +350,33 @@ function BlockViewerView() {
         </ResizablePanelGroup>
       </div>
     </TabsContent>
-  )
+  );
 }
 
 function BlockViewerIframe({ className }: { className?: string }) {
-  const { iframeKey, item, theme } = useBlockViewer()
+  const { iframeKey, item, theme } = useBlockViewer();
 
-  const iframeRef = useRef<HTMLIFrameElement>(null)
+  const iframeRef = useRef<HTMLIFrameElement>(null);
 
   useEffect(() => {
-    const iframe = iframeRef.current
+    const iframe = iframeRef.current;
     if (!iframe) {
-      return
+      return;
     }
 
     const sendParams = () => {
-      sendToIframe(iframe, "preview-params", { theme })
-    }
+      sendToIframe(iframe, 'preview-params', { theme });
+    };
 
     if (iframe.contentWindow) {
-      sendParams()
+      sendParams();
     }
 
-    iframe.addEventListener("load", sendParams)
+    iframe.addEventListener('load', sendParams);
     return () => {
-      iframe.removeEventListener("load", sendParams)
-    }
-  }, [theme])
+      iframe.removeEventListener('load', sendParams);
+    };
+  }, [theme]);
 
   const iframeSrc = useMemo(
     () => {
@@ -442,36 +385,36 @@ function BlockViewerIframe({ className }: { className?: string }) {
       // full-iframe reloads on every param change (flashes & loss of state).
       // Further updates of the search params will be sent to the iframe
       // via a postMessage channel, for it to sync its own history onto the host's.
-      return serializePreviewSearchParams(`/preview/${item.name}`, { theme })
+      return serializePreviewSearchParams(`/preview/${item.name}`, { theme });
     },
     // eslint-disable-next-line react-hooks/exhaustive-deps
     [iframeKey]
-  )
+  );
 
   return (
     <iframe
       key={iframeKey}
       ref={iframeRef}
-      className={cn("no-scrollbar w-full bg-background", className)}
+      className={cn('no-scrollbar w-full bg-background', className)}
       src={iframeSrc}
       loading="lazy"
       height={item.meta?.iframeHeight ?? 768}
     />
-  )
+  );
 }
 
 function BlockViewerCode() {
-  const { highlightedFiles, activeFile } = useBlockViewer()
+  const { highlightedFiles, activeFile } = useBlockViewer();
 
   const file = useMemo(() => {
-    return highlightedFiles?.find((file) => file.target === activeFile)
-  }, [highlightedFiles, activeFile])
+    return highlightedFiles?.find((file) => file.target === activeFile);
+  }, [highlightedFiles, activeFile]);
 
   if (!file) {
-    return null
+    return null;
   }
 
-  const language = file.path.split(".").pop() ?? "tsx"
+  const language = file.path.split('.').pop() ?? 'tsx';
 
   return (
     <TabsContent
@@ -500,18 +443,18 @@ function BlockViewerCode() {
         <div
           key={file?.path}
           className="h-full overflow-hidden rounded-[9px] border bg-code [&_pre]:no-scrollbar [&_pre]:h-full [&_pre]:overflow-y-auto"
-          dangerouslySetInnerHTML={{ __html: file?.highlightedContent ?? "" }}
+          dangerouslySetInnerHTML={{ __html: file?.highlightedContent ?? '' }}
         />
       </figure>
     </TabsContent>
-  )
+  );
 }
 
 function BlockViewerFileTree() {
-  const { tree } = useBlockViewer()
+  const { tree } = useBlockViewer();
 
   if (!tree) {
-    return null
+    return null;
   }
 
   return (
@@ -520,9 +463,7 @@ function BlockViewerFileTree() {
         collapsible="none"
         className="w-full flex-1 rounded-xl p-1 pt-0 inset-ring-1 inset-ring-border/64"
       >
-        <SidebarGroupLabel className="h-10 rounded-none px-4 text-sm">
-          Files
-        </SidebarGroupLabel>
+        <SidebarGroupLabel className="h-10 rounded-none px-4 text-sm">Files</SidebarGroupLabel>
 
         <SidebarGroup className="flex-1 rounded-[9px] border bg-background px-0">
           <SidebarGroupContent>
@@ -535,14 +476,14 @@ function BlockViewerFileTree() {
         </SidebarGroup>
       </Sidebar>
     </SidebarProvider>
-  )
+  );
 }
 
 function Tree({ item, index }: { item: FileTree; index: number }) {
-  const { activeFile, setActiveFile } = useBlockViewer()
+  const { activeFile, setActiveFile } = useBlockViewer();
 
   if (!item.children) {
-    const language = item.name.split(".").pop() ?? "tsx"
+    const language = item.name.split('.').pop() ?? 'tsx';
     return (
       <SidebarMenuItem>
         <SidebarMenuButton
@@ -550,7 +491,7 @@ function Tree({ item, index }: { item: FileTree; index: number }) {
           className="rounded-none pl-(--index) whitespace-nowrap data-active:font-normal [&_svg]:text-muted-foreground"
           style={
             {
-              "--index": `${index * (index === 2 ? 1.2 : 1.3)}rem`,
+              '--index': `${index * (index === 2 ? 1.2 : 1.3)}rem`,
             } as React.CSSProperties
           }
           isActive={item.path === activeFile}
@@ -561,7 +502,7 @@ function Tree({ item, index }: { item: FileTree; index: number }) {
           {item.name}
         </SidebarMenuButton>
       </SidebarMenuItem>
-    )
+    );
   }
 
   return (
@@ -573,12 +514,12 @@ function Tree({ item, index }: { item: FileTree; index: number }) {
         <CollapsibleTrigger asChild>
           <SidebarMenuButton
             className={cn(
-              "rounded-none pl-(--index) whitespace-nowrap [&_svg]:text-muted-foreground",
-              "data-[state=closed]:*:data-[slot=folder]:block data-[state=open]:*:data-[slot=folder-open]:block"
+              'rounded-none pl-(--index) whitespace-nowrap [&_svg]:text-muted-foreground',
+              'data-[state=closed]:*:data-[slot=folder]:block data-[state=open]:*:data-[slot=folder-open]:block'
             )}
             style={
               {
-                "--index": `${index * (index === 1 ? 1 : 1.2)}rem`,
+                '--index': `${index * (index === 1 ? 1 : 1.2)}rem`,
               } as React.CSSProperties
             }
           >
@@ -598,20 +539,20 @@ function Tree({ item, index }: { item: FileTree; index: number }) {
         </CollapsibleContent>
       </Collapsible>
     </SidebarMenuItem>
-  )
+  );
 }
 
 function BlockCopyCodeButton() {
-  const { item, activeFile } = useBlockViewer()
+  const { item, activeFile } = useBlockViewer();
 
   const file = useMemo(() => {
-    return item.files?.find((file) => file.target === activeFile)
-  }, [item.files, activeFile])
+    return item.files?.find((file) => file.target === activeFile);
+  }, [item.files, activeFile]);
 
-  const content = file?.content
+  const content = file?.content;
 
   if (!content) {
-    return null
+    return null;
   }
 
   return (
@@ -625,25 +566,25 @@ function BlockCopyCodeButton() {
       errorIcon={<IconX />}
       onCopySuccess={() => {
         trackEvent({
-          name: "copy_block_code",
+          name: 'copy_block_code',
           properties: {
             name: item.name,
             file: file.path,
           },
-        })
+        });
       }}
     />
-  )
+  );
 }
 
 function BlockViewerMobile() {
-  const { item } = useBlockViewer()
+  const { item } = useBlockViewer();
 
   return (
     <div className="flex flex-col gap-2 lg:hidden">
       <div className="flex items-center gap-2 px-2">
         <div className="line-clamp-2 text-sm font-medium text-balance">
-          {item.description?.replace(/\.$/, "")}
+          {item.description?.replace(/\.$/, '')}
         </div>
 
         <div className="ml-auto shrink-0 font-mono text-sm text-muted-foreground">
@@ -657,29 +598,29 @@ function BlockViewerMobile() {
         <BlockViewerIframe />
       </div>
     </div>
-  )
+  );
 }
 
 function ThemePicker() {
-  const { item, themes, theme, setTheme } = useBlockViewer()
+  const { item, themes, theme, setTheme } = useBlockViewer();
 
-  const themeItem = theme ? themes.get(theme) : null
+  const themeItem = theme ? themes.get(theme) : null;
 
   const { shadcnThemes, tweakcnThemes } = useMemo(() => {
-    const themesArray = Array.from(themes.values())
+    const themesArray = Array.from(themes.values());
     return {
-      shadcnThemes: themesArray.filter((t) => t.meta?.source === "shadcn"),
-      tweakcnThemes: themesArray.filter((t) => t.meta?.source === "tweakcn"),
-    }
-  }, [themes])
+      shadcnThemes: themesArray.filter((t) => t.meta?.source === 'shadcn'),
+      tweakcnThemes: themesArray.filter((t) => t.meta?.source === 'tweakcn'),
+    };
+  }, [themes]);
 
-  const handleThemeSelect = (value: PreviewSearchParams["theme"]) => {
-    setTheme(value)
+  const handleThemeSelect = (value: PreviewSearchParams['theme']) => {
+    setTheme(value);
     trackEvent({
-      name: "block_viewer_theme_change",
-      properties: { block: item.name, theme: value ?? "default" },
-    })
-  }
+      name: 'block_viewer_theme_change',
+      properties: { block: item.name, theme: value ?? 'default' },
+    });
+  };
 
   return (
     <Popover modal>
@@ -698,22 +639,16 @@ function ThemePicker() {
             </PopoverTrigger>
           }
         />
-        <TooltipContent>
-          {themeItem?.title || themeItem?.name || "Default"}
-        </TooltipContent>
+        <TooltipContent>{themeItem?.title || themeItem?.name || 'Default'}</TooltipContent>
       </Tooltip>
 
-      <PopoverContent
-        className="rounded-2xl p-0"
-        align="start"
-        alignOffset={-8}
-      >
+      <PopoverContent className="rounded-2xl p-0" align="start" alignOffset={-8}>
         <Command
           className={cn(
-            "**:data-[slot=command-input-wrapper]:h-12 [&_[cmdk-input-wrapper]_svg]:size-5 **:[[cmdk-input]]:h-10",
-            "**:[[cmdk-group]]:px-2",
-            "**:[[cmdk-group-heading]]:px-2 **:[[cmdk-group-heading]]:font-medium **:[[cmdk-group-heading]]:text-muted-foreground",
-            "[&_[cmdk-item]_svg]:size-5 **:[[cmdk-item]]:px-2 **:[[cmdk-item]]:py-2"
+            '**:data-[slot=command-input-wrapper]:h-12 [&_[cmdk-input-wrapper]_svg]:size-5 **:[[cmdk-input]]:h-10',
+            '**:[[cmdk-group]]:px-2',
+            '**:[[cmdk-group-heading]]:px-2 **:[[cmdk-group-heading]]:font-medium **:[[cmdk-group-heading]]:text-muted-foreground',
+            '[&_[cmdk-item]_svg]:size-5 **:[[cmdk-item]]:px-2 **:[[cmdk-item]]:py-2'
           )}
         >
           <CommandInput placeholder="Search theme…" />
@@ -746,7 +681,7 @@ function ThemePicker() {
         </Command>
       </PopoverContent>
     </Popover>
-  )
+  );
 }
 
 function ThemePickerGroup({
@@ -755,10 +690,10 @@ function ThemePickerGroup({
   activeTheme,
   onThemeSelect,
 }: {
-  title: string
-  themes: RegistryItem[]
-  activeTheme: PreviewSearchParams["theme"]
-  onThemeSelect: (theme: PreviewSearchParams["theme"]) => void
+  title: string;
+  themes: RegistryItem[];
+  activeTheme: PreviewSearchParams['theme'];
+  onThemeSelect: (theme: PreviewSearchParams['theme']) => void;
 }) {
   return (
     <CommandGroup heading={`${title} themes (${themes.length})`}>
@@ -766,35 +701,33 @@ function ThemePickerGroup({
         <CommandItem key={item.name} onSelect={() => onThemeSelect(item.name)}>
           <ThemePalette cssVars={item.cssVars} />
           {item.title || item.name}
-          {activeTheme === item.name && (
-            <CheckIcon className="ml-auto" strokeWidth={3} />
-          )}
+          {activeTheme === item.name && <CheckIcon className="ml-auto" strokeWidth={3} />}
         </CommandItem>
       ))}
     </CommandGroup>
-  )
+  );
 }
 
-const THEME_PALETTE_KEYS = ["primary", "accent", "muted", "secondary"] as const
+const THEME_PALETTE_KEYS = ['primary', 'accent', 'muted', 'secondary'] as const;
 
-function ThemePalette({ cssVars }: { cssVars?: RegistryItem["cssVars"] }) {
+function ThemePalette({ cssVars }: { cssVars?: RegistryItem['cssVars'] }) {
   return (
     <div className="flex shrink-0 gap-0.5">
       {THEME_PALETTE_KEYS.map((key) => (
         <div
           key={key}
           className={cn(
-            "flex h-4 w-2.5 shrink-0 rounded-xs inset-ring-1 inset-ring-foreground/15",
-            "bg-(--color-palette) dark:bg-(--color-palette-dark)"
+            'flex h-4 w-2.5 shrink-0 rounded-xs inset-ring-1 inset-ring-foreground/15',
+            'bg-(--color-palette) dark:bg-(--color-palette-dark)'
           )}
           style={
             {
-              "--color-palette": cssVars?.light?.[key] ?? `var(--${key})`,
-              "--color-palette-dark": cssVars?.dark?.[key] ?? `var(--${key})`,
+              '--color-palette': cssVars?.light?.[key] ?? `var(--${key})`,
+              '--color-palette-dark': cssVars?.dark?.[key] ?? `var(--${key})`,
             } as React.CSSProperties
           }
         />
       ))}
     </div>
-  )
+  );
 }

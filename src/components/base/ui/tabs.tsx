@@ -1,17 +1,17 @@
-"use client"
+'use client';
 
-import { Tabs as TabsPrimitive } from "@base-ui/react/tabs"
+import { Tabs as TabsPrimitive } from '@base-ui/react/tabs';
 
-import { cn } from "@/lib/utils"
+import { cn } from '@/lib/utils';
 
 function Tabs({ className, ...props }: TabsPrimitive.Root.Props) {
   return (
     <TabsPrimitive.Root
       data-slot="tabs"
-      className={cn("flex flex-col gap-2", className)}
+      className={cn('flex flex-col gap-2', className)}
       {...props}
     />
-  )
+  );
 }
 
 function TabsList({ className, ...props }: TabsPrimitive.List.Props) {
@@ -19,14 +19,14 @@ function TabsList({ className, ...props }: TabsPrimitive.List.Props) {
     <TabsPrimitive.List
       data-slot="tabs-list"
       className={cn(
-        "relative z-0 flex h-8 w-fit items-center justify-center rounded-lg p-0.5",
-        "bg-zinc-50 text-muted-foreground dark:bg-zinc-900",
-        "inset-ring-1 inset-ring-border/64",
+        'relative z-0 flex h-8 w-fit items-center justify-center rounded-lg p-0.5',
+        'bg-zinc-50 text-muted-foreground dark:bg-zinc-900',
+        'inset-ring-1 inset-ring-border/64',
         className
       )}
       {...props}
     />
-  )
+  );
 }
 
 function TabsIndicator({ className, ...props }: TabsPrimitive.Indicator.Props) {
@@ -34,13 +34,13 @@ function TabsIndicator({ className, ...props }: TabsPrimitive.Indicator.Props) {
     <TabsPrimitive.Indicator
       data-slot="tabs-indicator"
       className={cn(
-        "absolute bottom-0 left-0 -z-1 h-(--active-tab-height) w-(--active-tab-width) translate-x-(--active-tab-left) -translate-y-(--active-tab-bottom) rounded-md bg-white transition-[width,translate] duration-200 ease-in-out dark:bg-muted",
-        "inset-ring-1 inset-ring-foreground/10 dark:inset-ring-foreground/6",
+        'absolute bottom-0 left-0 -z-1 h-(--active-tab-height) w-(--active-tab-width) translate-x-(--active-tab-left) -translate-y-(--active-tab-bottom) rounded-md bg-white transition-[width,translate] duration-200 ease-in-out dark:bg-muted',
+        'inset-ring-1 inset-ring-foreground/10 dark:inset-ring-foreground/6',
         className
       )}
       {...props}
     />
-  )
+  );
 }
 
 function TabsTrigger({ className, ...props }: TabsPrimitive.Tab.Props) {
@@ -53,17 +53,17 @@ function TabsTrigger({ className, ...props }: TabsPrimitive.Tab.Props) {
       )}
       {...props}
     />
-  )
+  );
 }
 
 function TabsContent({ className, ...props }: TabsPrimitive.Panel.Props) {
   return (
     <TabsPrimitive.Panel
       data-slot="tabs-content"
-      className={cn("flex-1 outline-none", className)}
+      className={cn('flex-1 outline-none', className)}
       {...props}
     />
-  )
+  );
 }
 
-export { Tabs, TabsContent, TabsIndicator, TabsList, TabsTrigger }
+export { Tabs, TabsContent, TabsIndicator, TabsList, TabsTrigger };

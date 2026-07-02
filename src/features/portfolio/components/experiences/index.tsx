@@ -1,24 +1,20 @@
-import { ChevronDownIcon } from "lucide-react"
+import { ChevronDownIcon } from 'lucide-react';
 
-import { Button } from "@/components/base/ui/button"
+import { Button } from '@/components/base/ui/button';
 import {
   Collapsible,
   CollapsibleContent,
   CollapsibleTrigger,
-} from "@/components/base/ui/collapsible"
-import {
-  Panel,
-  PanelHeader,
-  PanelTitle,
-} from "@/features/portfolio/components/panel"
-import { PanelTitleCopy } from "@/features/portfolio/components/panel-title-copy"
-import { EXPERIENCES } from "@/features/portfolio/data/experiences"
-import type { Experience } from "@/features/portfolio/types/experiences"
+} from '@/components/base/ui/collapsible';
+import { Panel, PanelHeader, PanelTitle } from '@/features/portfolio/components/panel';
+import { PanelTitleCopy } from '@/features/portfolio/components/panel-title-copy';
+import { EXPERIENCES } from '@/features/portfolio/data/experiences';
+import type { Experience } from '@/features/portfolio/types/experiences';
 
-import { ExperienceItem } from "./experience-item"
+import { ExperienceItem } from './experience-item';
 
-const ID = "experience"
-const MAX = 3
+const ID = 'experience';
+const MAX = 3;
 
 export function Experiences() {
   return (
@@ -43,18 +39,10 @@ export function Experiences() {
           <div className="-mt-px flex items-center justify-center py-2">
             <CollapsibleTrigger
               render={
-                <Button
-                  className="gap-2 pr-2.5 pl-3"
-                  variant="secondary"
-                  size="sm"
-                >
-                  <span className="hidden group-data-closed/collapsible:block">
-                    Show more
-                  </span>
+                <Button className="gap-2 pr-2.5 pl-3" variant="secondary" size="sm">
+                  <span className="hidden group-data-closed/collapsible:block">Show more</span>
 
-                  <span className="hidden group-data-open/collapsible:block">
-                    Show less
-                  </span>
+                  <span className="hidden group-data-open/collapsible:block">Show less</span>
 
                   <ChevronDownIcon className="group-data-open/collapsible:rotate-180" />
                 </Button>
@@ -64,7 +52,7 @@ export function Experiences() {
         </Collapsible>
       )}
     </Panel>
-  )
+  );
 }
 
 function ExperienceList({ experiences }: { experiences: Experience[] }) {
@@ -74,5 +62,5 @@ function ExperienceList({ experiences }: { experiences: Experience[] }) {
         <ExperienceItem key={experience.id} experience={experience} />
       ))}
     </>
-  )
+  );
 }

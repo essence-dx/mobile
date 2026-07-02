@@ -1,13 +1,9 @@
-import type { Metadata } from "next"
-
-import { X_HANDLE } from "@/config/site"
-import { jsonLdBreadcrumbList, JsonLdScript } from "@/lib/json-ld"
-import { cn } from "@/lib/utils"
-import {
-  PageHeading,
-  PageHeadingTagline,
-  PageHeadingTitle,
-} from "@/components/page-heading"
+import type { Metadata } from 'next';
+import { PageHeading, PageHeadingTagline, PageHeadingTitle } from '@/components/page-heading';
+import { X_HANDLE } from '@/config/site';
+import { TESTIMONIALS_1, TESTIMONIALS_2 } from '@/features/portfolio/data/testimonials';
+import { JsonLdScript, jsonLdBreadcrumbList } from '@/lib/json-ld';
+import { cn } from '@/lib/utils';
 import {
   Testimonial,
   TestimonialAuthor,
@@ -17,27 +13,23 @@ import {
   TestimonialAvatarImg,
   TestimonialAvatarRing,
   TestimonialQuote,
-} from "@/registry/components/testimonial"
-import { Twemoji } from "@/registry/components/twemoji/twemoji"
-import {
-  TESTIMONIALS_1,
-  TESTIMONIALS_2,
-} from "@/features/portfolio/data/testimonials"
+} from '@/registry/components/testimonial';
+import { Twemoji } from '@/registry/components/twemoji/twemoji';
 
-const title = "Testimonials"
-const description = "Trusted by top builders."
+const title = 'Testimonials';
+const description = 'Trusted by top builders.';
 
-const ogImage = "/og/default.png"
+const ogImage = '/og/default.png';
 
 export const metadata: Metadata = {
   title,
   description,
   alternates: {
-    canonical: "/testimonials",
+    canonical: '/testimonials',
   },
   openGraph: {
-    url: "/testimonials",
-    type: "website",
+    url: '/testimonials',
+    type: 'website',
     images: {
       url: ogImage,
       width: 1200,
@@ -46,16 +38,16 @@ export const metadata: Metadata = {
     },
   },
   twitter: {
-    card: "summary_large_image",
+    card: 'summary_large_image',
     site: X_HANDLE,
     creator: X_HANDLE,
     images: [ogImage],
   },
-}
+};
 
 const TESTIMONIALS = [...TESTIMONIALS_1, ...TESTIMONIALS_2].sort(
   (a, b) => Number(a.order ?? 999) - Number(b.order ?? 999)
-)
+);
 
 export default function TestimonialsPage() {
   return (
@@ -63,12 +55,12 @@ export default function TestimonialsPage() {
       <JsonLdScript
         data={jsonLdBreadcrumbList([
           {
-            name: "Home",
-            href: "/",
+            name: 'Home',
+            href: '/',
           },
           {
-            name: "Testimonials",
-            href: "/testimonials",
+            name: 'Testimonials',
+            href: '/testimonials',
           },
         ])}
       />
@@ -92,9 +84,9 @@ export default function TestimonialsPage() {
               <li
                 key={item.url}
                 className={cn(
-                  "group/testimonial",
-                  "max-sm:screen-line-top max-sm:screen-line-bottom",
-                  "sm:nth-[2n+1]:screen-line-top sm:nth-[2n+1]:screen-line-bottom"
+                  'group/testimonial',
+                  'max-sm:screen-line-top max-sm:screen-line-bottom',
+                  'sm:nth-[2n+1]:screen-line-top sm:nth-[2n+1]:screen-line-bottom'
                 )}
               >
                 <Testimonial className="relative transition-[background-color] ease-out hover:bg-accent-muted">
@@ -127,9 +119,7 @@ export default function TestimonialsPage() {
                         </TestimonialVerifiedBadge>
                       )} */}
                     </TestimonialAuthorName>
-                    <TestimonialAuthorTagline>
-                      {item.authorTagline}
-                    </TestimonialAuthorTagline>
+                    <TestimonialAuthorTagline>{item.authorTagline}</TestimonialAuthorTagline>
                   </TestimonialAuthor>
                 </Testimonial>
               </li>
@@ -140,5 +130,5 @@ export default function TestimonialsPage() {
         <div className="h-4" />
       </div>
     </>
-  )
+  );
 }

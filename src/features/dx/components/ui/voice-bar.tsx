@@ -1,4 +1,4 @@
-import { motion } from "framer-motion"
+import { motion } from 'framer-motion';
 
 export function VoiceBar({ delay, height }: { delay: string; height: number }) {
   return (
@@ -11,9 +11,9 @@ export function VoiceBar({ delay, height }: { delay: string; height: number }) {
       transition={{
         duration: 1.2,
         repeat: Infinity,
-        ease: "easeInOut",
+        ease: 'easeInOut',
         delay: parseFloat(delay) * 0.01,
       }}
     />
-  )
+  );
 }

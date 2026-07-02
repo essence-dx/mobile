@@ -1,9 +1,8 @@
-import type { ComponentProps } from "react"
+import type { ComponentProps } from 'react';
+import { Button } from '@/components/ui/button';
+import { cn } from '@/lib/utils';
 
-import { cn } from "@/lib/utils"
-import { Button } from "@/components/ui/button"
-
-import { V0Icon } from "./icons"
+import { V0Icon } from './icons';
 
 export function OpenInV0Button({
   url,
@@ -12,7 +11,7 @@ export function OpenInV0Button({
 }: ComponentProps<typeof Button> & { url: string }) {
   return (
     <Button
-      className={cn("not-prose border-none px-2", className)}
+      className={cn('not-prose border-none px-2', className)}
       variant="ghost"
       size="sm"
       asChild
@@ -27,5 +26,5 @@ export function OpenInV0Button({
         <V0Icon className="size-5" />
       </a>
     </Button>
-  )
+  );
 }

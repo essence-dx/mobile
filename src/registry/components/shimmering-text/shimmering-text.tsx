@@ -1,26 +1,23 @@
-"use client"
+'use client';
 
-import * as React from "react"
-import type { Variants } from "motion/react"
-import { motion } from "motion/react"
+import type { Variants } from 'motion/react';
+import { motion } from 'motion/react';
+import * as React from 'react';
 
-import { cn } from "@/lib/utils"
+import { cn } from '@/lib/utils';
 
-export type ShimmeringTextProps = Omit<
-  React.ComponentProps<typeof motion.span>,
-  "children"
-> & {
+export type ShimmeringTextProps = Omit<React.ComponentProps<typeof motion.span>, 'children'> & {
   /** The text to render with the shimmering effect. */
-  text: string
+  text: string;
   /**
    * Duration in seconds for one shimmer cycle.
    * @defaultValue 1 */
-  duration?: number
+  duration?: number;
   /**
    * Whether the shimmer animation is paused.
    * @defaultValue false */
-  isStopped?: boolean
-}
+  isStopped?: boolean;
+};
 
 export function ShimmeringText({
   text,
@@ -32,42 +29,42 @@ export function ShimmeringText({
   const createCharVariants = React.useCallback(
     (charIndex: number): Variants => ({
       running: {
-        color: ["var(--color)", "var(--shimmering-color)", "var(--color)"],
+        color: ['var(--color)', 'var(--shimmering-color)', 'var(--color)'],
         transition: {
           duration,
           repeat: Infinity,
-          repeatType: "loop" as const,
+          repeatType: 'loop' as const,
           repeatDelay: text.length * 0.05,
           delay: (charIndex * duration) / text.length,
-          ease: "easeInOut",
+          ease: 'easeInOut',
         },
       },
       stopped: {
-        color: "var(--color)",
+        color: 'var(--color)',
         transition: {
           duration: duration * 0.5,
-          ease: "easeOut",
+          ease: 'easeOut',
         },
       },
     }),
     [duration, text.length]
-  )
+  );
 
   return (
     <motion.span
       className={cn(
-        "inline-block select-none",
-        "[--color:var(--muted-foreground)] [--shimmering-color:var(--foreground)]",
+        'inline-block select-none',
+        '[--color:var(--muted-foreground)] [--shimmering-color:var(--foreground)]',
         className
       )}
       {...props}
     >
-      {text?.split("")?.map((char, i) => (
+      {text?.split('')?.map((char, i) => (
         <motion.span
           key={i}
           className="inline-block whitespace-pre"
           initial="stopped"
-          animate={isStopped ? "stopped" : "running"}
+          animate={isStopped ? 'stopped' : 'running'}
           variants={createCharVariants(i)}
           aria-hidden
         >
@@ -76,5 +73,5 @@ export function ShimmeringText({
       ))}
       <span className="sr-only">{text}</span>
     </motion.span>
-  )
+  );
 }

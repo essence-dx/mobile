@@ -1,4 +1,4 @@
-export function LaravelIcon(props: React.ComponentProps<"svg">) {
+export function LaravelIcon(props: React.ComponentProps<'svg'>) {
   return (
     <svg viewBox="0 0 100 100" fill="none" {...props}>
       <path
@@ -6,10 +6,10 @@ export function LaravelIcon(props: React.ComponentProps<"svg">) {
         fill="currentColor"
       />
     </svg>
-  )
+  );
 }
 
-export function NextJSIcon(props: React.ComponentProps<"svg">) {
+export function NextJSIcon(props: React.ComponentProps<'svg'>) {
   return (
     <svg viewBox="0 0 24 24" fill="none" {...props}>
       <path
@@ -21,10 +21,10 @@ export function NextJSIcon(props: React.ComponentProps<"svg">) {
         fill="currentColor"
       />
     </svg>
-  )
+  );
 }
 
-export function NodeJSIcon(props: React.ComponentProps<"svg">) {
+export function NodeJSIcon(props: React.ComponentProps<'svg'>) {
   return (
     <svg viewBox="0 0 100 100" fill="none" {...props}>
       <path
@@ -36,10 +36,10 @@ export function NodeJSIcon(props: React.ComponentProps<"svg">) {
         fill="currentColor"
       />
     </svg>
-  )
+  );
 }
 
-export function ReactIcon(props: React.ComponentProps<"svg">) {
+export function ReactIcon(props: React.ComponentProps<'svg'>) {
   return (
     <svg viewBox="0 0 100 100" fill="none" {...props}>
       <path
@@ -62,10 +62,10 @@ export function ReactIcon(props: React.ComponentProps<"svg">) {
         strokeWidth="4"
       />
     </svg>
-  )
+  );
 }
 
-export function TailwindCSSIcon(props: React.ComponentProps<"svg">) {
+export function TailwindCSSIcon(props: React.ComponentProps<'svg'>) {
   return (
     <svg viewBox="0 0 100 100" fill="none" {...props}>
       <path
@@ -73,5 +73,5 @@ export function TailwindCSSIcon(props: React.ComponentProps<"svg">) {
         fill="currentColor"
       />
     </svg>
-  )
+  );
 }

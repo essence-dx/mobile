@@ -1,35 +1,20 @@
-import {
-  Copy,
-  MoreHorizontal,
-  RefreshCw,
-  Share2,
-  ThumbsDown,
-  ThumbsUp,
-} from "lucide-react"
+import { Copy, MoreHorizontal, RefreshCw, Share2, ThumbsDown, ThumbsUp } from 'lucide-react';
 
-import { Button } from "@/components/ui/button"
+import { Button } from '@/components/ui/button';
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu"
-import {
-  Tooltip,
-  TooltipContent,
-  TooltipTrigger,
-} from "@/components/ui/tooltip"
+} from '@/components/ui/dropdown-menu';
+import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip';
 
 export function BotMessageActions() {
   return (
     <div className="relative mt-2 flex w-full flex-wrap items-center gap-1 pb-2 md:gap-2">
       <Tooltip>
         <TooltipTrigger asChild>
-          <Button
-            variant="ghost"
-            size="icon-xs"
-            className="text-muted-foreground"
-          >
+          <Button variant="ghost" size="icon-xs" className="text-muted-foreground">
             <Copy className="size-4" />
           </Button>
         </TooltipTrigger>
@@ -37,11 +22,7 @@ export function BotMessageActions() {
       </Tooltip>
       <Tooltip>
         <TooltipTrigger asChild>
-          <Button
-            variant="ghost"
-            size="icon-xs"
-            className="text-muted-foreground"
-          >
+          <Button variant="ghost" size="icon-xs" className="text-muted-foreground">
             <Share2 className="size-4" />
           </Button>
         </TooltipTrigger>
@@ -49,11 +30,7 @@ export function BotMessageActions() {
       </Tooltip>
       <Tooltip>
         <TooltipTrigger asChild>
-          <Button
-            variant="ghost"
-            size="icon-xs"
-            className="text-muted-foreground"
-          >
+          <Button variant="ghost" size="icon-xs" className="text-muted-foreground">
             <ThumbsUp className="size-4" />
           </Button>
         </TooltipTrigger>
@@ -61,11 +38,7 @@ export function BotMessageActions() {
       </Tooltip>
       <Tooltip>
         <TooltipTrigger asChild>
-          <Button
-            variant="ghost"
-            size="icon-xs"
-            className="text-muted-foreground"
-          >
+          <Button variant="ghost" size="icon-xs" className="text-muted-foreground">
             <ThumbsDown className="size-4" />
           </Button>
         </TooltipTrigger>
@@ -73,11 +46,7 @@ export function BotMessageActions() {
       </Tooltip>
       <Tooltip>
         <TooltipTrigger asChild>
-          <Button
-            variant="ghost"
-            size="icon-xs"
-            className="text-muted-foreground"
-          >
+          <Button variant="ghost" size="icon-xs" className="text-muted-foreground">
             <RefreshCw className="size-4" />
           </Button>
         </TooltipTrigger>
@@ -85,11 +54,7 @@ export function BotMessageActions() {
       </Tooltip>
       <DropdownMenu>
         <DropdownMenuTrigger asChild>
-          <Button
-            variant="ghost"
-            size="icon-xs"
-            className="text-muted-foreground"
-          >
+          <Button variant="ghost" size="icon-xs" className="text-muted-foreground">
             <MoreHorizontal className="size-4" />
           </Button>
         </DropdownMenuTrigger>
@@ -103,5 +68,5 @@ export function BotMessageActions() {
         <MoreHorizontal className="size-3" />
       </div>
     </div>
-  )
+  );
 }

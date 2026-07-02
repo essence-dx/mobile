@@ -1,16 +1,16 @@
-"use client"
+'use client';
 
-import { motion, useReducedMotion } from "motion/react"
-import { useTheme } from "next-themes"
+import { motion, useReducedMotion } from 'motion/react';
+import { useTheme } from 'next-themes';
 
-import { SpinningCircularText } from "@/registry/components/spinning-circular-text"
+import { SpinningCircularText } from '@/registry/components/spinning-circular-text';
 
-const TEXT = "Built with care by ncdai • "
-const DURATION = 4
+const TEXT = 'Built with care by ncdai • ';
+const DURATION = 4;
 
 export function SpinningCircularTextDemo2() {
-  const shouldReduceMotion = useReducedMotion()
-  const { resolvedTheme } = useTheme()
+  const shouldReduceMotion = useReducedMotion();
+  const { resolvedTheme } = useTheme();
 
   return (
     <SpinningCircularText
@@ -26,19 +26,15 @@ export function SpinningCircularTextDemo2() {
             // Re-render the character when the theme changes to restart the animation with the new colors
             key={resolvedTheme}
             animate={{
-              color: [
-                "var(--color)",
-                "var(--shimmering-color)",
-                "var(--color)",
-              ],
+              color: ['var(--color)', 'var(--shimmering-color)', 'var(--color)'],
             }}
             transition={{
               duration: DURATION,
               repeat: Infinity,
-              repeatType: "loop",
+              repeatType: 'loop',
               repeatDelay: TEXT.length * 0.03,
               delay: (index * DURATION) / TEXT.length,
-              ease: "easeInOut",
+              ease: 'easeInOut',
             }}
           >
             {char}
@@ -46,5 +42,5 @@ export function SpinningCircularTextDemo2() {
         )
       }
     />
-  )
+  );
 }

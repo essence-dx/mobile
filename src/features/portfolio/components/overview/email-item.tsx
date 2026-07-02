@@ -1,47 +1,42 @@
-"use client"
+'use client';
 
-import { useId } from "react"
-import { copyToClipboardWithEvent } from "@/utils/copy"
-import { decodeEmail } from "@/utils/string"
-import { useTiks } from "@rexa-developer/tiks/react"
-import { MailIcon } from "lucide-react"
-import { useHotkeys } from "react-hotkeys-hook"
-import { toast } from "sonner"
+import { useTiks } from '@rexa-developer/tiks/react';
+import { MailIcon } from 'lucide-react';
+import { useId } from 'react';
+import { useHotkeys } from 'react-hotkeys-hook';
+import { toast } from 'sonner';
+import { CopyButton } from '@/components/copy-button';
+import { useIsClient } from '@/hooks/use-is-client';
 
-import { trackEvent } from "@/lib/events"
-import { useIsClient } from "@/hooks/use-is-client"
-import { CopyButton } from "@/components/copy-button"
+import { trackEvent } from '@/lib/events';
+import { copyToClipboardWithEvent } from '@/utils/copy';
+import { decodeEmail } from '@/utils/string';
 
-import {
-  IntroItem,
-  IntroItemContent,
-  IntroItemIcon,
-  IntroItemLink,
-} from "./intro-item"
-import { RevealEncodedTextScript } from "./reveal-encoded-text"
+import { IntroItem, IntroItemContent, IntroItemIcon, IntroItemLink } from './intro-item';
+import { RevealEncodedTextScript } from './reveal-encoded-text';
 
 type EmailItemProps = {
-  emailB64: string
-}
+  emailB64: string;
+};
 
 export function EmailItem({ emailB64 }: EmailItemProps) {
-  const id = useId()
-  const isClient = useIsClient()
-  const emailDecoded = decodeEmail(emailB64)
+  const id = useId();
+  const isClient = useIsClient();
+  const emailDecoded = decodeEmail(emailB64);
 
-  const { success } = useTiks()
+  const { success } = useTiks();
 
-  useHotkeys("shift+e", () => {
+  useHotkeys('shift+e', () => {
     copyToClipboardWithEvent(emailDecoded, {
-      name: "copy_email",
+      name: 'copy_email',
       properties: {
-        method: "keyboard",
-        key: "shift+e",
+        method: 'keyboard',
+        key: 'shift+e',
       },
-    })
-    success()
-    toast.success("Email copied")
-  })
+    });
+    success();
+    toast.success('Email copied');
+  });
 
   return (
     <IntroItem className="group">
@@ -52,10 +47,10 @@ export function EmailItem({ emailB64 }: EmailItemProps) {
       <IntroItemContent className="flex">
         <IntroItemLink
           id={id}
-          href={isClient ? `mailto:${emailDecoded}` : ""}
+          href={isClient ? `mailto:${emailDecoded}` : ''}
           suppressHydrationWarning
         >
-          {isClient ? emailDecoded : ""}
+          {isClient ? emailDecoded : ''}
         </IntroItemLink>
       </IntroItemContent>
 
@@ -67,16 +62,16 @@ export function EmailItem({ emailB64 }: EmailItemProps) {
           text={() => emailDecoded}
           onCopySuccess={() => {
             trackEvent({
-              name: "copy_email",
+              name: 'copy_email',
               properties: {
-                method: "button",
+                method: 'button',
               },
-            })
+            });
           }}
         />
       </div>
 
       <RevealEncodedTextScript id={id} textB64={emailB64} />
     </IntroItem>
-  )
+  );
 }

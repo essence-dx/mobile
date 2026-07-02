@@ -1,34 +1,34 @@
-"use client"
+'use client';
 
-import type { ComponentProps } from "react"
-import type { TargetAndTransition } from "motion/react"
-import { motion } from "motion/react"
+import type { TargetAndTransition } from 'motion/react';
+import { motion } from 'motion/react';
+import type { ComponentProps } from 'react';
 
-import { cn } from "@/lib/utils"
+import { cn } from '@/lib/utils';
 
 const initialProps: TargetAndTransition = {
   pathLength: 0,
   opacity: 0,
-}
+};
 
 const animateProps: TargetAndTransition = {
   pathLength: 1,
   opacity: 1,
-}
+};
 
 export type AppleHelloEffectProps = Omit<
   ComponentProps<typeof motion.svg>,
-  "durationScale" | "onAnimationComplete"
+  'durationScale' | 'onAnimationComplete'
 > & {
   /**
    * Scales the duration and delay of the handwriting animation.
    * Values below 1 speed up, values above 1 slow down.
    * @defaultValue 0.8
    */
-  durationScale?: number
+  durationScale?: number;
   /** Called when the full handwriting animation completes. */
-  onAnimationComplete?: () => void
-}
+  onAnimationComplete?: () => void;
+};
 
 export function AppleHelloEffectHindi({
   className,
@@ -36,11 +36,11 @@ export function AppleHelloEffectHindi({
   onAnimationComplete,
   ...props
 }: AppleHelloEffectProps) {
-  const calc = (x: number) => x * durationScale
+  const calc = (x: number) => x * durationScale;
 
   return (
     <motion.svg
-      className={cn("h-20", className)}
+      className={cn('h-20', className)}
       xmlns="http://www.w3.org/2000/svg"
       viewBox="0 0 605 273"
       fill="none"
@@ -59,7 +59,7 @@ export function AppleHelloEffectHindi({
         animate={animateProps}
         transition={{
           duration: calc(0.6),
-          ease: "easeOut",
+          ease: 'easeOut',
           opacity: { duration: 0.2 },
         }}
       />
@@ -69,7 +69,7 @@ export function AppleHelloEffectHindi({
         animate={animateProps}
         transition={{
           duration: calc(0.4),
-          ease: "easeOut",
+          ease: 'easeOut',
           delay: calc(0.6),
           opacity: { duration: 0.2, delay: calc(0.6) },
         }}
@@ -80,7 +80,7 @@ export function AppleHelloEffectHindi({
         animate={animateProps}
         transition={{
           duration: calc(0.6),
-          ease: "easeOut",
+          ease: 'easeOut',
           delay: calc(1),
           opacity: { duration: 0.2, delay: calc(1) },
         }}
@@ -91,7 +91,7 @@ export function AppleHelloEffectHindi({
         animate={animateProps}
         transition={{
           duration: calc(0.4),
-          ease: "easeOut",
+          ease: 'easeOut',
           delay: calc(1.6),
           opacity: { duration: 0.2, delay: calc(1.6) },
         }}
@@ -102,7 +102,7 @@ export function AppleHelloEffectHindi({
         animate={animateProps}
         transition={{
           duration: calc(0.6),
-          ease: "easeOut",
+          ease: 'easeOut',
           delay: calc(2),
           opacity: { duration: 0.2, delay: calc(2) },
         }}
@@ -113,7 +113,7 @@ export function AppleHelloEffectHindi({
         animate={animateProps}
         transition={{
           duration: calc(0.4),
-          ease: "easeOut",
+          ease: 'easeOut',
           delay: calc(2.6),
           opacity: { duration: 0.2, delay: calc(2.6) },
         }}
@@ -124,7 +124,7 @@ export function AppleHelloEffectHindi({
         animate={animateProps}
         transition={{
           duration: calc(0.4),
-          ease: "easeOut",
+          ease: 'easeOut',
           delay: calc(3),
           opacity: { duration: 0.2, delay: calc(3) },
         }}
@@ -135,7 +135,7 @@ export function AppleHelloEffectHindi({
         animate={animateProps}
         transition={{
           duration: calc(0.6),
-          ease: "easeOut",
+          ease: 'easeOut',
           delay: calc(3.4),
           opacity: { duration: 0.2, delay: calc(3.4) },
         }}
@@ -146,7 +146,7 @@ export function AppleHelloEffectHindi({
         animate={animateProps}
         transition={{
           duration: calc(0.6),
-          ease: "easeOut",
+          ease: 'easeOut',
           delay: calc(4),
           opacity: { duration: 0.2, delay: calc(4) },
         }}
@@ -157,12 +157,12 @@ export function AppleHelloEffectHindi({
         animate={animateProps}
         transition={{
           duration: calc(0.8),
-          ease: "easeOut",
+          ease: 'easeOut',
           delay: calc(4.6),
           opacity: { duration: 0.2, delay: calc(4.6) },
         }}
         onAnimationComplete={onAnimationComplete}
       />
     </motion.svg>
-  )
+  );
 }

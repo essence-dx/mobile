@@ -1,14 +1,11 @@
-"use client"
+'use client';
 
-import { useDialKit } from "dialkit"
+import { useDialKit } from 'dialkit';
 
-import {
-  GlowCard,
-  GlowCardGrid,
-} from "@/registry/transformed/components/glow-card-grid"
+import { GlowCard, GlowCardGrid } from '@/registry/transformed/components/glow-card-grid';
 
 export default function GlowCardGridDialKit() {
-  const params = useDialKit("GlowCard", {
+  const params = useDialKit('GlowCard', {
     cardRadius: [16, 0, 32, 1],
     icon: {
       blur: [25, 0, 100, 1], // [default, min, max, step]
@@ -24,7 +21,7 @@ export default function GlowCardGridDialKit() {
       brightness: [2.5, 0, 4, 0.1],
       contrast: [2.5, 0, 3, 0.1],
     },
-  })
+  });
 
   return (
     <div className="container px-4 py-8">
@@ -46,57 +43,52 @@ export default function GlowCardGridDialKit() {
         borderContrast={params.border.contrast}
       >
         {CARDS.map((card) => (
-          <GlowCard
-            key={card.name}
-            name={card.name}
-            handle={card.handle}
-            avatar={card.avatar}
-          />
+          <GlowCard key={card.name} name={card.name} handle={card.handle} avatar={card.avatar} />
         ))}
       </GlowCardGrid>
     </div>
-  )
+  );
 }
 
 const CARDS = [
   {
-    name: "shadcn",
-    handle: "@shadcn",
-    avatar: "https://unavatar.io/x/shadcn",
+    name: 'shadcn',
+    handle: '@shadcn',
+    avatar: 'https://unavatar.io/x/shadcn',
   },
   {
-    name: "Evil Rabbit",
-    handle: "@evilrabbit_",
-    avatar: "https://unavatar.io/x/evilrabbit_",
+    name: 'Evil Rabbit',
+    handle: '@evilrabbit_',
+    avatar: 'https://unavatar.io/x/evilrabbit_',
   },
   {
-    name: "OrcDev",
-    handle: "@orcdev",
-    avatar: "https://unavatar.io/x/orcdev",
+    name: 'OrcDev',
+    handle: '@orcdev',
+    avatar: 'https://unavatar.io/x/orcdev',
   },
   {
-    name: "David Haz",
-    handle: "@davidhdev",
-    avatar: "https://unavatar.io/x/davidhdev",
+    name: 'David Haz',
+    handle: '@davidhdev',
+    avatar: 'https://unavatar.io/x/davidhdev',
   },
   {
-    name: "Shu",
-    handle: "@shuding",
-    avatar: "https://unavatar.io/x/shuding",
+    name: 'Shu',
+    handle: '@shuding',
+    avatar: 'https://unavatar.io/x/shuding',
   },
   {
-    name: "Emil Kowalski",
-    handle: "@emilkowalski",
-    avatar: "https://unavatar.io/x/emilkowalski",
+    name: 'Emil Kowalski',
+    handle: '@emilkowalski',
+    avatar: 'https://unavatar.io/x/emilkowalski',
   },
   {
-    name: "Aaron",
-    handle: "@aaronmahlke",
-    avatar: "https://unavatar.io/x/aaronmahlke",
+    name: 'Aaron',
+    handle: '@aaronmahlke',
+    avatar: 'https://unavatar.io/x/aaronmahlke',
   },
   {
-    name: "Chánh Đại",
-    handle: "@iamncdai",
-    avatar: "https://unavatar.io/x/iamncdai",
+    name: 'Chánh Đại',
+    handle: '@iamncdai',
+    avatar: 'https://unavatar.io/x/iamncdai',
   },
-]
+];

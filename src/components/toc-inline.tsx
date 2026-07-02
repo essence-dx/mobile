@@ -1,18 +1,11 @@
-"use client"
+'use client';
 
-import type { TOCItemType } from "fumadocs-core/toc"
-import { TextIcon } from "lucide-react"
-
-import { trackEvent } from "@/lib/events"
-import { cn } from "@/lib/utils"
-import {
-  Collapsible,
-  CollapsibleChevronDownIcon,
-} from "@/components/base/collapsible-animated"
-import {
-  CollapsibleContent,
-  CollapsibleTrigger,
-} from "@/components/base/ui/collapsible"
+import type { TOCItemType } from 'fumadocs-core/toc';
+import { TextIcon } from 'lucide-react';
+import { Collapsible, CollapsibleChevronDownIcon } from '@/components/base/collapsible-animated';
+import { CollapsibleContent, CollapsibleTrigger } from '@/components/base/ui/collapsible';
+import { trackEvent } from '@/lib/events';
+import { cn } from '@/lib/utils';
 
 export function TOCInline({
   items,
@@ -21,27 +14,27 @@ export function TOCInline({
   onOpenChange,
   ...props
 }: React.ComponentProps<typeof Collapsible> & {
-  items: TOCItemType[]
+  items: TOCItemType[];
 }) {
   if (!items.length) {
-    return null
+    return null;
   }
 
   return (
     <Collapsible
       className={cn(
-        "not-prose group/inline-toc rounded-xl bg-surface font-sans inset-ring-1 inset-ring-border/64",
+        'not-prose group/inline-toc rounded-xl bg-surface font-sans inset-ring-1 inset-ring-border/64',
         className
       )}
       onOpenChange={(open, eventDetails) => {
-        trackEvent({ name: "toc_inline_toggle", properties: { open } })
-        onOpenChange?.(open, eventDetails)
+        trackEvent({ name: 'toc_inline_toggle', properties: { open } });
+        onOpenChange?.(open, eventDetails);
       }}
       {...props}
     >
       <CollapsibleTrigger className="inline-flex w-full items-center gap-2 rounded-xl py-2.5 pr-2 pl-4 text-sm font-medium outline-none group-data-open/inline-toc:rounded-b-none focus-visible:inset-ring-2 focus-visible:inset-ring-ring/50 [&_svg]:size-4">
         <TextIcon className="-translate-x-0.5" />
-        {children ?? "On this page"}
+        {children ?? 'On this page'}
         <div className="ml-auto shrink-0 text-muted-foreground">
           <CollapsibleChevronDownIcon duration={0.15} />
         </div>
@@ -64,15 +57,15 @@ export function TOCInline({
         </ul>
       </CollapsibleContent>
     </Collapsible>
-  )
+  );
 }
 
 function handleItemClick(e: React.MouseEvent<HTMLAnchorElement>) {
-  const url = e.currentTarget.getAttribute("href") ?? ""
-  const title = e.currentTarget.textContent ?? ""
-  const depth = Number(e.currentTarget.getAttribute("data-depth"))
+  const url = e.currentTarget.getAttribute('href') ?? '';
+  const title = e.currentTarget.textContent ?? '';
+  const depth = Number(e.currentTarget.getAttribute('data-depth'));
   trackEvent({
-    name: "toc_inline_item_click",
+    name: 'toc_inline_item_click',
     properties: { url, title, depth },
-  })
+  });
 }

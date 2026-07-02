@@ -1,17 +1,17 @@
-import { Suspense } from "react"
+import { Suspense } from 'react';
 
-import { cn } from "@/lib/utils"
+import { cn } from '@/lib/utils';
 import {
   GitHubContributions,
   GitHubContributionsFallback,
-} from "@/registry/transformed/components/github-contributions"
-import { getCachedContributions } from "@/registry/transformed/components/github-contributions/lib/get-cached-contributions"
+} from '@/registry/transformed/components/github-contributions';
+import { getCachedContributions } from '@/registry/transformed/components/github-contributions/lib/get-cached-contributions';
 
-const GITHUB_USERNAME = "ncdai"
-const GITHUB_PROFILE_URL = "https://github.com/ncdai"
+const GITHUB_USERNAME = 'ncdai';
+const GITHUB_PROFILE_URL = 'https://github.com/ncdai';
 
 export default function GitHubContributionsWinterTheme() {
-  const contributions = getCachedContributions(GITHUB_USERNAME)
+  const contributions = getCachedContributions(GITHUB_USERNAME);
 
   return (
     <Suspense fallback={<GitHubContributionsFallback />}>
@@ -28,5 +28,5 @@ export default function GitHubContributionsWinterTheme() {
         )}
       />
     </Suspense>
-  )
+  );
 }

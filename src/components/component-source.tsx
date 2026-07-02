@@ -1,23 +1,19 @@
-import { CodeCollapsibleWrapper } from "./code-collapsible-wrapper"
+import { CodeCollapsibleWrapper } from './code-collapsible-wrapper';
 
 export function ComponentSource({
   className,
-  collapsible = "true",
+  collapsible = 'true',
   children,
-}: React.ComponentProps<"div"> & {
-  name: string
-  src?: string
-  title?: string
-  showLineNumbers?: boolean
-  collapsible?: "true" | "false"
+}: React.ComponentProps<'div'> & {
+  name: string;
+  src?: string;
+  title?: string;
+  showLineNumbers?: boolean;
+  collapsible?: 'true' | 'false';
 }) {
-  if (collapsible === "false") {
-    return <div className={className}>{children}</div>
+  if (collapsible === 'false') {
+    return <div className={className}>{children}</div>;
   }
 
-  return (
-    <CodeCollapsibleWrapper className={className}>
-      {children}
-    </CodeCollapsibleWrapper>
-  )
+  return <CodeCollapsibleWrapper className={className}>{children}</CodeCollapsibleWrapper>;
 }

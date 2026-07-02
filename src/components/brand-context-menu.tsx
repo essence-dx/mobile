@@ -1,24 +1,23 @@
-"use client"
+'use client';
 
-import Link from "next/link"
-import { copyText } from "@/utils/copy"
-import { useTiks } from "@rexa-developer/tiks/react"
-import { Download, SquareDashed, Type } from "lucide-react"
-import { toast } from "sonner"
-
+import { useTiks } from '@rexa-developer/tiks/react';
+import { Download, SquareDashed, Type } from 'lucide-react';
+import Link from 'next/link';
+import { toast } from 'sonner';
 import {
   ContextMenu,
   ContextMenuContent,
   ContextMenuItem,
   ContextMenuSeparator,
   ContextMenuTrigger,
-} from "@/components/ui/context-menu"
+} from '@/components/ui/context-menu';
+import { copyText } from '@/utils/copy';
 
-import { ChanhDaiMark, getMarkSVG } from "./chanhdai-mark"
-import { getWordmarkSVG } from "./chanhdai-wordmark"
+import { ChanhDaiMark, getMarkSVG } from './chanhdai-mark';
+import { getWordmarkSVG } from './chanhdai-wordmark';
 
 export function BrandContextMenu({ children }: { children: React.ReactNode }) {
-  const { success } = useTiks()
+  const { success } = useTiks();
 
   return (
     <ContextMenu>
@@ -27,9 +26,9 @@ export function BrandContextMenu({ children }: { children: React.ReactNode }) {
       <ContextMenuContent className="w-fit">
         <ContextMenuItem
           onClick={() => {
-            copyText(getMarkSVG())
-            toast.success("Mark as SVG copied")
-            success()
+            copyText(getMarkSVG());
+            toast.success('Mark as SVG copied');
+            success();
           }}
         >
           <ChanhDaiMark />
@@ -38,9 +37,9 @@ export function BrandContextMenu({ children }: { children: React.ReactNode }) {
 
         <ContextMenuItem
           onClick={() => {
-            copyText(getWordmarkSVG())
-            toast.success("Logotype as SVG copied")
-            success()
+            copyText(getWordmarkSVG());
+            toast.success('Logotype as SVG copied');
+            success();
           }}
         >
           <Type />
@@ -64,7 +63,7 @@ export function BrandContextMenu({ children }: { children: React.ReactNode }) {
         </ContextMenuItem>
       </ContextMenuContent>
     </ContextMenu>
-  )
+  );
 }
 
-export default BrandContextMenu
+export default BrandContextMenu;

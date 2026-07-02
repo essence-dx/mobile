@@ -1,13 +1,13 @@
-import { Search } from "lucide-react"
+import { Search } from 'lucide-react';
 
 export function SourceItem({
   searched,
   title,
   score,
 }: {
-  searched: string
-  title: string
-  score: string
+  searched: string;
+  title: string;
+  score: string;
 }) {
   return (
     <div className="group flex cursor-pointer flex-col gap-1.5 transition-opacity active:opacity-70">
@@ -24,5 +24,5 @@ export function SourceItem({
         </span>
       </div>
     </div>
-  )
+  );
 }

@@ -1,11 +1,11 @@
-"use client"
+'use client';
 
-import type { JSX } from "react"
-import { useSyncExternalStore } from "react"
-import { motion } from "motion/react"
-import { useTheme } from "next-themes"
+import { motion } from 'motion/react';
+import { useTheme } from 'next-themes';
+import type { JSX } from 'react';
+import { useSyncExternalStore } from 'react';
 
-import { IconPlaceholder } from "@/registry/icons/icon-placeholder"
+import { IconPlaceholder } from '@/registry/icons/icon-placeholder';
 
 function ThemeOption({
   icon,
@@ -13,10 +13,10 @@ function ThemeOption({
   isActive,
   onClick,
 }: {
-  icon: JSX.Element
-  value: string
-  isActive?: boolean
-  onClick: (value: string) => void
+  icon: JSX.Element;
+  value: string;
+  isActive?: boolean;
+  onClick: (value: string) => void;
 }) {
   return (
     <button
@@ -32,12 +32,12 @@ function ThemeOption({
       {isActive && (
         <motion.span
           layoutId="theme-option"
-          transition={{ type: "spring", bounce: 0.3, duration: 0.6 }}
+          transition={{ type: 'spring', bounce: 0.3, duration: 0.6 }}
           className="absolute inset-0 rounded-full border"
         />
       )}
     </button>
-  )
+  );
 }
 
 const THEME_OPTIONS = [
@@ -51,7 +51,7 @@ const THEME_OPTIONS = [
         remixicon="RiComputerLine"
       />
     ),
-    value: "system",
+    value: 'system',
   },
   {
     icon: (
@@ -63,7 +63,7 @@ const THEME_OPTIONS = [
         remixicon="RiSunLine"
       />
     ),
-    value: "light",
+    value: 'light',
   },
   {
     icon: (
@@ -75,21 +75,21 @@ const THEME_OPTIONS = [
         remixicon="RiMoonLine"
       />
     ),
-    value: "dark",
+    value: 'dark',
   },
-]
+];
 
 function ThemeSwitcher() {
-  const { theme, setTheme } = useTheme()
+  const { theme, setTheme } = useTheme();
 
   const isMounted = useSyncExternalStore(
     () => () => {},
     () => true,
     () => false
-  )
+  );
 
   if (!isMounted) {
-    return <div className="flex h-8 w-24" />
+    return <div className="flex h-8 w-24" />;
   }
 
   return (
@@ -111,7 +111,7 @@ function ThemeSwitcher() {
         />
       ))}
     </motion.div>
-  )
+  );
 }
 
-export { ThemeSwitcher }
+export { ThemeSwitcher };

@@ -1,4 +1,4 @@
-export { DxChat } from "./dx-chat"
-export * from "./hooks"
-export * from "./ui"
-export * from "./settings"
+export { DxChat } from './dx-chat';
+export * from './hooks';
+export * from './settings';
+export * from './ui';

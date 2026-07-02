@@ -1,43 +1,38 @@
-"use client"
+'use client';
 
-import { useImperativeHandle } from "react"
-import type { MotionNodeAnimationOptions } from "motion/react"
-import { motion, useAnimation } from "motion/react"
+import type { MotionNodeAnimationOptions } from 'motion/react';
+import { motion, useAnimation } from 'motion/react';
+import { useImperativeHandle } from 'react';
 
 export type SidebarIconHandle = {
-  startAnimation: () => void
-  stopAnimation: () => void
-}
+  startAnimation: () => void;
+  stopAnimation: () => void;
+};
 
-export type SidebarIconProps = React.ComponentPropsWithoutRef<"svg"> & {
-  ref?: React.Ref<SidebarIconHandle>
-  initial?: MotionNodeAnimationOptions["initial"]
-  duration?: number
-}
+export type SidebarIconProps = React.ComponentPropsWithoutRef<'svg'> & {
+  ref?: React.Ref<SidebarIconHandle>;
+  initial?: MotionNodeAnimationOptions['initial'];
+  duration?: number;
+};
 
 export function SidebarIcon({
   ref,
-  initial = "normal",
+  initial = 'normal',
   duration = 0.3,
   ...props
 }: SidebarIconProps) {
-  const controls = useAnimation()
+  const controls = useAnimation();
 
   useImperativeHandle(ref, () => {
     return {
-      startAnimation: () => controls.start("animate"),
-      stopAnimation: () => controls.start("normal"),
-    }
-  })
+      startAnimation: () => controls.start('animate'),
+      stopAnimation: () => controls.start('normal'),
+    };
+  });
 
   return (
     // Icon designed by @ncdai
-    <svg
-      xmlns="http://www.w3.org/2000/svg"
-      viewBox="0 0 24 24"
-      fill="none"
-      {...props}
-    >
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" {...props}>
       <rect
         x="2"
         y="3"
@@ -70,5 +65,5 @@ export function SidebarIcon({
         }}
       />
     </svg>
-  )
+  );
 }

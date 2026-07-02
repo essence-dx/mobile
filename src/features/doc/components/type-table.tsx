@@ -1,57 +1,50 @@
-"use client"
+'use client';
 
-import type { ComponentProps, ReactNode } from "react"
-
-import { cn } from "@/lib/utils"
-import { Prose } from "@/components/ui/typography"
-import {
-  Collapsible,
-  CollapsibleChevronDownIcon,
-} from "@/components/base/collapsible-animated"
-import {
-  CollapsibleContent,
-  CollapsibleTrigger,
-} from "@/components/base/ui/collapsible"
+import type { ComponentProps, ReactNode } from 'react';
+import { Collapsible, CollapsibleChevronDownIcon } from '@/components/base/collapsible-animated';
+import { CollapsibleContent, CollapsibleTrigger } from '@/components/base/ui/collapsible';
+import { Prose } from '@/components/ui/typography';
+import { cn } from '@/lib/utils';
 
 export interface ParameterNode {
-  name: string
-  description: ReactNode
+  name: string;
+  description: ReactNode;
 }
 
 export interface TypeNode {
   /**
    * Additional description of the field
    */
-  description?: ReactNode
+  description?: ReactNode;
 
   /**
    * type signature (short)
    */
-  type: ReactNode
+  type: ReactNode;
 
   /**
    * type signature (full)
    */
-  typeDescription?: ReactNode
+  typeDescription?: ReactNode;
 
   /**
    * Optional `href` for the type
    */
-  typeDescriptionLink?: string
+  typeDescriptionLink?: string;
 
-  default?: ReactNode
+  default?: ReactNode;
 
-  required?: boolean
-  deprecated?: boolean
+  required?: boolean;
+  deprecated?: boolean;
 
   /**
    * a list of parameters info if the type is a function.
    */
-  parameters?: ParameterNode[]
+  parameters?: ParameterNode[];
 
-  example?: ReactNode
+  example?: ReactNode;
 
-  returns?: ReactNode
+  returns?: ReactNode;
 }
 
 export function TypeTable({
@@ -59,12 +52,12 @@ export function TypeTable({
   type,
   className,
   ...props
-}: ComponentProps<"div"> & { type: Record<string, TypeNode> }) {
+}: ComponentProps<'div'> & { type: Record<string, TypeNode> }) {
   return (
     <div
       id={id}
       className={cn(
-        "@container my-[1.25em] flex flex-col gap-px overflow-hidden rounded-xl bg-surface p-1 text-sm inset-ring-1 inset-ring-border/64",
+        '@container my-[1.25em] flex flex-col gap-px overflow-hidden rounded-xl bg-surface p-1 text-sm inset-ring-1 inset-ring-border/64',
         className
       )}
       {...props}
@@ -78,7 +71,7 @@ export function TypeTable({
         <Item key={key} parentId={id} name={key} item={value} />
       ))}
     </div>
-  )
+  );
 }
 
 function Item({
@@ -97,11 +90,11 @@ function Item({
     returns,
   },
 }: {
-  parentId?: string
-  name: string
-  item: TypeNode
+  parentId?: string;
+  name: string;
+  item: TypeNode;
 }) {
-  const id = parentId ? `${parentId}-${name}` : undefined
+  const id = parentId ? `${parentId}-${name}` : undefined;
 
   return (
     <Collapsible
@@ -111,20 +104,17 @@ function Item({
       <CollapsibleTrigger className="not-prose relative flex w-full flex-row items-center rounded-lg px-3 py-2 text-start text-sm inset-ring-border outline-none group-data-open/type-item:rounded-b-none group-data-open/type-item:inset-ring-1 hover:bg-accent focus-visible:inset-ring-1 focus-visible:inset-ring-ring/50 dark:hover:bg-[color-mix(in_oklab,var(--accent)_60%,var(--surface))] [&_svg]:size-4">
         <code
           className={cn(
-            "[--shiki-dark:#FFF] [--shiki-light:#6F42C1]",
-            "w-1/4 min-w-fit shrink-0 pr-2 font-mono text-(--shiki-light) dark:text-(--shiki-dark)",
-            deprecated && "line-through opacity-50"
+            '[--shiki-dark:#FFF] [--shiki-light:#6F42C1]',
+            'w-1/4 min-w-fit shrink-0 pr-2 font-mono text-(--shiki-light) dark:text-(--shiki-dark)',
+            deprecated && 'line-through opacity-50'
           )}
         >
           {name}
-          {!required && "?"}
+          {!required && '?'}
         </code>
 
         {typeDescriptionLink ? (
-          <a
-            href={typeDescriptionLink}
-            className="link-underline @max-xl:hidden"
-          >
+          <a href={typeDescriptionLink} className="link-underline @max-xl:hidden">
             {type}
           </a>
         ) : (
@@ -138,9 +128,7 @@ function Item({
 
       <CollapsibleContent>
         <div className="grid grid-cols-[1fr_3fr] gap-y-3 p-3 text-sm">
-          <CustomProse className="col-span-full empty:hidden">
-            {description}
-          </CustomProse>
+          <CustomProse className="col-span-full empty:hidden">{description}</CustomProse>
 
           {typeDescription != null && (
             <>
@@ -164,8 +152,8 @@ function Item({
                   <div key={param.name} className="flex flex-col gap-1.5">
                     <code
                       className={cn(
-                        "[--shiki-dark:#FFF] [--shiki-light:#E36209]",
-                        "not-prose text-(--shiki-light) dark:text-(--shiki-dark)"
+                        '[--shiki-dark:#FFF] [--shiki-light:#E36209]',
+                        'not-prose text-(--shiki-light) dark:text-(--shiki-dark)'
                       )}
                     >
                       {param.name}
@@ -193,17 +181,17 @@ function Item({
         </div>
       </CollapsibleContent>
     </Collapsible>
-  )
+  );
 }
 
 function CustomProse({ className, ...props }: ComponentProps<typeof Prose>) {
   return (
     <Prose
       className={cn(
-        "prose-sm prose-no-margin prose-code:py-[1.5px] prose-code:text-[.8125rem]",
+        'prose-sm prose-no-margin prose-code:py-[1.5px] prose-code:text-[.8125rem]',
         className
       )}
       {...props}
     />
-  )
+  );
 }

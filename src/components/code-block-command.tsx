@@ -1,29 +1,17 @@
-"use client"
+'use client';
 
-import { useMemo } from "react"
+import { useMemo } from 'react';
+import { Tabs, TabsContent, TabsIndicator, TabsList, TabsTrigger } from '@/components/base/ui/tabs';
+import type { PackageManager } from '@/hooks/use-package-manager';
+import { usePackageManager } from '@/hooks/use-package-manager';
+import { IconSwap, IconSwapItem } from '@/registry/components/icon-swap';
+import type { NpmCommands } from '@/types/unist';
 
-import type { NpmCommands } from "@/types/unist"
-import type { PackageManager } from "@/hooks/use-package-manager"
-import { usePackageManager } from "@/hooks/use-package-manager"
-import {
-  Tabs,
-  TabsContent,
-  TabsIndicator,
-  TabsList,
-  TabsTrigger,
-} from "@/components/base/ui/tabs"
-import { IconSwap, IconSwapItem } from "@/registry/components/icon-swap"
+import { CopyButton } from './copy-button';
+import { getIconForPackageManager } from './icons';
 
-import { CopyButton } from "./copy-button"
-import { getIconForPackageManager } from "./icons"
-
-export function CodeBlockCommand({
-  __pnpm__,
-  __yarn__,
-  __npm__,
-  __bun__,
-}: NpmCommands) {
-  const [packageManager, setPackageManager] = usePackageManager()
+export function CodeBlockCommand({ __pnpm__, __yarn__, __npm__, __bun__ }: NpmCommands) {
+  const [packageManager, setPackageManager] = usePackageManager();
 
   const tabs = useMemo(() => {
     return {
@@ -31,8 +19,8 @@ export function CodeBlockCommand({
       yarn: __yarn__,
       npm: __npm__,
       bun: __bun__,
-    }
-  }, [__pnpm__, __yarn__, __npm__, __bun__])
+    };
+  }, [__pnpm__, __yarn__, __npm__, __bun__]);
 
   return (
     <div data-slot="code-block-command" className="relative">
@@ -40,7 +28,7 @@ export function CodeBlockCommand({
         className="gap-0"
         value={packageManager}
         onValueChange={(value) => {
-          setPackageManager(value as PackageManager)
+          setPackageManager(value as PackageManager);
         }}
       >
         <div className="px-3">
@@ -53,14 +41,10 @@ export function CodeBlockCommand({
 
             {Object.entries(tabs).map(([key]) => {
               return (
-                <TabsTrigger
-                  key={key}
-                  className="h-7 rounded-lg p-0 px-2 font-mono"
-                  value={key}
-                >
+                <TabsTrigger key={key} className="h-7 rounded-lg p-0 px-2 font-mono" value={key}>
                   {key}
                 </TabsTrigger>
-              )
+              );
             })}
 
             <TabsIndicator className="h-0.5 translate-y-px rounded-none bg-foreground ring-0 dark:bg-foreground" />
@@ -83,7 +67,7 @@ export function CodeBlockCommand({
                 </pre>
               </div>
             </TabsContent>
-          )
+          );
         })}
       </Tabs>
 
@@ -91,9 +75,9 @@ export function CodeBlockCommand({
         className="absolute top-1.5 right-0.5 z-10 size-7 rounded-md border-none text-muted-foreground [&_svg:not([class*='size-'])]:size-4"
         variant="ghost"
         size="icon-xs"
-        text={tabs[packageManager] || ""}
+        text={tabs[packageManager] || ''}
         event="copy_npm_command"
       />
     </div>
-  )
+  );
 }

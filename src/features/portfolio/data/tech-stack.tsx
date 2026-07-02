@@ -6,29 +6,29 @@ import {
   ShadcnIcon,
   TsIcon,
   VercelIcon,
-} from "@/components/icons"
+} from '@/components/icons';
 
-import type { TechStack } from "../types/tech-stack"
+import type { TechStack } from '../types/tech-stack';
 
 export const TECH_STACK: TechStack[] = [
   {
-    key: "typescript",
-    title: "TypeScript",
-    href: "https://www.typescriptlang.org",
+    key: 'typescript',
+    title: 'TypeScript',
+    href: 'https://www.typescriptlang.org',
     icon: <TsIcon />,
-    categories: ["Language"],
+    categories: ['Language'],
   },
   {
-    key: "js",
-    title: "JavaScript",
-    href: "https://developer.mozilla.org/en-US/docs/Web/JavaScript",
+    key: 'js',
+    title: 'JavaScript',
+    href: 'https://developer.mozilla.org/en-US/docs/Web/JavaScript',
     icon: <JsIcon />,
-    categories: ["Language"],
+    categories: ['Language'],
   },
   {
-    key: "python",
-    title: "Python",
-    href: "https://www.python.org",
+    key: 'python',
+    title: 'Python',
+    href: 'https://www.python.org',
     icon: (
       <svg viewBox="0 0 24 24" aria-hidden>
         <path
@@ -37,12 +37,12 @@ export const TECH_STACK: TechStack[] = [
         />
       </svg>
     ),
-    categories: ["Language"],
+    categories: ['Language'],
   },
   {
-    key: "react",
-    title: "React",
-    href: "https://react.dev",
+    key: 'react',
+    title: 'React',
+    href: 'https://react.dev',
     icon: (
       <svg viewBox="0 0 24 24" aria-hidden>
         <path
@@ -51,12 +51,12 @@ export const TECH_STACK: TechStack[] = [
         />
       </svg>
     ),
-    categories: ["Frontend"],
+    categories: ['Frontend'],
   },
   {
-    key: "nextjs",
-    title: "Next.js",
-    href: "https://nextjs.org",
+    key: 'nextjs',
+    title: 'Next.js',
+    href: 'https://nextjs.org',
     icon: (
       <svg viewBox="0 0 24 24" aria-hidden>
         <path
@@ -65,12 +65,12 @@ export const TECH_STACK: TechStack[] = [
         />
       </svg>
     ),
-    categories: ["Frontend"],
+    categories: ['Frontend'],
   },
   {
-    key: "tailwindcss",
-    title: "Tailwind CSS",
-    href: "https://tailwindcss.com",
+    key: 'tailwindcss',
+    title: 'Tailwind CSS',
+    href: 'https://tailwindcss.com',
     icon: (
       <svg viewBox="0 0 24 24" aria-hidden>
         <path
@@ -79,19 +79,19 @@ export const TECH_STACK: TechStack[] = [
         />
       </svg>
     ),
-    categories: ["Frontend"],
+    categories: ['Frontend'],
   },
   {
-    key: "shadcn-ui",
-    title: "shadcn/ui",
-    href: "https://ui.shadcn.com",
+    key: 'shadcn-ui',
+    title: 'shadcn/ui',
+    href: 'https://ui.shadcn.com',
     icon: <ShadcnIcon />,
-    categories: ["Frontend"],
+    categories: ['Frontend'],
   },
   {
-    key: "radixui",
-    title: "Radix UI",
-    href: "https://www.radix-ui.com",
+    key: 'radixui',
+    title: 'Radix UI',
+    href: 'https://www.radix-ui.com',
     icon: (
       <svg viewBox="0 0 24 24" aria-hidden>
         <path
@@ -100,12 +100,12 @@ export const TECH_STACK: TechStack[] = [
         />
       </svg>
     ),
-    categories: ["Frontend"],
+    categories: ['Frontend'],
   },
   {
-    key: "base-ui",
-    title: "Base UI",
-    href: "https://base-ui.com",
+    key: 'base-ui',
+    title: 'Base UI',
+    href: 'https://base-ui.com',
     icon: (
       <svg viewBox="0 0 24 24" aria-hidden>
         <path
@@ -114,12 +114,12 @@ export const TECH_STACK: TechStack[] = [
         />
       </svg>
     ),
-    categories: ["Frontend"],
+    categories: ['Frontend'],
   },
   {
-    key: "motion",
-    title: "Motion",
-    href: "https://motion.dev",
+    key: 'motion',
+    title: 'Motion',
+    href: 'https://motion.dev',
     icon: (
       <svg viewBox="0 0 24 24" aria-hidden>
         <path
@@ -128,12 +128,12 @@ export const TECH_STACK: TechStack[] = [
         />
       </svg>
     ),
-    categories: ["Frontend"],
+    categories: ['Frontend'],
   },
   {
-    key: "expo",
-    title: "Expo",
-    href: "https://expo.dev",
+    key: 'expo',
+    title: 'Expo',
+    href: 'https://expo.dev',
     icon: (
       <svg viewBox="0 0 24 24" aria-hidden>
         <path
@@ -142,12 +142,12 @@ export const TECH_STACK: TechStack[] = [
         />
       </svg>
     ),
-    categories: ["Frontend"],
+    categories: ['Frontend'],
   },
   {
-    key: "tanstack",
-    title: "TanStack",
-    href: "https://tanstack.com",
+    key: 'tanstack',
+    title: 'TanStack',
+    href: 'https://tanstack.com',
     icon: (
       <svg viewBox="0 0 24 24" aria-hidden>
         <path
@@ -156,12 +156,12 @@ export const TECH_STACK: TechStack[] = [
         />
       </svg>
     ),
-    categories: ["Frontend"],
+    categories: ['Frontend'],
   },
   {
-    key: "mobx-state-tree",
-    title: "MobX-State-Tree",
-    href: "https://mobx-state-tree.js.org",
+    key: 'mobx-state-tree',
+    title: 'MobX-State-Tree',
+    href: 'https://mobx-state-tree.js.org',
     icon: (
       <svg viewBox="0 0 24 24" aria-hidden>
         <path
@@ -170,12 +170,12 @@ export const TECH_STACK: TechStack[] = [
         />
       </svg>
     ),
-    categories: ["Frontend"],
+    categories: ['Frontend'],
   },
   {
-    key: "nodejs",
-    title: "Node.js",
-    href: "https://nodejs.org",
+    key: 'nodejs',
+    title: 'Node.js',
+    href: 'https://nodejs.org',
     icon: (
       <svg viewBox="0 0 24 24" aria-hidden>
         <path
@@ -184,19 +184,19 @@ export const TECH_STACK: TechStack[] = [
         />
       </svg>
     ),
-    categories: ["Backend & Database"],
+    categories: ['Backend & Database'],
   },
   {
-    key: "bun",
-    title: "Bun",
-    href: "https://bun.sh",
+    key: 'bun',
+    title: 'Bun',
+    href: 'https://bun.sh',
     icon: <BunIcon />,
-    categories: ["Backend & Database"],
+    categories: ['Backend & Database'],
   },
   {
-    key: "postgresql",
-    title: "PostgreSQL",
-    href: "https://www.postgresql.org",
+    key: 'postgresql',
+    title: 'PostgreSQL',
+    href: 'https://www.postgresql.org',
     icon: (
       <svg viewBox="0 0 24 24" aria-hidden>
         <path
@@ -205,12 +205,12 @@ export const TECH_STACK: TechStack[] = [
         />
       </svg>
     ),
-    categories: ["Backend & Database"],
+    categories: ['Backend & Database'],
   },
   {
-    key: "mongodb",
-    title: "MongoDB",
-    href: "https://www.mongodb.com",
+    key: 'mongodb',
+    title: 'MongoDB',
+    href: 'https://www.mongodb.com',
     icon: (
       <svg viewBox="0 0 24 24" aria-hidden>
         <path
@@ -219,12 +219,12 @@ export const TECH_STACK: TechStack[] = [
         />
       </svg>
     ),
-    categories: ["Backend & Database"],
+    categories: ['Backend & Database'],
   },
   {
-    key: "redis",
-    title: "Redis",
-    href: "https://redis.io",
+    key: 'redis',
+    title: 'Redis',
+    href: 'https://redis.io',
     icon: (
       <svg viewBox="0 0 24 24" aria-hidden>
         <path
@@ -233,12 +233,12 @@ export const TECH_STACK: TechStack[] = [
         />
       </svg>
     ),
-    categories: ["Backend & Database"],
+    categories: ['Backend & Database'],
   },
   {
-    key: "nginx",
-    title: "nginx",
-    href: "https://nginx.org",
+    key: 'nginx',
+    title: 'nginx',
+    href: 'https://nginx.org',
     icon: (
       <svg viewBox="0 0 24 24" aria-hidden>
         <path
@@ -247,12 +247,12 @@ export const TECH_STACK: TechStack[] = [
         />
       </svg>
     ),
-    categories: ["Backend & Database"],
+    categories: ['Backend & Database'],
   },
   {
-    key: "cursor",
-    title: "Cursor",
-    href: "https://cursor.com",
+    key: 'cursor',
+    title: 'Cursor',
+    href: 'https://cursor.com',
     icon: (
       <svg viewBox="0 0 24 24" aria-hidden>
         <path
@@ -261,12 +261,12 @@ export const TECH_STACK: TechStack[] = [
         />
       </svg>
     ),
-    categories: ["Workflow & AI"],
+    categories: ['Workflow & AI'],
   },
   {
-    key: "claude",
-    title: "Claude",
-    href: "https://claude.ai",
+    key: 'claude',
+    title: 'Claude',
+    href: 'https://claude.ai',
     icon: (
       <svg viewBox="0 0 24 24" aria-hidden>
         <path
@@ -275,12 +275,12 @@ export const TECH_STACK: TechStack[] = [
         />
       </svg>
     ),
-    categories: ["Workflow & AI"],
+    categories: ['Workflow & AI'],
   },
   {
-    key: "gemini",
-    title: "Gemini",
-    href: "https://gemini.google.com",
+    key: 'gemini',
+    title: 'Gemini',
+    href: 'https://gemini.google.com',
     icon: (
       <svg viewBox="0 0 24 24" aria-hidden>
         <path
@@ -289,19 +289,19 @@ export const TECH_STACK: TechStack[] = [
         />
       </svg>
     ),
-    categories: ["Workflow & AI"],
+    categories: ['Workflow & AI'],
   },
   {
-    key: "chatgpt",
-    title: "ChatGPT",
-    href: "https://chatgpt.com",
+    key: 'chatgpt',
+    title: 'ChatGPT',
+    href: 'https://chatgpt.com',
     icon: <OpenAIIcon />,
-    categories: ["Workflow & AI"],
+    categories: ['Workflow & AI'],
   },
   {
-    key: "git",
-    title: "Git",
-    href: "https://git-scm.com",
+    key: 'git',
+    title: 'Git',
+    href: 'https://git-scm.com',
     icon: (
       <svg viewBox="0 0 24 24" aria-hidden>
         <path
@@ -310,19 +310,19 @@ export const TECH_STACK: TechStack[] = [
         />
       </svg>
     ),
-    categories: ["Workflow & AI"],
+    categories: ['Workflow & AI'],
   },
   {
-    key: "github",
-    title: "GitHub",
-    href: "https://github.com",
+    key: 'github',
+    title: 'GitHub',
+    href: 'https://github.com',
     icon: <GitHubIcon />,
-    categories: ["Workflow & AI"],
+    categories: ['Workflow & AI'],
   },
   {
-    key: "docker",
-    title: "Docker",
-    href: "https://www.docker.com",
+    key: 'docker',
+    title: 'Docker',
+    href: 'https://www.docker.com',
     icon: (
       <svg viewBox="0 0 24 24" aria-hidden>
         <path
@@ -331,19 +331,19 @@ export const TECH_STACK: TechStack[] = [
         />
       </svg>
     ),
-    categories: ["Workflow & AI"],
+    categories: ['Workflow & AI'],
   },
   {
-    key: "vercel",
-    title: "Vercel",
-    href: "https://vercel.com",
+    key: 'vercel',
+    title: 'Vercel',
+    href: 'https://vercel.com',
     icon: <VercelIcon />,
-    categories: ["Workflow & AI"],
+    categories: ['Workflow & AI'],
   },
   {
-    key: "openpanel",
-    title: "OpenPanel",
-    href: "https://openpanel.dev",
+    key: 'openpanel',
+    title: 'OpenPanel',
+    href: 'https://openpanel.dev',
     icon: (
       <svg viewBox="0 0 24 24" aria-hidden>
         <path
@@ -352,12 +352,12 @@ export const TECH_STACK: TechStack[] = [
         />
       </svg>
     ),
-    categories: ["Analytics"],
+    categories: ['Analytics'],
   },
   {
-    key: "posthog",
-    title: "PostHog",
-    href: "https://posthog.com",
+    key: 'posthog',
+    title: 'PostHog',
+    href: 'https://posthog.com',
     icon: (
       <svg viewBox="0 0 24 24" aria-hidden>
         <path
@@ -366,12 +366,12 @@ export const TECH_STACK: TechStack[] = [
         />
       </svg>
     ),
-    categories: ["Analytics"],
+    categories: ['Analytics'],
   },
   {
-    key: "figma",
-    title: "Figma",
-    href: "https://www.figma.com",
+    key: 'figma',
+    title: 'Figma',
+    href: 'https://www.figma.com',
     icon: (
       <svg viewBox="0 0 24 24" aria-hidden>
         <path
@@ -380,12 +380,12 @@ export const TECH_STACK: TechStack[] = [
         />
       </svg>
     ),
-    categories: ["Design"],
+    categories: ['Design'],
   },
   {
-    key: "paper",
-    title: "Paper",
-    href: "https://paper.design",
+    key: 'paper',
+    title: 'Paper',
+    href: 'https://paper.design',
     icon: (
       <svg viewBox="0 0 24 24">
         <path
@@ -394,12 +394,12 @@ export const TECH_STACK: TechStack[] = [
         />
       </svg>
     ),
-    categories: ["Design"],
+    categories: ['Design'],
   },
   {
-    key: "ps",
-    title: "Photoshop",
-    href: "https://www.adobe.com/vn_en/products/photoshop.html",
+    key: 'ps',
+    title: 'Photoshop',
+    href: 'https://www.adobe.com/vn_en/products/photoshop.html',
     icon: (
       <svg viewBox="0 0 24 24" aria-hidden>
         <path
@@ -408,6 +408,6 @@ export const TECH_STACK: TechStack[] = [
         />
       </svg>
     ),
-    categories: ["Design"],
+    categories: ['Design'],
   },
-]
+];

@@ -1,184 +1,176 @@
-import {
-  ConsentManagerDialog,
-  ConsentManagerProvider,
-  CookieBanner,
-} from "@c15t/nextjs"
-
-import { cn } from "@/lib/utils"
-import { buttonVariants } from "@/components/ui/button"
+import { ConsentManagerDialog, ConsentManagerProvider, CookieBanner } from '@c15t/nextjs';
+import { buttonVariants } from '@/components/ui/button';
+import { cn } from '@/lib/utils';
 
 export function ConsentManager({ children }: { children: React.ReactNode }) {
   return (
     <ConsentManagerProvider
       options={{
-        mode: "offline",
-        consentCategories: ["necessary", "measurement"],
+        mode: 'offline',
+        consentCategories: ['necessary', 'measurement'],
         // ignoreGeoLocation: process.env.NODE_ENV === "development", // Useful for development to always view the banner.
       }}
     >
       <CookieBanner
         theme={{
-          "banner.card": {
+          'banner.card': {
             noStyle: true,
             className: cn(
-              "relative w-full max-w-(--banner-max-width) divide-y overflow-hidden rounded-2xl",
-              "bg-popover text-popover-foreground shadow-lg ring-1 ring-foreground/10 dark:ring-foreground/20"
+              'relative w-full max-w-(--banner-max-width) divide-y overflow-hidden rounded-2xl',
+              'bg-popover text-popover-foreground shadow-lg ring-1 ring-foreground/10 dark:ring-foreground/20'
             ),
           },
-          "banner.header.title": {
+          'banner.header.title': {
             noStyle: true,
-            className: "text-base leading-none font-medium text-foreground",
+            className: 'text-base leading-none font-medium text-foreground',
           },
-          "banner.header.description": {
+          'banner.header.description': {
             noStyle: true,
-            className: "text-sm text-muted-foreground",
+            className: 'text-sm text-muted-foreground',
           },
-          "banner.footer": {
+          'banner.footer': {
             style: {
-              "--banner-footer-background-color": "transparent",
-              "--banner-footer-background-color-dark": "transparent",
+              '--banner-footer-background-color': 'transparent',
+              '--banner-footer-background-color-dark': 'transparent',
             },
           },
-          "banner.footer.reject-button": {
+          'banner.footer.reject-button': {
             noStyle: true,
-            className: buttonVariants({ variant: "secondary" }),
+            className: buttonVariants({ variant: 'secondary' }),
           },
-          "banner.footer.accept-button": {
+          'banner.footer.accept-button': {
             noStyle: true,
-            className: buttonVariants({ variant: "secondary" }),
+            className: buttonVariants({ variant: 'secondary' }),
           },
-          "banner.footer.customize-button": {
+          'banner.footer.customize-button': {
             noStyle: true,
-            className: buttonVariants({ variant: "default" }),
+            className: buttonVariants({ variant: 'default' }),
           },
         }}
       />
 
       <ConsentManagerDialog
         theme={{
-          "dialog.root": {
+          'dialog.root': {
             style: {
-              "--dialog-height": "100%",
-              "--dialog-font-family": "var(--font-sans)",
+              '--dialog-height': '100%',
+              '--dialog-font-family': 'var(--font-sans)',
 
-              "--dialog-background-color": "var(--background)",
-              "--dialog-background-color-dark": "var(--background)",
+              '--dialog-background-color': 'var(--background)',
+              '--dialog-background-color-dark': 'var(--background)',
 
-              "--dialog-border-width": "0",
-              "--dialog-border-color": "var(--border)",
-              "--dialog-border-color-dark": "var(--border)",
+              '--dialog-border-width': '0',
+              '--dialog-border-color': 'var(--border)',
+              '--dialog-border-color-dark': 'var(--border)',
 
-              "--dialog-card-radius": "1rem",
-              "--dialog-card-shadow":
-                "0 0 0 1px var(--dialog-card-shadow-color)",
+              '--dialog-card-radius': '1rem',
+              '--dialog-card-shadow': '0 0 0 1px var(--dialog-card-shadow-color)',
             },
             className:
-              "[--dialog-card-shadow-color:var(--foreground)]/10 dark:[--dialog-card-shadow-color:var(--border)]",
+              '[--dialog-card-shadow-color:var(--foreground)]/10 dark:[--dialog-card-shadow-color:var(--border)]',
           },
-          "dialog.overlay": {
+          'dialog.overlay': {
             style: {
-              "--dialog-overlay-background-color": "lab(0% 0 0 / 0.2)",
-              "--dialog-overlay-background-color-dark": "lab(0% 0 0 / 0.4)",
+              '--dialog-overlay-background-color': 'lab(0% 0 0 / 0.2)',
+              '--dialog-overlay-background-color-dark': 'lab(0% 0 0 / 0.4)',
             },
           },
-          "dialog.title": {
+          'dialog.title': {
+            noStyle: true,
+            className: 'text-base leading-none font-medium tracking-tight text-foreground',
+          },
+          'dialog.description': {
+            noStyle: true,
+            className: 'text-sm text-muted-foreground',
+          },
+          'dialog.header': {
+            style: {
+              '--dialog-header-gap': '0.5rem',
+              '--dialog-card-gap': '0',
+            },
+          },
+          'dialog.footer': {
+            style: {
+              '--dialog-border-width': '1px',
+
+              '--dialog-stroke-color': 'var(--border)',
+              '--dialog-stroke-color-dark': 'var(--border)',
+
+              '--dialog-branding-icon-height': '1.125rem',
+              '--dialog-branding-font-size': '0.875rem',
+
+              '--dialog-branding-focus-color': 'color-mix(in oklab, var(--ring) 50%, transparent)',
+              '--dialog-branding-focus-color-dark':
+                'color-mix(in oklab, var(--ring) 50%, transparent)',
+
+              '--dialog-foreground-color': 'var(--muted-foreground)',
+              '--dialog-foreground-color-dark': 'var(--muted-foreground)',
+            },
+          },
+          'widget.accordion.item': {
+            noStyle: true,
+            className: 'rounded-lg border',
+          },
+          'widget.accordion.trigger': {
+            noStyle: true,
+            className: 'flex items-center gap-3 pr-3',
+          },
+          'widget.accordion.trigger-inner': {
+            noStyle: true,
+            className: cn(
+              'flex flex-1 items-center rounded-lg px-4 py-3 text-sm font-medium text-foreground **:[svg]:hidden',
+              'outline-none focus-visible:border-ring focus-visible:ring-[3px] focus-visible:ring-ring/50'
+            ),
+          },
+          'widget.accordion.content': {
             noStyle: true,
             className:
-              "text-base leading-none font-medium tracking-tight text-foreground",
+              'overflow-hidden px-4 data-[state=closed]:animate-accordion-up data-[state=open]:animate-accordion-down',
           },
-          "dialog.description": {
+          'widget.accordion.content-inner': {
             noStyle: true,
-            className: "text-sm text-muted-foreground",
+            className: 'pb-4 text-sm text-muted-foreground',
           },
-          "dialog.header": {
-            style: {
-              "--dialog-header-gap": "0.5rem",
-              "--dialog-card-gap": "0",
-            },
-          },
-          "dialog.footer": {
-            style: {
-              "--dialog-border-width": "1px",
-
-              "--dialog-stroke-color": "var(--border)",
-              "--dialog-stroke-color-dark": "var(--border)",
-
-              "--dialog-branding-icon-height": "1.125rem",
-              "--dialog-branding-font-size": "0.875rem",
-
-              "--dialog-branding-focus-color":
-                "color-mix(in oklab, var(--ring) 50%, transparent)",
-              "--dialog-branding-focus-color-dark":
-                "color-mix(in oklab, var(--ring) 50%, transparent)",
-
-              "--dialog-foreground-color": "var(--muted-foreground)",
-              "--dialog-foreground-color-dark": "var(--muted-foreground)",
-            },
-          },
-          "widget.accordion.item": {
-            noStyle: true,
-            className: "rounded-lg border",
-          },
-          "widget.accordion.trigger": {
-            noStyle: true,
-            className: "flex items-center gap-3 pr-3",
-          },
-          "widget.accordion.trigger-inner": {
+          'widget.switch': {
             noStyle: true,
             className: cn(
-              "flex flex-1 items-center rounded-lg px-4 py-3 text-sm font-medium text-foreground **:[svg]:hidden",
-              "outline-none focus-visible:border-ring focus-visible:ring-[3px] focus-visible:ring-ring/50"
+              'inline-flex h-4.5 w-8 shrink-0 items-center rounded-full transition-all',
+              'border border-transparent',
+              'outline-none focus-visible:border-ring focus-visible:ring-[3px] focus-visible:ring-ring/50',
+              'disabled:cursor-not-allowed disabled:opacity-50',
+              'data-[state=checked]:bg-primary data-[state=unchecked]:bg-input dark:data-[state=unchecked]:bg-input/80'
             ),
           },
-          "widget.accordion.content": {
+          'widget.switch.track': {
             noStyle: true,
-            className:
-              "overflow-hidden px-4 data-[state=closed]:animate-accordion-up data-[state=open]:animate-accordion-down",
           },
-          "widget.accordion.content-inner": {
-            noStyle: true,
-            className: "pb-4 text-sm text-muted-foreground",
-          },
-          "widget.switch": {
+          'widget.switch.thumb': {
             noStyle: true,
             className: cn(
-              "inline-flex h-4.5 w-8 shrink-0 items-center rounded-full transition-all",
-              "border border-transparent",
-              "outline-none focus-visible:border-ring focus-visible:ring-[3px] focus-visible:ring-ring/50",
-              "disabled:cursor-not-allowed disabled:opacity-50",
-              "data-[state=checked]:bg-primary data-[state=unchecked]:bg-input dark:data-[state=unchecked]:bg-input/80"
+              'pointer-events-none block size-4 rounded-full bg-background ring-0 transition-[translate,background-color]',
+              'data-[state=checked]:translate-x-[calc(100%-2px)] data-[state=unchecked]:translate-x-0 dark:data-[state=checked]:bg-primary-foreground dark:data-[state=unchecked]:bg-foreground'
             ),
           },
-          "widget.switch.track": {
+          'widget.footer.sub-group': {
             noStyle: true,
+            className: 'grid grid-cols-2 gap-4 sm:flex',
           },
-          "widget.switch.thumb": {
+          'widget.footer.reject-button': {
             noStyle: true,
-            className: cn(
-              "pointer-events-none block size-4 rounded-full bg-background ring-0 transition-[translate,background-color]",
-              "data-[state=checked]:translate-x-[calc(100%-2px)] data-[state=unchecked]:translate-x-0 dark:data-[state=checked]:bg-primary-foreground dark:data-[state=unchecked]:bg-foreground"
-            ),
+            className: buttonVariants({ variant: 'secondary' }),
           },
-          "widget.footer.sub-group": {
+          'widget.footer.accept-button': {
             noStyle: true,
-            className: "grid grid-cols-2 gap-4 sm:flex",
+            className: buttonVariants({ variant: 'secondary' }),
           },
-          "widget.footer.reject-button": {
+          'widget.footer.save-button': {
             noStyle: true,
-            className: buttonVariants({ variant: "secondary" }),
-          },
-          "widget.footer.accept-button": {
-            noStyle: true,
-            className: buttonVariants({ variant: "secondary" }),
-          },
-          "widget.footer.save-button": {
-            noStyle: true,
-            className: buttonVariants({ variant: "default" }),
+            className: buttonVariants({ variant: 'default' }),
           },
         }}
       />
 
       {children}
     </ConsentManagerProvider>
-  )
+  );
 }

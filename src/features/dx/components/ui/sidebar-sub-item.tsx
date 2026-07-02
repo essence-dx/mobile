@@ -1,28 +1,23 @@
-import { motion } from "framer-motion"
-
-import { cn } from "@/lib/utils"
-import {
-  Tooltip,
-  TooltipContent,
-  TooltipTrigger,
-} from "@/components/ui/tooltip"
+import { motion } from 'framer-motion';
+import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip';
+import { cn } from '@/lib/utils';
 
 export function SidebarSubItem({
   icon: Icon,
   label,
   collapsed,
 }: {
-  icon: React.ElementType
-  label: string
-  collapsed: boolean
+  icon: React.ElementType;
+  label: string;
+  collapsed: boolean;
 }) {
   return (
     <Tooltip>
       <TooltipTrigger asChild>
         <button
           className={cn(
-            "group flex w-full items-center gap-3 rounded-lg px-3 py-2 text-left text-[15px] text-muted-foreground transition-colors hover:bg-muted hover:text-foreground md:py-1.5 md:text-sm",
-            collapsed && "justify-center px-0"
+            'group flex w-full items-center gap-3 rounded-lg px-3 py-2 text-left text-[15px] text-muted-foreground transition-colors hover:bg-muted hover:text-foreground md:py-1.5 md:text-sm',
+            collapsed && 'justify-center px-0'
           )}
         >
           <motion.span
@@ -30,7 +25,7 @@ export function SidebarSubItem({
             whileHover={{ scale: 1.05, rotate: -2 }}
             whileTap={{ scale: 0.95 }}
             transition={{
-              type: "spring",
+              type: 'spring',
               stiffness: 400,
               damping: 25,
             }}
@@ -42,5 +37,5 @@ export function SidebarSubItem({
       </TooltipTrigger>
       {collapsed && <TooltipContent side="right">{label}</TooltipContent>}
     </Tooltip>
-  )
+  );
 }

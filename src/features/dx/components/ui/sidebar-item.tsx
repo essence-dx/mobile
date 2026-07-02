@@ -1,11 +1,6 @@
-import { motion } from "framer-motion"
-
-import { cn } from "@/lib/utils"
-import {
-  Tooltip,
-  TooltipContent,
-  TooltipTrigger,
-} from "@/components/ui/tooltip"
+import { motion } from 'framer-motion';
+import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip';
+import { cn } from '@/lib/utils';
 
 export function SidebarItem({
   icon: Icon,
@@ -14,22 +9,22 @@ export function SidebarItem({
   active,
   badge,
 }: {
-  icon: React.ElementType
-  label: string
-  collapsed: boolean
-  active?: boolean
-  badge?: string
+  icon: React.ElementType;
+  label: string;
+  collapsed: boolean;
+  active?: boolean;
+  badge?: string;
 }) {
   return (
     <Tooltip>
       <TooltipTrigger asChild>
         <button
           className={cn(
-            "group flex items-center gap-3 rounded-lg py-2.5 text-left text-[15px] font-medium transition-colors md:py-2 md:text-sm",
-            collapsed ? "w-auto justify-center px-0" : "w-full px-3",
+            'group flex items-center gap-3 rounded-lg py-2.5 text-left text-[15px] font-medium transition-colors md:py-2 md:text-sm',
+            collapsed ? 'w-auto justify-center px-0' : 'w-full px-3',
             active
-              ? "bg-muted text-foreground"
-              : "text-muted-foreground hover:bg-muted hover:text-foreground"
+              ? 'bg-muted text-foreground'
+              : 'text-muted-foreground hover:bg-muted hover:text-foreground'
           )}
         >
           <motion.span
@@ -37,7 +32,7 @@ export function SidebarItem({
             whileHover={{ scale: 1.05, rotate: -2 }}
             whileTap={{ scale: 0.95 }}
             transition={{
-              type: "spring",
+              type: 'spring',
               stiffness: 400,
               damping: 25,
             }}
@@ -52,7 +47,7 @@ export function SidebarItem({
                   initial={{ scale: 0, opacity: 0 }}
                   animate={{ scale: 1, opacity: 1 }}
                   transition={{
-                    type: "spring",
+                    type: 'spring',
                     stiffness: 500,
                     damping: 28,
                     delay: 0.1,
@@ -68,5 +63,5 @@ export function SidebarItem({
       </TooltipTrigger>
       {collapsed && <TooltipContent side="right">{label}</TooltipContent>}
     </Tooltip>
-  )
+  );
 }

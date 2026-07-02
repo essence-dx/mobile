@@ -1,16 +1,14 @@
-import { Check, Info, Plus } from "lucide-react"
+import { Check, Info, Plus } from 'lucide-react';
 
-import { Button } from "@/components/ui/button"
-import { Textarea } from "@/components/ui/textarea"
+import { Button } from '@/components/ui/button';
+import { Textarea } from '@/components/ui/textarea';
 
-import { DORA_COLORS, JARVIS_COLORS, PixelCanvas } from "./pixel-canvas"
+import { DORA_COLORS, JARVIS_COLORS, PixelCanvas } from './pixel-canvas';
 
 export function SettingsCustomize() {
   return (
     <>
-      <h2 className="mb-4 text-lg font-bold text-foreground md:mb-6 md:text-xl">
-        Customize
-      </h2>
+      <h2 className="mb-4 text-lg font-bold text-foreground md:mb-6 md:text-xl">Customize</h2>
       <div className="space-y-6 md:space-y-8">
         <div>
           <div className="mb-3 flex items-center gap-2 md:mb-4">
@@ -48,10 +46,7 @@ export function SettingsCustomize() {
               </span>
               <Info className="size-4 text-muted-foreground" />
             </div>
-            <Button
-              variant="outline"
-              className="rounded-full text-[13px] md:text-[14px]"
-            >
+            <Button variant="outline" className="rounded-full text-[13px] md:text-[14px]">
               <Plus className="mr-1.5 size-3" />
               Create
             </Button>
@@ -90,5 +85,5 @@ export function SettingsCustomize() {
         </div>
       </div>
     </>
-  )
+  );
 }

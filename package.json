@@ -30,8 +30,10 @@
     "lint": "eslint . --cache --cache-location .eslintcache",
     "lint:fix": "eslint --fix . --cache --cache-location .eslintcache",
     "check-types": "tsc --noEmit --pretty",
-    "format:check": "prettier --check \"**/*.{ts,tsx,md,mdx}\" --cache",
-    "format:write": "prettier --write \"**/*.{ts,tsx,md,mdx}\" --cache",
+    "format": "biome format --write",
+    "format:check": "biome format",
+    "check": "biome check",
+    "check:fix": "biome check --write",
     "registry:build": "bun run ./src/scripts/build-registry.mts && shadcn build",
     "registry:validate": "shadcn registry validate ./public/r/registry.json",
     "capture": "bun run ./src/scripts/capture.mts",
@@ -113,6 +115,7 @@
     "zod": "^3.25.76"
   },
   "devDependencies": {
+    "@biomejs/biome": "^2.5.2",
     "@ianvs/prettier-plugin-sort-imports": "^4.7.1",
     "@tailwindcss/postcss": "^4.3.1",
     "@tailwindcss/typography": "^0.5.19",

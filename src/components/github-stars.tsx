@@ -1,29 +1,19 @@
-import { addQueryParams } from "@/utils/url"
-
-import { UTM_PARAMS } from "@/config/site"
-import { Button } from "@/components/ui/button"
-import {
-  Tooltip,
-  TooltipContent,
-  TooltipTrigger,
-} from "@/components/base/ui/tooltip"
+import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/base/ui/tooltip';
+import { Button } from '@/components/ui/button';
+import { UTM_PARAMS } from '@/config/site';
+import { addQueryParams } from '@/utils/url';
 
 type GitHubStarsProps = {
-  repo: string
-  stargazersCount: number
-}
+  repo: string;
+  stargazersCount: number;
+};
 
 export function GitHubStars({ repo, stargazersCount }: GitHubStarsProps) {
   return (
     <Tooltip>
       <TooltipTrigger
         render={
-          <Button
-            className="gap-1.5 border-none px-1.5"
-            variant="ghost"
-            size="sm"
-            asChild
-          >
+          <Button className="gap-1.5 border-none px-1.5" variant="ghost" size="sm" asChild>
             <a
               href={addQueryParams(`https://github.com/${repo}`, UTM_PARAMS)}
               target="_blank"
@@ -38,11 +28,11 @@ export function GitHubStars({ repo, stargazersCount }: GitHubStarsProps) {
 
               <span
                 className="text-[0.8125rem]/none text-muted-foreground tabular-nums"
-                style={{ textBox: "trim-end cap alphabetic" }}
+                style={{ textBox: 'trim-end cap alphabetic' }}
               >
-                {new Intl.NumberFormat("en-US", {
-                  notation: "compact",
-                  compactDisplay: "short",
+                {new Intl.NumberFormat('en-US', {
+                  notation: 'compact',
+                  compactDisplay: 'short',
                 })
                   .format(stargazersCount)
                   .toLowerCase()}
@@ -54,8 +44,8 @@ export function GitHubStars({ repo, stargazersCount }: GitHubStarsProps) {
         }
       />
       <TooltipContent className="tabular-nums">
-        {new Intl.NumberFormat("en-US").format(stargazersCount)} stars
+        {new Intl.NumberFormat('en-US').format(stargazersCount)} stars
       </TooltipContent>
     </Tooltip>
-  )
+  );
 }

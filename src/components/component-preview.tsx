@@ -1,27 +1,16 @@
-"use client"
+'use client';
 
-import React, { useMemo, useState } from "react"
-import { Repeat, Settings2 } from "lucide-react"
-import { useTheme } from "next-themes"
-
-import { cn } from "@/lib/utils"
-import { Button } from "@/components/ui/button"
-import { Code as CodeInline } from "@/components/ui/typography"
-import {
-  Tabs,
-  TabsContent,
-  TabsIndicator,
-  TabsList,
-  TabsTrigger,
-} from "@/components/base/ui/tabs"
-import {
-  Tooltip,
-  TooltipContent,
-  TooltipTrigger,
-} from "@/components/base/ui/tooltip"
-import { CodeCollapsibleWrapper } from "@/components/code-collapsible-wrapper"
-import { OpenInV0Button } from "@/components/v0-open-button"
-import { Index } from "@/registry/__index__"
+import { Repeat, Settings2 } from 'lucide-react';
+import { useTheme } from 'next-themes';
+import React, { useMemo, useState } from 'react';
+import { Tabs, TabsContent, TabsIndicator, TabsList, TabsTrigger } from '@/components/base/ui/tabs';
+import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/base/ui/tooltip';
+import { CodeCollapsibleWrapper } from '@/components/code-collapsible-wrapper';
+import { Button } from '@/components/ui/button';
+import { Code as CodeInline } from '@/components/ui/typography';
+import { OpenInV0Button } from '@/components/v0-open-button';
+import { cn } from '@/lib/utils';
+import { Index } from '@/registry/__index__';
 
 export function ComponentPreview({
   className,
@@ -34,41 +23,41 @@ export function ComponentPreview({
   remountOnThemeChange = false,
   children,
   ...props
-}: React.ComponentProps<"div"> & {
-  name: string
-  openInV0Url?: string
-  customizeUrl?: string
-  canReplay?: boolean
-  prose?: boolean
-  codeCollapsible?: boolean
-  remountOnThemeChange?: boolean
+}: React.ComponentProps<'div'> & {
+  name: string;
+  openInV0Url?: string;
+  customizeUrl?: string;
+  canReplay?: boolean;
+  prose?: boolean;
+  codeCollapsible?: boolean;
+  remountOnThemeChange?: boolean;
 }) {
-  const { resolvedTheme } = useTheme()
+  const { resolvedTheme } = useTheme();
 
-  const [replay, setReplay] = useState(0)
+  const [replay, setReplay] = useState(0);
 
-  const Codes = React.Children.toArray(children) as React.ReactElement[]
-  const Code = Codes[0]
+  const Codes = React.Children.toArray(children) as React.ReactElement[];
+  const Code = Codes[0];
 
   const Preview = useMemo(() => {
-    const Component = Index[name]?.component
+    const Component = Index[name]?.component;
 
     if (!Component) {
       return (
         <p className="text-sm text-muted-foreground">
           Component <CodeInline>{name}</CodeInline> not found in registry.
         </p>
-      )
+      );
     }
 
-    return <Component />
-  }, [name])
+    return <Component />;
+  }, [name]);
 
   return (
     <div
       className={cn(
-        "my-[1.25em] rounded-xl bg-surface inset-ring-1 inset-ring-border/64",
-        prose === false && "not-prose",
+        'my-[1.25em] rounded-xl bg-surface inset-ring-1 inset-ring-border/64',
+        prose === false && 'not-prose',
         className
       )}
       {...props}
@@ -94,10 +83,7 @@ export function ComponentPreview({
             className="relative rounded-[9px] border bg-background p-2 data-[show-buttons=true]:py-8.75"
           >
             {(canReplay || customizeUrl || openInV0Url) && (
-              <div
-                data-slot="buttons"
-                className="absolute top-0.75 right-0.75 flex items-center"
-              >
+              <div data-slot="buttons" className="absolute top-0.75 right-0.75 flex items-center">
                 {canReplay && (
                   <Tooltip>
                     <TooltipTrigger
@@ -128,11 +114,7 @@ export function ComponentPreview({
                           aria-label="Customize"
                           asChild
                         >
-                          <a
-                            href={customizeUrl}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                          >
+                          <a href={customizeUrl} target="_blank" rel="noopener noreferrer">
                             <Settings2 />
                           </a>
                         </Button>
@@ -142,17 +124,12 @@ export function ComponentPreview({
                   </Tooltip>
                 )}
 
-                {openInV0Url && (
-                  <OpenInV0Button
-                    className="h-7 rounded-[5px]"
-                    url={openInV0Url}
-                  />
-                )}
+                {openInV0Url && <OpenInV0Button className="h-7 rounded-[5px]" url={openInV0Url} />}
               </div>
             )}
 
             <div
-              key={`${replay}-${remountOnThemeChange ? (resolvedTheme ?? "system") : "static"}`}
+              key={`${replay}-${remountOnThemeChange ? (resolvedTheme ?? 'system') : 'static'}`}
               data-slot="component-preview"
               className="flex min-h-72 items-center justify-center font-sans"
             >
@@ -172,20 +149,18 @@ export function ComponentPreview({
         <TabsContent
           value="code"
           className={cn(
-            "**:data-rehype-pretty-code-figure:m-0 **:data-rehype-pretty-code-figure:bg-transparent **:data-rehype-pretty-code-figure:pt-0 **:data-rehype-pretty-code-figure:inset-ring-0",
-            "**:data-[slot=copy-button]:top-1 **:data-[slot=copy-button]:opacity-100",
-            "**:data-fade-overlay:top-px"
+            '**:data-rehype-pretty-code-figure:m-0 **:data-rehype-pretty-code-figure:bg-transparent **:data-rehype-pretty-code-figure:pt-0 **:data-rehype-pretty-code-figure:inset-ring-0',
+            '**:data-[slot=copy-button]:top-1 **:data-[slot=copy-button]:opacity-100',
+            '**:data-fade-overlay:top-px'
           )}
         >
           {codeCollapsible ? (
-            <CodeCollapsibleWrapper className="my-0">
-              {Code}
-            </CodeCollapsibleWrapper>
+            <CodeCollapsibleWrapper className="my-0">{Code}</CodeCollapsibleWrapper>
           ) : (
             Code
           )}
         </TabsContent>
       </Tabs>
     </div>
-  )
+  );
 }

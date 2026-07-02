@@ -1,34 +1,34 @@
-"use client"
+'use client';
 
-import type { ComponentProps } from "react"
-import type { TargetAndTransition } from "motion/react"
-import { motion } from "motion/react"
+import type { TargetAndTransition } from 'motion/react';
+import { motion } from 'motion/react';
+import type { ComponentProps } from 'react';
 
-import { cn } from "@/lib/utils"
+import { cn } from '@/lib/utils';
 
 const initialProps: TargetAndTransition = {
   pathLength: 0,
   opacity: 0,
-}
+};
 
 const animateProps: TargetAndTransition = {
   pathLength: 1,
   opacity: 1,
-}
+};
 
 export type AppleHelloEffectEnglishProps = Omit<
   ComponentProps<typeof motion.svg>,
-  "durationScale" | "onAnimationComplete"
+  'durationScale' | 'onAnimationComplete'
 > & {
   /**
    * Scales the duration and delay of the handwriting animation.
    * Values below 1 speed up, values above 1 slow down.
    * @defaultValue 1
    */
-  durationScale?: number
+  durationScale?: number;
   /** Called when the full handwriting animation completes. */
-  onAnimationComplete?: () => void
-}
+  onAnimationComplete?: () => void;
+};
 
 export function AppleHelloEffectEnglish({
   className,
@@ -36,11 +36,11 @@ export function AppleHelloEffectEnglish({
   onAnimationComplete,
   ...props
 }: AppleHelloEffectEnglishProps) {
-  const calc = (x: number) => x * durationScale
+  const calc = (x: number) => x * durationScale;
 
   return (
     <motion.svg
-      className={cn("h-20", className)}
+      className={cn('h-20', className)}
       xmlns="http://www.w3.org/2000/svg"
       viewBox="0 0 638 200"
       fill="none"
@@ -61,7 +61,7 @@ export function AppleHelloEffectEnglish({
         animate={animateProps}
         transition={{
           duration: calc(0.8),
-          ease: "easeInOut",
+          ease: 'easeInOut',
           opacity: { duration: 0.4 },
         }}
       />
@@ -73,12 +73,12 @@ export function AppleHelloEffectEnglish({
         animate={animateProps}
         transition={{
           duration: calc(2.8),
-          ease: "easeInOut",
+          ease: 'easeInOut',
           delay: calc(0.7),
           opacity: { duration: 0.7, delay: calc(0.7) },
         }}
         onAnimationComplete={onAnimationComplete}
       />
     </motion.svg>
-  )
+  );
 }

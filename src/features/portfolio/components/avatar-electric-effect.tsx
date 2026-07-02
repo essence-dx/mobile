@@ -1,46 +1,45 @@
-"use client"
+'use client';
 
-import type { JSX } from "react"
-import { useEffect, useRef, useState } from "react"
+import type { JSX } from 'react';
+import { useEffect, useRef, useState } from 'react';
+import { ElectricBorder } from '@/components/react-bits/electric-border';
+import { useSound } from '@/hooks/soundcn/use-sound';
+import { laserSmall001Sound } from '@/lib/soundcn/laser-small-001';
 
-import { laserSmall001Sound } from "@/lib/soundcn/laser-small-001"
-import { useSound } from "@/hooks/soundcn/use-sound"
-import { ElectricBorder } from "@/components/react-bits/electric-border"
-
-const HOVER_DELAY_MS = 150
+const HOVER_DELAY_MS = 150;
 
 export function AvatarElectricEffect({ children }: { children: JSX.Element }) {
-  const [isHovered, setIsHovered] = useState(false)
-  const hoverTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null)
+  const [isHovered, setIsHovered] = useState(false);
+  const hoverTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
-  const [play] = useSound(laserSmall001Sound, { volume: 0.2 })
+  const [play] = useSound(laserSmall001Sound, { volume: 0.2 });
 
   const clearHoverTimeout = () => {
-    if (!hoverTimeoutRef.current) return
+    if (!hoverTimeoutRef.current) return;
 
-    clearTimeout(hoverTimeoutRef.current)
-    hoverTimeoutRef.current = null
-  }
+    clearTimeout(hoverTimeoutRef.current);
+    hoverTimeoutRef.current = null;
+  };
 
   useEffect(() => {
     return () => {
-      clearHoverTimeout()
-    }
-  }, [])
+      clearHoverTimeout();
+    };
+  }, []);
 
   const handleMouseEnter = () => {
-    clearHoverTimeout()
+    clearHoverTimeout();
 
     hoverTimeoutRef.current = setTimeout(() => {
-      setIsHovered(true)
-      play()
-    }, HOVER_DELAY_MS)
-  }
+      setIsHovered(true);
+      play();
+    }, HOVER_DELAY_MS);
+  };
 
   const handleMouseLeave = () => {
-    clearHoverTimeout()
-    setIsHovered(false)
-  }
+    clearHoverTimeout();
+    setIsHovered(false);
+  };
 
   return (
     <ElectricBorder
@@ -53,5 +52,5 @@ export function AvatarElectricEffect({ children }: { children: JSX.Element }) {
     >
       {children}
     </ElectricBorder>
-  )
+  );
 }

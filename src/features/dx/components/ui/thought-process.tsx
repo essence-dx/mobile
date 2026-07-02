@@ -1,11 +1,11 @@
-import { Lightbulb } from "lucide-react"
+import { Lightbulb } from 'lucide-react';
 
 export function ThoughtProcess({
   label,
   onOpenThoughts,
 }: {
-  label: string
-  onOpenThoughts: () => void
+  label: string;
+  onOpenThoughts: () => void;
 }) {
   return (
     <button
@@ -15,5 +15,5 @@ export function ThoughtProcess({
       <Lightbulb className="size-3.5" />
       <span>Thought for {label}</span>
     </button>
-  )
+  );
 }

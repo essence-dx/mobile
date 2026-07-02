@@ -2,51 +2,46 @@
  * This component is inspired by Devouring Details and Skiper UI.
  */
 
-"use client"
+'use client';
 
-import { memo, useEffect, useRef, useState } from "react"
-import type { Route } from "next"
-import Link from "next/link"
-import { usePathname } from "next/navigation"
-import { motion } from "motion/react"
-import { useHotkeys } from "react-hotkeys-hook"
+import { motion } from 'motion/react';
+import type { Route } from 'next';
+import Link from 'next/link';
+import { usePathname } from 'next/navigation';
+import { memo, useEffect, useRef, useState } from 'react';
+import { useHotkeys } from 'react-hotkeys-hook';
+import { Button } from '@/components/base/ui/button';
+import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/base/ui/tooltip';
+import { Kbd } from '@/components/ui/kbd';
+import { cn } from '@/lib/utils';
 
-import { cn } from "@/lib/utils"
-import { Kbd } from "@/components/ui/kbd"
-import { Button } from "@/components/base/ui/button"
-import {
-  Tooltip,
-  TooltipContent,
-  TooltipTrigger,
-} from "@/components/base/ui/tooltip"
+import type { SidebarIconHandle } from './sidebar-icon';
+import { SidebarIcon } from './sidebar-icon';
 
-import type { SidebarIconHandle } from "./sidebar-icon"
-import { SidebarIcon } from "./sidebar-icon"
-
-const DEFAULT_SIDEBAR_OPEN = true
+const DEFAULT_SIDEBAR_OPEN = true;
 
 export function Sidebar({ children }: { children: React.ReactNode }) {
-  const [isOpen, setIsOpen] = useState(DEFAULT_SIDEBAR_OPEN)
+  const [isOpen, setIsOpen] = useState(DEFAULT_SIDEBAR_OPEN);
 
-  const sidebarIconref = useRef<SidebarIconHandle>(null)
+  const sidebarIconref = useRef<SidebarIconHandle>(null);
 
-  useHotkeys("s", () => setIsOpen((prev) => !prev))
+  useHotkeys('s', () => setIsOpen((prev) => !prev));
 
   useEffect(() => {
     if (isOpen) {
-      sidebarIconref.current?.startAnimation()
+      sidebarIconref.current?.startAnimation();
     } else {
-      sidebarIconref.current?.stopAnimation()
+      sidebarIconref.current?.stopAnimation();
     }
-  }, [isOpen])
+  }, [isOpen]);
 
   return (
     <div
       className={cn(
-        "[--sidebar-width:--spacing(60)]",
-        "[--sidebar-radius:var(--radius-xl)]",
-        "[--sidebar-top:calc(var(--header-height)+(--spacing(12))+(--spacing(0.75)))]",
-        "sticky top-(--sidebar-top) isolate flex flex-col max-xl:hidden"
+        '[--sidebar-width:--spacing(60)]',
+        '[--sidebar-radius:var(--radius-xl)]',
+        '[--sidebar-top:calc(var(--header-height)+(--spacing(12))+(--spacing(0.75)))]',
+        'sticky top-(--sidebar-top) isolate flex flex-col max-xl:hidden'
       )}
     >
       <Tooltip>
@@ -55,10 +50,10 @@ export function Sidebar({ children }: { children: React.ReactNode }) {
             <Button
               data-sidebar-open={isOpen}
               className={cn(
-                "[--trigger-inset:--spacing(1.5)]",
-                "[--trigger-radius:calc(var(--sidebar-radius)-var(--trigger-inset)+1px)]",
-                "absolute top-(--trigger-inset) left-(--trigger-inset) z-10 size-7 rounded-(--trigger-radius) border-none",
-                "data-[sidebar-open=false]:inset-ring-1 data-[sidebar-open=false]:inset-ring-border"
+                '[--trigger-inset:--spacing(1.5)]',
+                '[--trigger-radius:calc(var(--sidebar-radius)-var(--trigger-inset)+1px)]',
+                'absolute top-(--trigger-inset) left-(--trigger-inset) z-10 size-7 rounded-(--trigger-radius) border-none',
+                'data-[sidebar-open=false]:inset-ring-1 data-[sidebar-open=false]:inset-ring-border'
               )}
               variant="ghost"
               size="icon-sm"
@@ -66,7 +61,7 @@ export function Sidebar({ children }: { children: React.ReactNode }) {
             >
               <SidebarIcon
                 ref={sidebarIconref}
-                initial={DEFAULT_SIDEBAR_OPEN ? "animate" : "normal"}
+                initial={DEFAULT_SIDEBAR_OPEN ? 'animate' : 'normal'}
               />
             </Button>
           }
@@ -82,10 +77,10 @@ export function Sidebar({ children }: { children: React.ReactNode }) {
       <div
         data-open={isOpen}
         className={cn(
-          "flex flex-col rounded-(--sidebar-radius) border bg-background",
-          "h-[calc(100svh-var(--sidebar-top)-var(--fade-bottom-height))] w-(--sidebar-width)",
-          "-translate-x-[calc(var(--sidebar-width)-1px)] data-open:translate-x-0",
-          "transition-[translate] duration-350 ease-[cubic-bezier(0.24,0.88,0.28,0.92)]"
+          'flex flex-col rounded-(--sidebar-radius) border bg-background',
+          'h-[calc(100svh-var(--sidebar-top)-var(--fade-bottom-height))] w-(--sidebar-width)',
+          '-translate-x-[calc(var(--sidebar-width)-1px)] data-open:translate-x-0',
+          'transition-[translate] duration-350 ease-[cubic-bezier(0.24,0.88,0.28,0.92)]'
         )}
         tabIndex={isOpen ? 0 : -1}
         aria-hidden={!isOpen}
@@ -95,30 +90,30 @@ export function Sidebar({ children }: { children: React.ReactNode }) {
         </div>
       </div>
     </div>
-  )
+  );
 }
 
 type MenuItem<T extends string = string> = {
-  title: string
-  href: T
-}
+  title: string;
+  href: T;
+};
 
 export function SidebarContent({ items }: { items: MenuItem<Route>[] }) {
-  const pathname = usePathname()
+  const pathname = usePathname();
 
-  const itemActiveRef = useRef<HTMLAnchorElement | null>(null)
+  const itemActiveRef = useRef<HTMLAnchorElement | null>(null);
 
   // Scroll active item into view on mount
   useEffect(() => {
-    itemActiveRef.current?.scrollIntoView({ block: "center" })
-  }, [])
+    itemActiveRef.current?.scrollIntoView({ block: 'center' });
+  }, []);
 
   return (
     <div
       className="flex flex-col gap-2 py-5.25 pr-0.5 pl-3"
       style={
         {
-          "--normal-line-width": `${lineVariants.normal.width}px`,
+          '--normal-line-width': `${lineVariants.normal.width}px`,
         } as React.CSSProperties
       }
     >
@@ -133,16 +128,16 @@ export function SidebarContent({ items }: { items: MenuItem<Route>[] }) {
         />
       ))}
     </div>
-  )
+  );
 }
 
-const MotionLink = motion.create(Link)
+const MotionLink = motion.create(Link);
 
 const lineVariants = {
   normal: { width: 24 },
   active: { width: 40 },
   hover: { width: 40 },
-}
+};
 
 const SidebarMenuItem = memo(function SidebarMenuItem({
   ref,
@@ -151,25 +146,25 @@ const SidebarMenuItem = memo(function SidebarMenuItem({
   isActive = false,
   isLast = false,
 }: MenuItem<Route> & {
-  ref?: React.Ref<HTMLAnchorElement>
-  isActive?: boolean
-  isLast?: boolean
+  ref?: React.Ref<HTMLAnchorElement>;
+  isActive?: boolean;
+  isLast?: boolean;
 }) {
   return (
     <>
       <MotionLink
         ref={ref}
-        aria-current={isActive ? "page" : undefined}
+        aria-current={isActive ? 'page' : undefined}
         className="group relative flex h-px items-center gap-3 after:absolute after:top-1/2 after:left-0 after:size-full after:-translate-y-1/2 after:p-3.5"
         href={href}
         initial={false}
-        animate={isActive ? "active" : "normal"}
+        animate={isActive ? 'active' : 'normal'}
         whileHover="hover"
       >
         <motion.span
           className="block h-px shrink-0 bg-foreground/20 transition-[background-color] ease-out group-hover:bg-foreground group-aria-[current=page]:bg-foreground"
           variants={lineVariants}
-          transition={{ type: "spring", stiffness: 200, damping: 20 }}
+          transition={{ type: 'spring', stiffness: 200, damping: 20 }}
         />
         <span className="text-sm whitespace-nowrap text-muted-foreground transition-[color] ease-out group-hover:text-foreground group-aria-[current=page]:text-foreground">
           {title}
@@ -183,5 +178,5 @@ const SidebarMenuItem = memo(function SidebarMenuItem({
         </>
       )}
     </>
-  )
-})
+  );
+});

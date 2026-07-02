@@ -12,5 +12,5 @@ export function LogoIcon({ className }: { className?: string }) {
       <circle cx="12" cy="12" r="8" />
       <path d="M5 19L19 5" />
     </svg>
-  )
+  );
 }

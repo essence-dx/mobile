@@ -1,14 +1,14 @@
-import type { Education } from "@/features/portfolio/types/education"
+import type { Education } from '@/features/portfolio/types/education';
 
 export const EDUCATION: Education[] = [
   {
-    id: "hcmus",
-    school: "University of Science — VNUHCM",
-    degree: "Bachelor’s degree",
-    fieldOfStudy: "Information Systems",
+    id: 'hcmus',
+    school: 'University of Science — VNUHCM',
+    degree: 'Bachelor’s degree',
+    fieldOfStudy: 'Information Systems',
     period: {
-      start: "08.2018",
-      end: "08.2026",
+      start: '08.2018',
+      end: '08.2026',
     },
     description: `- Currently studying for a Bachelor’s degree in Information Systems.
 - Language Proficiency: B1 level in English (CEFR).
@@ -16,25 +16,25 @@ export const EDUCATION: Education[] = [
   - Bronze Medal — 10th Design, Manufacturing, and Application Award 2022
   - 2nd Prize — Business Startup Competition 2019`,
     skills: [
-      "C++",
-      "Java",
-      "Python",
-      "PHP",
-      "DSA",
-      "Advanced Databases",
-      "Systems Design",
-      "Distributed Systems",
-      "Software Engineering",
-      "Teamwork",
+      'C++',
+      'Java',
+      'Python',
+      'PHP',
+      'DSA',
+      'Advanced Databases',
+      'Systems Design',
+      'Distributed Systems',
+      'Software Engineering',
+      'Teamwork',
     ],
   },
   {
-    id: "chuyenlytutrong",
-    school: "Ly Tu Trong High School for the Gifted",
-    fieldOfStudy: "Computer Science",
+    id: 'chuyenlytutrong',
+    school: 'Ly Tu Trong High School for the Gifted',
+    fieldOfStudy: 'Computer Science',
     period: {
-      start: "08.2015",
-      end: "06.2018",
+      start: '08.2015',
+      end: '06.2018',
     },
     description: `- Student of the Specialized Computer Science Program.
 - Granted direct admission to university due to achieving 3rd Prize at the national level.
@@ -51,22 +51,14 @@ export const EDUCATION: Education[] = [
 - Developed a feature using Node.js and Pandoc to recognize multiple-choice questions from .docx files and upload them to an [online quiz platform](https://youtu.be/QjR99wdmTyo) I created.
 - Developed websites based on Laravel framework.
 - Built websites with PHP and MySQL, following the MVC architecture.`,
-    skills: [
-      "Algorithms",
-      "C++",
-      "PHP",
-      "MySQL",
-      "Laravel",
-      "Node.js",
-      "Pandoc",
-    ],
+    skills: ['Algorithms', 'C++', 'PHP', 'MySQL', 'Laravel', 'Node.js', 'Pandoc'],
   },
   {
-    id: "thcsthuanhung",
-    school: "Thuan Hung Secondary School",
+    id: 'thcsthuanhung',
+    school: 'Thuan Hung Secondary School',
     period: {
-      start: "08.2011",
-      end: "06.2015",
+      start: '08.2011',
+      end: '06.2015',
     },
     description: `- Recognized as the most outstanding student of the district.
 - Achieved numerous awards at city and national levels:
@@ -75,6 +67,6 @@ export const EDUCATION: Education[] = [
   - 1st Prize — Can Tho City Young Informatics Contest 2014
 - Achieved the title of Outstanding Student from Grade 6-9.
 - Developed websites using the open-source NukeViet CMS.`,
-    skills: ["Pascal", "HTML", "CSS", "JavaScript", "NukeViet"],
+    skills: ['Pascal', 'HTML', 'CSS', 'JavaScript', 'NukeViet'],
   },
-]
+];

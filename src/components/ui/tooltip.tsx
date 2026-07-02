@@ -1,12 +1,12 @@
-"use client"
+'use client';
 
-import * as React from "react"
-import { motion } from "framer-motion"
-import { Tooltip as TooltipPrimitive } from "radix-ui"
+import { motion } from 'framer-motion';
+import { Tooltip as TooltipPrimitive } from 'radix-ui';
+import type * as React from 'react';
 
-import { cn } from "@/lib/utils"
+import { cn } from '@/lib/utils';
 
-const tooltipSpring = { type: "spring" as const, stiffness: 400, damping: 30 }
+const tooltipSpring = { type: 'spring' as const, stiffness: 400, damping: 30 };
 
 function TooltipProvider({
   delayDuration = 0,
@@ -18,19 +18,15 @@ function TooltipProvider({
       delayDuration={delayDuration}
       {...props}
     />
-  )
+  );
 }
 
-function Tooltip({
-  ...props
-}: React.ComponentProps<typeof TooltipPrimitive.Root>) {
-  return <TooltipPrimitive.Root data-slot="tooltip" {...props} />
+function Tooltip({ ...props }: React.ComponentProps<typeof TooltipPrimitive.Root>) {
+  return <TooltipPrimitive.Root data-slot="tooltip" {...props} />;
 }
 
-function TooltipTrigger({
-  ...props
-}: React.ComponentProps<typeof TooltipPrimitive.Trigger>) {
-  return <TooltipPrimitive.Trigger data-slot="tooltip-trigger" {...props} />
+function TooltipTrigger({ ...props }: React.ComponentProps<typeof TooltipPrimitive.Trigger>) {
+  return <TooltipPrimitive.Trigger data-slot="tooltip-trigger" {...props} />;
 }
 
 function TooltipContent({
@@ -47,7 +43,7 @@ function TooltipContent({
           animate={{ opacity: 1, scale: 1, y: 0 }}
           transition={tooltipSpring}
           className={cn(
-            "z-50 inline-flex w-fit max-w-xs origin-(--radix-tooltip-content-transform-origin) items-center gap-1.5 rounded-md bg-foreground px-3 py-1.5 text-xs text-background has-data-[slot=kbd]:pr-1.5",
+            'z-50 inline-flex w-fit max-w-xs origin-(--radix-tooltip-content-transform-origin) items-center gap-1.5 rounded-md bg-foreground px-3 py-1.5 text-xs text-background has-data-[slot=kbd]:pr-1.5',
             className
           )}
         >
@@ -56,7 +52,7 @@ function TooltipContent({
         </motion.div>
       </TooltipPrimitive.Content>
     </TooltipPrimitive.Portal>
-  )
+  );
 }
 
-export { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger }
+export { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger };
