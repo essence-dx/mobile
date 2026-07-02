@@ -11,7 +11,9 @@
       "src/**",
       "*.json",
       "*.md",
-      "*.mjs"
+      "*.mjs",
+      "*.ts",
+      "*.d.ts"
     ]
   },
   "formatter": {
@@ -78,6 +80,17 @@
         "src/components/animated-lucide/**"
       ],
       "linter": {
+        "enabled": false
+      }
+    },
+    {
+      "includes": [
+        "**/*.css"
+      ],
+      "linter": {
+        "enabled": false
+      },
+      "formatter": {
         "enabled": false
       }
     },
